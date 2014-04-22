@@ -22,13 +22,13 @@ close all;
 set(0,'DefaultFigureWindowStyle','docked') %dock the figures..just a personal preference you don't need this.
 
 %base_dir = 'E:\Dropbox\Student_dave\flies_SD_frames\duplicates_removed\';
-base_dir = '2a/';
+base_dir = 'maddenNew/';
 
 
 cd(base_dir);
 
 %% get listing of frames so that you can cycle through them easily.
-f_list =  dir('*jpeg');
+f_list =  dir('*jpg');
 %obj.reader = vision.VideoFileReader('*jpg');
 
 
@@ -37,7 +37,7 @@ f_list =  dir('*jpeg');
 %using fspecial, we will make a laplacian of a gaussian (LOG) template to convolve (pass over)
 %over the image to find blobs!
 
-hsizeh = 30  %you will need to iterative test these values two values. the bigger they are, the larger the blob they will find!
+hsizeh = 150  %you will need to iterative test these values two values. the bigger they are, the larger the blob they will find!
 sigmah = 6   %
 h = fspecial('log', hsizeh, sigmah)
 subplot(121); imagesc(h)
@@ -47,29 +47,31 @@ colormap(jet)
 
 %frame = obj.reader.step();
     
-% % % %% iteratively (frame by frame) find flies and save the X Y coordinates!
-% % % X = cell(1,length(f_list)); %detection X coordinate indice
-% % % Y = cell(1,length(f_list));  %detection Y coordinate indice
-
 %% iteratively (frame by frame) find flies and save the X Y coordinates!
-X = cell(1,length(frame)); %detection X coordinate indice
-Y = cell(1,length(frame));  %detection Y coordinate indice
+X = cell(1,length(f_list)); %detection X coordinate indice
+Y = cell(1,length(f_list));  %detection Y coordinate indice
+% % % % 
+% % % % %% iteratively (frame by frame) find flies and save the X Y coordinates!
+% % % % X = cell(1,length(frame)); %detection X coordinate indice
+% % % % Y = cell(1,length(frame));  %detection Y coordinate indice
 
-for i = 1:length(f_list)
-while ~isDone(obj.reader)
+for i = 50:length(f_list)
+%while ~isDone(obj.reader)
     
-    %img_real = (imread(f_list(i).name)); %just for plottin purposes
-    img_real = (imread(frame.name)); %just for plottin purposes
+    img_real = (imread(f_list(i).name)); %just for plottin purposes
+    %img_real = (imread(frame.name)); %just for plottin purposes
     img_tmp = double(imread(f_list(i).name)); %load in the image and convert to double too allow for computations on the image
     img = img_tmp(:,:,1); %reduce to just the first dimension, we don't care about color (rgb) values here.
- 
+    imshow(img)
     %do the blob filter!
     blob_img = conv2(img,h,'same');
+    imagesc(blob_img)
     
     %threshold the image to blobs only: you'll need to decide what your
     %threshold level is..you can use your eyes or a histogram :P
     idx = find(blob_img < 0.7); 
     blob_img(idx) = nan ;
+    imagesc(blob_img)
     
     %now we have an image of hills and valleys..some are distinct, some
     %overlap..but you can still see the peak...most of the time.
@@ -81,21 +83,20 @@ while ~isDone(obj.reader)
     
     %for plotting
     %%{
-    clf
-    %subplot(211);   
-    %imagesc(blob_img)
-    %    axis off
-    %subplot(212)
+% % %     clf
+% % %     subplot(211);   
+% % %     imagesc(blob_img)
+% % %         axis off
+% % %     subplot(212)
     imshow(img_real)
     hold on
     for j = 1:length(X{i})
         plot(Y{i}(j),X{i}(j),'or')
     end
     axis off
-    pause
+    pause(.1);
     %}
     
-    frame = obj.reader.step();
     
     i
 end

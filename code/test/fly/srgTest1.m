@@ -37,7 +37,7 @@ f_list =  dir('*jpg');
 %using fspecial, we will make a laplacian of a gaussian (LOG) template to convolve (pass over)
 %over the image to find blobs!
 
-hsizeh = 50  %you will need to iterative test these values two values. the bigger they are, the larger the blob they will find!
+hsizeh = 30  %you will need to iterative test these values two values. the bigger they are, the larger the blob they will find!
 sigmah = 6   %
 h = fspecial('log', hsizeh, sigmah)
 subplot(121); imagesc(h)
@@ -65,11 +65,13 @@ for i = 50:length(f_list)
     imshow(img)
     %do the blob filter!
     blob_img = conv2(img,h,'same');
+    imagesc(blob_img)
     
     %threshold the image to blobs only: you'll need to decide what your
     %threshold level is..you can use your eyes or a histogram :P
-    idx = find(blob_img < 0.7); 
+    idx = find(blob_img < 0.9); 
     blob_img(idx) = nan ;
+    imagesc(blob_img)
     
     %now we have an image of hills and valleys..some are distinct, some
     %overlap..but you can still see the peak...most of the time.
@@ -82,10 +84,10 @@ for i = 50:length(f_list)
     %for plotting
     %%{
     clf
-    %subplot(211);   
-    %imagesc(blob_img)
-    %    axis off
-    %subplot(212)
+% % %     subplot(211);   
+% % %     imagesc(blob_img)
+% % %         axis off
+% % %     subplot(212)
     imshow(img_real)
     hold on
     for j = 1:length(X{i})
