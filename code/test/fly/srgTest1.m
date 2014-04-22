@@ -22,7 +22,7 @@ close all;
 set(0,'DefaultFigureWindowStyle','docked') %dock the figures..just a personal preference you don't need this.
 
 %base_dir = 'E:\Dropbox\Student_dave\flies_SD_frames\duplicates_removed\';
-base_dir = '2a/';
+base_dir = 'maddenNew/';
 
 
 cd(base_dir);
@@ -55,14 +55,14 @@ Y = cell(1,length(f_list));  %detection Y coordinate indice
 % % % % X = cell(1,length(frame)); %detection X coordinate indice
 % % % % Y = cell(1,length(frame));  %detection Y coordinate indice
 
-for i = 1:length(f_list)
+for i = 50:length(f_list)
 %while ~isDone(obj.reader)
     
     img_real = (imread(f_list(i).name)); %just for plottin purposes
     %img_real = (imread(frame.name)); %just for plottin purposes
     img_tmp = double(imread(f_list(i).name)); %load in the image and convert to double too allow for computations on the image
     img = img_tmp(:,:,1); %reduce to just the first dimension, we don't care about color (rgb) values here.
-    %imshow(img)
+    imshow(img)
     %do the blob filter!
     blob_img = conv2(img,h,'same');
     
@@ -86,13 +86,13 @@ for i = 1:length(f_list)
     %imagesc(blob_img)
     %    axis off
     %subplot(212)
-% % %     imshow(img_real)
-% % %     hold on
-% % %     for j = 1:length(X{i})
-% % %         plot(Y{i}(j),X{i}(j),'or')
-% % %     end
-% % %     axis off
-% % %     pause(.1);
+    imshow(img_real)
+    hold on
+    for j = 1:length(X{i})
+        plot(Y{i}(j),X{i}(j),'or')
+    end
+    axis off
+    pause(.1);
     %}
     
     
