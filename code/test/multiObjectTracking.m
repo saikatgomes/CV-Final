@@ -93,7 +93,7 @@ end
         % of 1 corresponds to the foreground and the value of 0 corresponds
         % to the background. 
         
-        obj.detector = vision.ForegroundDetector('NumGaussians', 10, ...
+        obj.detector = vision.ForegroundDetector('NumGaussians', 3, ...
             'NumTrainingFrames', 40, 'MinimumBackgroundRatio', 0.7);
         
         % Connected groups of foreground pixels are likely to correspond to moving
@@ -194,7 +194,8 @@ end
             % Shift the bounding box so that its center is at 
             % the predicted location.
             predictedCentroid = int32(predictedCentroid) - bbox(3:4) / 2;
-            tracks(i).bbox = [predictedCentroid, bbox(3:4)];
+            %tracks(i).bbox = [predictedCentroid, bbox(3:4)];
+            tracks(i).bbox = [predictedCentroid, 50,50];
         end
     end
 
@@ -262,6 +263,10 @@ end
             detectionIdx = assignments(i, 2);
             centroid = centroids(detectionIdx, :);
             bbox = bboxes(detectionIdx, :);
+            
+            %srg
+            bbox(3)=50;
+            bbox(4)=50;
             
             % Correct the estimate of the object's location
             % using the new detection.

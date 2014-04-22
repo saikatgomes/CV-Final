@@ -91,8 +91,8 @@ end
         % objects in each frame, and playing the video.
         
         % Create a video file reader.
-        obj.reader = vision.VideoFileReader('madden.avi');
-        %obj.reader = vision.VideoFileReader('maddenTest.mp4');
+        %obj.reader = vision.VideoFileReader('madden.avi');
+        obj.reader = vision.VideoFileReader('maddenNew.mp4');
         
         % Create two video players, one to display the video,
         % and one to display the foreground mask.
@@ -106,7 +106,7 @@ end
         % of 1 corresponds to the foreground and the value of 0 corresponds
         % to the background. 
         
-        obj.detector = vision.ForegroundDetector('NumGaussians', 3, ...
+        obj.detector = vision.ForegroundDetector('NumGaussians', 9, ...
             'NumTrainingFrames', 40, 'MinimumBackgroundRatio', .7);
         
         % Connected groups of foreground pixels are likely to correspond to moving
@@ -207,7 +207,8 @@ end
             % Shift the bounding box so that its center is at 
             % the predicted location.
             predictedCentroid = int32(predictedCentroid) - bbox(3:4) / 2;
-            tracks(i).bbox = [predictedCentroid, bbox(3:4)];
+            %tracks(i).bbox = [predictedCentroid, bbox(3:4)];
+            tracks(i).bbox = [predictedCentroid, 30,30];
         end
     end
 
@@ -275,6 +276,10 @@ end
             detectionIdx = assignments(i, 2);
             centroid = centroids(detectionIdx, :);
             bbox = bboxes(detectionIdx, :);
+            %SG
+            bbox(3)=30;
+            bbox(4)=30;
+            
             
             % Correct the estimate of the object's location
             % using the new detection.
