@@ -21,13 +21,14 @@ clear all;
 close all;
 set(0,'DefaultFigureWindowStyle','docked') %dock the figures..just a personal preference you don't need this.
 
-base_dir = 'E:\Dropbox\Student_dave\flies_SD_frames\duplicates_removed\';
+%base_dir = 'E:\Dropbox\Student_dave\flies_SD_frames\duplicates_removed\';
+base_dir = 'play/';
 
 
 cd(base_dir);
 
 %% get listing of frames so that you can cycle through them easily.
-f_list =  dir('*jpeg');
+f_list =  dir('*mp4');
 
 
 %% initialize gaussian filter
