@@ -92,7 +92,7 @@ end
         
         % Create a video file reader.
         %obj.reader = vision.VideoFileReader('madden.avi');
-        obj.reader = vision.VideoFileReader('maddenNew.mp4');
+        obj.reader = vision.VideoFileReader('2.mp4');
         
         % Create two video players, one to display the video,
         % and one to display the foreground mask.
