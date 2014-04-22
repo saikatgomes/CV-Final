@@ -78,8 +78,8 @@ end
         % objects in each frame, and playing the video.
         
         % Create a video file reader.
-        %obj.reader = vision.VideoFileReader('atrium.avi');
-        obj.reader = vision.VideoFileReader('srg.mp4');
+        obj.reader = vision.VideoFileReader('atrium.avi');
+        %obj.reader = vision.VideoFileReader('madden.avi');
         
         % Create two video players, one to display the video,
         % and one to display the foreground mask.
@@ -93,7 +93,7 @@ end
         % of 1 corresponds to the foreground and the value of 0 corresponds
         % to the background. 
         
-        obj.detector = vision.ForegroundDetector('NumGaussians', 3, ...
+        obj.detector = vision.ForegroundDetector('NumGaussians', 10, ...
             'NumTrainingFrames', 40, 'MinimumBackgroundRatio', 0.7);
         
         % Connected groups of foreground pixels are likely to correspond to moving
