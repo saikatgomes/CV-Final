@@ -50,10 +50,7 @@ h = fspecial('log', hsizeh, sigmah)
 %% iteratively (frame by frame) find flies and save the X Y coordinates!
 X = cell(1,length(f_list)); %detection X coordinate indice
 Y = cell(1,length(f_list));  %detection Y coordinate indice
-% % % % 
-% % % % %% iteratively (frame by frame) find flies and save the X Y coordinates!
-% % % % X = cell(1,length(frame)); %detection X coordinate indice
-% % % % Y = cell(1,length(frame));  %detection Y coordinate indice
+
 
 for i = 2:length(f_list)-1
 %while ~isDone(obj.reader)
@@ -63,39 +60,39 @@ for i = 2:length(f_list)-1
     img_tmp = double(imread(f_list(i).name)); %load in the image and convert to double too allow for computations on the image
     img = img_tmp(:,:,1); %reduce to just the first dimension, we don't care about color (rgb) values here.
     imshow(int8(img))
-    img = (img > 100);
-    img = (img * 255);
-    imshow(int8(img))
-    
-                
-                img_tmp = double(imread(f_list(i-1).name));
-                img1 = img_tmp(:,:,1); 
-                img_tmp = double(imread(f_list(i+1).name));
-                img2 = img_tmp(:,:,1);
-                
-    img1 = (img1 > 100);
-    img1 = (img1 * 255);
-    
-    img2 = (img2 > 100);
-    img2 = (img2 * 255);
-                
-       for x=1:size(img,1)
-            for y=1:size(img,2)
-                
-                if(img1(x,y)==img(x,y) && img(x,y)==img2(x,y))
-                    img(x,y)=0;
-                end    
-                
-                
-            end
-       end   
-    imshow(int8(img))
+% % % %     img = (img > 100);
+% % % %     img = (img * 255);
+% % % %     imshow(int8(img))
+% % % %     
+% % % %                 
+% % % %                 img_tmp = double(imread(f_list(i-1).name));
+% % % %                 img1 = img_tmp(:,:,1); 
+% % % %                 img_tmp = double(imread(f_list(i+1).name));
+% % % %                 img2 = img_tmp(:,:,1);
+% % % %                 
+% % % %     img1 = (img1 > 100);
+% % % %     img1 = (img1 * 255);
+% % % %     
+% % % %     img2 = (img2 > 100);
+% % % %     img2 = (img2 * 255);
+% % % %                 
+% % % %        for x=1:size(img,1)
+% % % %             for y=1:size(img,2)
+% % % %                 
+% % % %                 if(img1(x,y)==img(x,y) && img(x,y)==img2(x,y))
+% % % %                     img(x,y)=0;
+% % % %                 end    
+% % % %                 
+% % % %                 
+% % % %             end
+% % % %        end   
+% % % %     imshow(int8(img))
        
        
     %do the blob filter!
     blob_img = conv2(img,h,'same');
-    blob_img1 = conv2(img1,h,'same');
-    blob_img2 = conv2(img2,h,'same');
+% % % %     blob_img1 = conv2(img1,h,'same');
+% % % %     blob_img2 = conv2(img2,h,'same');
 %     colormap(jet)
 %     imagesc(blob_img1)
     colormap(jet)
@@ -104,15 +101,15 @@ for i = 2:length(f_list)-1
 %     imagesc(blob_img2)
 %     colormap(jet)
     
-       for x=1:size(blob_img,1)
-            for y=1:size(blob_img,2)
-                
-                if(blob_img1(x,y)==blob_img(x,y) && blob_img(x,y)==blob_img2(x,y))
-                    blob_img(x,y)=0;
-                end                   
-            end
-       end   
-    
+% % % %        for x=1:size(blob_img,1)
+% % % %             for y=1:size(blob_img,2)
+% % % %                 
+% % % %                 if(blob_img1(x,y)==blob_img(x,y) && blob_img(x,y)==blob_img2(x,y))
+% % % %                     blob_img(x,y)=0;
+% % % %                 end                   
+% % % %             end
+% % % %        end   
+% % % %     
     
     colormap(jet)
     imagesc(blob_img)

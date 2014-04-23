@@ -148,7 +148,7 @@ try
 		numberOfFramesWritten = numberOfFramesWritten + 1;
 		
 		% Now let's do the differencing
-		alpha = .5;
+		alpha = .30;
 		if frame == 1
 			Background = thisFrame;
 		else
