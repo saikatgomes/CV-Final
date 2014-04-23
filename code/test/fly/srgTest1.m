@@ -55,7 +55,7 @@ Y = cell(1,length(f_list));  %detection Y coordinate indice
 % % % % X = cell(1,length(frame)); %detection X coordinate indice
 % % % % Y = cell(1,length(frame));  %detection Y coordinate indice
 
-for i = 50:length(f_list)
+for i = 6:5:length(f_list)-5
 %while ~isDone(obj.reader)
     
     img_real = (imread(f_list(i).name)); %just for plottin purposes
@@ -63,6 +63,26 @@ for i = 50:length(f_list)
     img_tmp = double(imread(f_list(i).name)); %load in the image and convert to double too allow for computations on the image
     img = img_tmp(:,:,1); %reduce to just the first dimension, we don't care about color (rgb) values here.
     imshow(img)
+    
+                
+                img_tmp = double(imread(f_list(i-5).name));
+                img1 = img_tmp(:,:,1); 
+                img_tmp = double(imread(f_list(i+5).name));
+                img2 = img_tmp(:,:,1); 
+                
+       for x=1:size(img,1)
+            for y=1:size(img,2)
+                
+                if(img1(x,y)==img(x,y) && img(x,y)==img2(x,y))
+                    img(x,y)=0;
+                end    
+                
+                
+            end
+       end   
+    imshow(img)
+       
+       
     %do the blob filter!
     blob_img = conv2(img,h,'same');
     imagesc(blob_img)

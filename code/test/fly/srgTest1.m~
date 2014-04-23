@@ -37,7 +37,7 @@ f_list =  dir('*jpg');
 %using fspecial, we will make a laplacian of a gaussian (LOG) template to convolve (pass over)
 %over the image to find blobs!
 
-hsizeh = 150  %you will need to iterative test these values two values. the bigger they are, the larger the blob they will find!
+hsizeh = 30  %you will need to iterative test these values two values. the bigger they are, the larger the blob they will find!
 sigmah = 6   %
 h = fspecial('log', hsizeh, sigmah)
 subplot(121); imagesc(h)
@@ -55,7 +55,7 @@ Y = cell(1,length(f_list));  %detection Y coordinate indice
 % % % % X = cell(1,length(frame)); %detection X coordinate indice
 % % % % Y = cell(1,length(frame));  %detection Y coordinate indice
 
-for i = 50:length(f_list)
+for i = 3:length(f_list)-3
 %while ~isDone(obj.reader)
     
     img_real = (imread(f_list(i).name)); %just for plottin purposes
@@ -63,13 +63,26 @@ for i = 50:length(f_list)
     img_tmp = double(imread(f_list(i).name)); %load in the image and convert to double too allow for computations on the image
     img = img_tmp(:,:,1); %reduce to just the first dimension, we don't care about color (rgb) values here.
     imshow(img)
+    
+       for x=1:size(img,2)
+            for y=1:size(img,1)
+                
+                img_tmp = double(imread(f_list(i-2).name));
+                img1 = img_tmp(:,:,1); 
+                
+                
+                
+                
+            end
+       end   
+    
     %do the blob filter!
     blob_img = conv2(img,h,'same');
     imagesc(blob_img)
     
     %threshold the image to blobs only: you'll need to decide what your
     %threshold level is..you can use your eyes or a histogram :P
-    idx = find(blob_img < 0.7); 
+    idx = find(blob_img < 0.9); 
     blob_img(idx) = nan ;
     imagesc(blob_img)
     
@@ -83,7 +96,7 @@ for i = 50:length(f_list)
     
     %for plotting
     %%{
-% % %     clf
+    clf
 % % %     subplot(211);   
 % % %     imagesc(blob_img)
 % % %         axis off
