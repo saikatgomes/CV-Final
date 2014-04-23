@@ -54,23 +54,12 @@ nextId = 1; % ID of the next track
 % Detect moving objects, and track them across video frames.
 while ~isDone(obj.reader)
     frame = readFrame();
-%     f1=int32(frame(:,:,1));
-%     for i=1:size(frame,1)
-%         for j=1:size(frame,2)
-%            r=single(frame(i,j,1));
-%            g=int8(frame(i,j,2));
-%            b=frame(i,j,3); 
-%            
-%         end
-%     end
-    
-    %frame = rgb2gray(frame);
     [centroids, bboxes, mask] = detectObjects(frame);
     predictNewLocationsOfTracks();
     [assignments, unassignedTracks, unassignedDetections] = ...
         detectionToTrackAssignment();
     
-    updateAssignedTracks();cd 
+    updateAssignedTracks();
     updateUnassignedTracks();
     deleteLostTracks();
     createNewTracks();
@@ -92,7 +81,7 @@ end
         
         % Create a video file reader.
         %obj.reader = vision.VideoFileReader('madden.avi');
-        obj.reader = vision.VideoFileReader('2a.mp4');
+        obj.reader = vision.VideoFileReader('maddenNew.mp4');
         
         % Create two video players, one to display the video,
         % and one to display the foreground mask.

@@ -40,9 +40,9 @@ f_list =  dir('*jpg');
 hsizeh = 30  %you will need to iterative test these values two values. the bigger they are, the larger the blob they will find!
 sigmah = 6   %
 h = fspecial('log', hsizeh, sigmah)
-subplot(121); imagesc(h)
-subplot(122); mesh(h)
-colormap(jet)
+% % % % subplot(121); imagesc(h)
+% % % % subplot(122); mesh(h)
+% % % % colormap(jet)
 
 
 %frame = obj.reader.step();
@@ -55,34 +55,72 @@ Y = cell(1,length(f_list));  %detection Y coordinate indice
 % % % % X = cell(1,length(frame)); %detection X coordinate indice
 % % % % Y = cell(1,length(frame));  %detection Y coordinate indice
 
-for i = 3:length(f_list)-3
+for i = 2:5:length(f_list)-1
 %while ~isDone(obj.reader)
     
     img_real = (imread(f_list(i).name)); %just for plottin purposes
     %img_real = (imread(frame.name)); %just for plottin purposes
     img_tmp = double(imread(f_list(i).name)); %load in the image and convert to double too allow for computations on the image
     img = img_tmp(:,:,1); %reduce to just the first dimension, we don't care about color (rgb) values here.
-    imshow(img)
+    imshow(int8(img))
+    img = (img > 100);
+    img = (img * 255);
+    imshow(int8(img))
     
-       for x=1:size(img,2)
-            for y=1:size(img,1)
                 
-                img_tmp = double(imread(f_list(i-2).name));
+                img_tmp = double(imread(f_list(i-5).name));
                 img1 = img_tmp(:,:,1); 
+                img_tmp = double(imread(f_list(i+5).name));
+                img2 = img_tmp(:,:,1);
                 
+    img1 = (img1 > 100);
+    img1 = (img1 * 255);
+    
+    img2 = (img2 > 100);
+    img2 = (img2 * 255);
                 
+       for x=1:size(img,1)
+            for y=1:size(img,2)
+                
+                if(img1(x,y)==img(x,y) && img(x,y)==img2(x,y))
+                    img(x,y)=0;
+                end    
                 
                 
             end
        end   
-    
+    imshow(int8(img))
+       
+       
     %do the blob filter!
     blob_img = conv2(img,h,'same');
+    blob_img1 = conv2(img1,h,'same');
+    blob_img2 = conv2(img2,h,'same');
+%     colormap(jet)
+%     imagesc(blob_img1)
+    colormap(jet)
     imagesc(blob_img)
+    colormap(jet)
+%     imagesc(blob_img2)
+%     colormap(jet)
+    
+       for x=1:size(blob_img,1)
+            for y=1:size(blob_img,2)
+                
+                if(blob_img1(x,y)==blob_img(x,y) && blob_img(x,y)==blob_img2(x,y))
+                    blob_img(x,y)=0;
+                end                   
+            end
+       end   
+    
+    
+    colormap(jet)
+    imagesc(blob_img)
+    colormap(jet)
     
     %threshold the image to blobs only: you'll need to decide what your
     %threshold level is..you can use your eyes or a histogram :P
-    idx = find(blob_img < 0.9); 
+    idx = find(blob_img < 0.8); 
     blob_img(idx) = nan ;
     imagesc(blob_img)
     
