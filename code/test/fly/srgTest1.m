@@ -158,12 +158,6 @@ save('raw_fly_detections.mat',  'X','Y')
 %now, move on to the multi object tracking code!
 
 
-% % %     function frame = readFrame()
-% % %         frame = obj.reader.step();
-% % %     end
-
-
-
 
 
 

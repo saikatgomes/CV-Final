@@ -81,7 +81,7 @@ end
         
         % Create a video file reader.
         %obj.reader = vision.VideoFileReader('madden.avi');
-        obj.reader = vision.VideoFileReader('maddenNew.mp4');
+        obj.reader = vision.VideoFileReader('2a.mp4');
         
         % Create two video players, one to display the video,
         % and one to display the foreground mask.
@@ -95,8 +95,8 @@ end
         % of 1 corresponds to the foreground and the value of 0 corresponds
         % to the background. 
         
-        obj.detector = vision.ForegroundDetector('NumGaussians', 9, ...
-            'NumTrainingFrames', 40, 'MinimumBackgroundRatio', .7);
+        obj.detector = vision.ForegroundDetector('NumGaussians', 6, ...
+            'NumTrainingFrames', 80, 'MinimumBackgroundRatio', .7);
         
         % Connected groups of foreground pixels are likely to correspond to moving
         % objects.  The blob analysis system object is used to find such groups
@@ -105,7 +105,7 @@ end
         
         obj.blobAnalyser = vision.BlobAnalysis('BoundingBoxOutputPort', true, ...
             'AreaOutputPort', true, 'CentroidOutputPort', true, ...
-            'MinimumBlobArea', 400);
+            'MinimumBlobArea', 300, 'MaximumBlobArea', 1800);
     end
 
 %% Initialize Tracks
@@ -406,7 +406,7 @@ end
                 
                 % Draw the objects on the mask.
                 mask = insertObjectAnnotation(mask, 'rectangle', ...
-                    bboxes, labels);
+                    bboxes, labels, 'color', 'red');
             end
         end
         
