@@ -1,5 +1,5 @@
 
-function multiObjectTracking()
+function main()
 
     % fileName='../data/packers_lowTexture/1a_big';
     % fileName='../data/packer_multi_res/1a_med';
@@ -7,19 +7,19 @@ function multiObjectTracking()
     % minBlobArea=125;
     % minBlobArea=50;
     
-    fileName='../data/packer_multi_res/1a_big';
+    fileName='../data/packers_A/1';
     minBlobArea=300;
     ext='mp4';
 
     %create player detector
     playerDetector.reader = vision.VideoFileReader(strcat(fileName,'.',ext));
-    mkdir(strcat(fileName,'noBG/'));
+    %mkdir(strcat(fileName,'noBG/'));
 
     playerDetector.videoPlayer = vision.VideoPlayer('Position', [20, 400, 700, 400]);
     playerDetector.maskPlayer = vision.VideoPlayer('Position', [740, 400, 700, 400]);
 
     playerDetector.detector = vision.ForegroundDetector('NumGaussians', 3, ...
-        'NumTrainingFrames', 50, 'MinimumBackgroundRatio', 0.5);
+        'NumTrainingFrames', 50, 'MinimumBackgroundRatio', 0.7);
 
     playerDetector.blobAnalyser = vision.BlobAnalysis('BoundingBoxOutputPort', true, ...
         'AreaOutputPort', true, 'CentroidOutputPort', true, ...
@@ -42,9 +42,59 @@ function multiObjectTracking()
 
     while ~isDone(playerDetector.reader)
 
+        frameCount=frameCount+1;
+        display(strcat(datestr(now,'HH:MM:SS'),' [INFO] processing frame -> ',num2str(frameCount)));
+        
         frame = playerDetector.reader.step();
+        imshow(frame);
+        
+        %img_tmp = double(frame); %load in the image and convert to double too allow for computations on the image
+        img_bw = frame(:,:,1); %reduce to just the first dimension, we don't care about color (rgb) values here.
+        imshow(img_bw); 
+        
         [centroids, bboxes, mask] = detectObjects(frame);
         predictNewLocationsOfTracks();
+        
+        forMap(:,:,1)=double(frame(:,:,1).*mask);
+        forMap(:,:,2)=double(frame(:,:,2).*mask);
+        forMap(:,:,3)=double(frame(:,:,3).*mask);
+        imshow(forMap); 
+        
+        forMap_bw=forMap(:,:,1); 
+        imshow(forMap_bw);   
+        
+        blob_ori = conv2(forMap_bw,h,'same');
+        imagesc(blob_ori); 
+        colormap(jet)
+        
+        idx = find(blob_ori > -1.5); 
+        blob_ori(idx) = nan ;
+        imagesc(blob_ori); 
+        colormap(jet)
+        
+
+%         subplot(231); imshow(frame); 
+%         colormap('default')
+%         subplot(234); imshow((img_bw));
+%         colormap('default')
+%         subplot(232); imshow(forMap); 
+%         colormap('default')
+%         subplot(235); imshow((forMap_bw));
+%         colormap('default')
+%         subplot(233); imagesc(blob_ori); 
+%         colormap(jet)
+%         subplot(236); imagesc(blob_img);
+%         colormap(jet)
+        
+%         colormap('default') 
+%         imshow((img_bw));
+%         imshow(forMap);
+%         imshow((forMap_bw));
+%         imagesc(blob_ori); 
+%         colormap(jet)
+%         imagesc(blob_img);
+        %colormap(jet)
+                
         [assignments, unassignedTracks, unassignedDetections] = ...
             detectionToTrackAssignment();
 
