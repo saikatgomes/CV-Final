@@ -88,7 +88,7 @@ end
 %% Create System Objects
 % Create System objects used for reading the video frames, detecting
 % foreground objects, and displaying results.
-
+imfill
     function obj = setupSystemObjects()
         % Initialize Video I/O
         % Create objects for reading a video from a file, drawing the tracked
