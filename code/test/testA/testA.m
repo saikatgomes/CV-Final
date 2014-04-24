@@ -43,8 +43,8 @@
 
 function [tracks]=testA()
 
-%fileName='../data/packer_multi_res/1a_big';
-fileName='../data/packers_lowTexture/1a_big';
+fileName='../data/packer_multi_res/1a_big';
+%fileName='../data/packers_lowTexture/1a_big';
 minBlobArea=300;
 % fileName='../data/packer_multi_res/1a_med';
 % minBlobArea=125;
@@ -66,9 +66,9 @@ fCount=0;
 while ~isDone(obj.reader)
     frame = readFrame();
     fCount=fCount+1;
-    if (fCount<30)
-        continue;
-    end
+%     if (fCount<30)
+%         continue;
+%     end
     
     [centroids, bboxes, mask] = detectObjects(frame);
     %subplot(311); imshow(mask);
