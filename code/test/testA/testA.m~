@@ -43,11 +43,11 @@
 
 function [tracks]=testA()
 
-%fileName='../data/packer_multi_res/1a_big';
+fileName='../data/packer_multi_res/1a_big';
 %fileName='../data/packers_lowTexture/1a_big';
-%minBlobArea=300;
- fileName='../data/packer_multi_res/1a_med';
- minBlobArea=125;
+minBlobArea=300;
+% fileName='../data/packer_multi_res/1a_med';
+% minBlobArea=125;
 % fileName='../data/packer_multi_res/1a_small';
 % minBlobArea=50;
 ext='mp4';
@@ -76,16 +76,16 @@ while ~isDone(obj.reader)
     
     
     testMap0(:,:,1)=single(frame(:,:,1).*mask0);
-    testMap0(:,:,2)=single(frame(:,:,2).*mask0);
-    testMap0(:,:,3)=single(frame(:,:,3).*mask0);
-    imshow(testMap0);
+    testMap(:,:,2)=single(frame(:,:,2).*mask0);
+    testMap(:,:,3)=single(frame(:,:,3).*mask0);
+    
     testMap(:,:,1)=single(frame(:,:,1).*mask);
     testMap(:,:,2)=single(frame(:,:,2).*mask);
     testMap(:,:,3)=single(frame(:,:,3).*mask);
-    imshow(testMap);
+    
     %subplot(313); imshow(testMap);
     %clf;
-    %imwrite(testMap,strcat(fileName,'noBG/',num2str(fCount),'.jpg'));
+    imwrite(testMap,strcat(fileName,'noBG/',num2str(fCount),'.jpg'));
     %imshow(testMap);
     
     predictNewLocationsOfTracks();
@@ -134,7 +134,7 @@ end
         % to the background. 
         
         obj.detector = vision.ForegroundDetector('NumGaussians', 3, ...
-            'NumTrainingFrames', 2, 'MinimumBackgroundRatio', 0.5);
+            'NumTrainingFrames', 50, 'MinimumBackgroundRatio', 0.5);
         
         % Connected groups of foreground pixels are likely to correspond to moving
         % objects.  The blob analysis system object is used to find such groups
