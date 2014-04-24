@@ -117,19 +117,19 @@ for i = 2:length(f_list)-1
     %threshold level is..you can use your eyes or a histogram :P
     blob_ori=blob_img;
     
-    idx = find(blob_ori <-0.5); 
+    idx = find(blob_ori >-0.5); 
     blob_img(idx) = nan ;
     imagesc(blob_img)
     
     blob_img=blob_ori;
     
-    idx = find(blob_ori <-1); 
+    idx = find(blob_ori >-1); 
     blob_img(idx) = nan ;
     imagesc(blob_img)
     
     blob_img=blob_ori;
     
-    idx = find(blob_ori <-1.5); 
+    idx = find(blob_ori >-1.5); 
     blob_img(idx) = nan ;
     imagesc(blob_img)
     
