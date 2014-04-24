@@ -60,7 +60,7 @@ function multiObjectTracking()
     function [centroids, bboxes, mask] = detectObjects(frame)
         
         % Detect foreground.
-        mask = obj.detector.step(frame);
+        mask = playerDetector.detector.step(frame);
         
         % Apply morphological operations to remove noise and fill in holes.
         mask = imopen(mask, strel('rectangle', [3,3]));
@@ -68,7 +68,7 @@ function multiObjectTracking()
         mask = imfill(mask, 'holes');
         
         % Perform blob analysis to find connected components.
-        [~, centroids, bboxes] = obj.blobAnalyser.step(mask);
+        [~, centroids, bboxes] = playerDetector.blobAnalyser.step(mask);
     end
     
 
@@ -183,7 +183,7 @@ function multiObjectTracking()
             
             % Create a new track.
             newTrack = struct(...
-                'id', nextId, ...
+                'id', nextTrackID, ...
                 'bbox', bbox, ...
                 'kalmanFilter', kalmanFilter, ...
                 'age', 1, ...
@@ -194,7 +194,7 @@ function multiObjectTracking()
             tracks(end + 1) = newTrack;
             
             % Increment the next id.
-            nextId = nextId + 1;
+            nextTrackID = nextTrackID + 1;
         end
     end
 
