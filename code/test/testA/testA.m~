@@ -43,11 +43,14 @@
 
 function [tracks]=testA()
 
+fileName='../data/packer_multi_res/1a_big';
+ext='mp4';
+
 % Create system objects used for reading video, detecting moving objects,
 % and displaying the results.
 obj = setupSystemObjects();
 
-tracks = initializeTracks(); % Create an empty array of tracks.
+tracks = initializeTracks(fileName,ext); % Create an empty array of tracks.
 
 nextId = 1; % ID of the next track
 
@@ -89,15 +92,17 @@ end
 % Create System objects used for reading the video frames, detecting
 % foreground objects, and displaying results.
 imfill
-    function obj = setupSystemObjects()
+    function obj = setupSystemObjects(fileName,ext)
         % Initialize Video I/O
         % Create objects for reading a video from a file, drawing the tracked
         % objects in each frame, and playing the video.
         
         % Create a video file reader.
-        %obj.reader = vision.VideoFileReader('madden.avi');
-        obj.reader = vision.VideoFileReader('../data/packers_A/2.mp4');
-        obj.reader = vision.VideoFileReader('../data/colts_A/1.mp4');
+        %obj.reader = vision.VideoFilReader('madden.avi');
+        %obj.reader = vision.VideoFileReader('../data/packers_A/2.mp4');
+        %obj.reader = vision.VideoFileReader('../data/colts_A/1.mp4');
+        obj.reader = vision.VideoFileReader('../data/packer_multi_res/1a_big.mp4');
+        $mkdir('../data/colts_A/1_noBG');
         mkdir('../data/colts_A/1_noBG');
         
         % Create two video players, one to display the video,
@@ -112,8 +117,8 @@ imfill
         % of 1 corresponds to the foreground and the value of 0 corresponds
         % to the background. 
         
-        obj.detector = vision.ForegroundDetector('NumGaussians', 5, ...
-            'NumTrainingFrames', 150, 'MinimumBackgroundRatio', 0.5);
+        obj.detector = vision.ForegroundDetector('NumGaussians', 3, ...
+            'NumTrainingFrames', 40, 'MinimumBackgroundRatio', 0.5);
         
         % Connected groups of foreground pixels are likely to correspond to moving
         % objects.  The blob analysis system object is used to find such groups

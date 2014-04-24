@@ -43,9 +43,17 @@
 
 function [tracks]=testA()
 
+fileName='../data/packer_multi_res/1a_big';
+minBlobArea=300;
+% fileName='../data/packer_multi_res/1a_med';
+% minBlobArea=125;
+% fileName='../data/packer_multi_res/1a_small';
+% minBlobArea=50;
+ext='mp4';
+
 % Create system objects used for reading video, detecting moving objects,
 % and displaying the results.
-obj = setupSystemObjects();
+obj = setupSystemObjects(fileName,ext);
 
 tracks = initializeTracks(); % Create an empty array of tracks.
 
@@ -67,7 +75,7 @@ while ~isDone(obj.reader)
     %subplot(313); imshow(testMap);
     %clf;
     fCount=fCount+1;
-    imwrite(testMap,strcat('../data/colts_A/1_noBG/',num2str(fCount),'.jpg'));
+    imwrite(testMap,strcat(fileName,'noBG/',num2str(fCount),'.jpg'));
     %imshow(testMap);
     
     predictNewLocationsOfTracks();
@@ -88,17 +96,20 @@ end
 %% Create System Objects
 % Create System objects used for reading the video frames, detecting
 % foreground objects, and displaying results.
-imfill
-    function obj = setupSystemObjects()
+
+    function obj = setupSystemObjects(fileName,ext)
         % Initialize Video I/O
         % Create objects for reading a video from a file, drawing the tracked
         % objects in each frame, and playing the video.
         
         % Create a video file reader.
-        %obj.reader = vision.VideoFileReader('madden.avi');
-        obj.reader = vision.VideoFileReader('../data/packers_A/2.mp4');
-        obj.reader = vision.VideoFileReader('../data/colts_A/1.mp4');
-        mkdir('../data/colts_A/1_noBG');
+        %obj.reader = vision.VideoFilReader('madden.avi');
+        %obj.reader = vision.VideoFileReader('../data/packers_A/2.mp4');
+        %obj.reader = vision.VideoFileReader('../data/colts_A/1.mp4');
+        %obj.reader = vision.VideoFileReader('../data/packer_multi_res/1a_big.mp4');
+        %mkdir('../data/colts_A/1_noBG');
+        obj.reader = vision.VideoFileReader(strcat(fileName,'.',ext));
+        mkdir(strcat(fileName,'noBG/'));
         
         % Create two video players, one to display the video,
         % and one to display the foreground mask.
@@ -112,8 +123,8 @@ imfill
         % of 1 corresponds to the foreground and the value of 0 corresponds
         % to the background. 
         
-        obj.detector = vision.ForegroundDetector('NumGaussians', 5, ...
-            'NumTrainingFrames', 150, 'MinimumBackgroundRatio', 0.5);
+        obj.detector = vision.ForegroundDetector('NumGaussians', 3, ...
+            'NumTrainingFrames', 40, 'MinimumBackgroundRatio', 0.5);
         
         % Connected groups of foreground pixels are likely to correspond to moving
         % objects.  The blob analysis system object is used to find such groups
@@ -122,7 +133,8 @@ imfill
         
         obj.blobAnalyser = vision.BlobAnalysis('BoundingBoxOutputPort', true, ...
             'AreaOutputPort', true, 'CentroidOutputPort', true, ...
-            'MinimumBlobArea', 300); %, 'MaximumBlobArea', 150
+            'MinimumBlobArea', minBlobArea); %, 'MaximumBlobArea', 150
+            %'MinimumBlobArea', 150); %, 'MaximumBlobArea', 150
     end
 
 %% Initialize Tracks
