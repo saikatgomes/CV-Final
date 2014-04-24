@@ -43,7 +43,8 @@
 
 function [tracks]=testA()
 
-fileName='../data/packer_multi_res/1a_big';
+%fileName='../data/packer_multi_res/1a_big';
+fileName='../data/packers_lowTexture/1a_big';
 minBlobArea=300;
 % fileName='../data/packer_multi_res/1a_med';
 % minBlobArea=125;
@@ -64,6 +65,11 @@ fCount=0;
 % Detect moving objects, and track them across video frames.
 while ~isDone(obj.reader)
     frame = readFrame();
+    fCount=fCount+1;
+    if (fCount<30)
+        continue;
+    end
+    
     [centroids, bboxes, mask] = detectObjects(frame);
     %subplot(311); imshow(mask);
     %subplot(312); imshow(frame);
@@ -74,7 +80,6 @@ while ~isDone(obj.reader)
     
     %subplot(313); imshow(testMap);
     %clf;
-    fCount=fCount+1;
     imwrite(testMap,strcat(fileName,'noBG/',num2str(fCount),'.jpg'));
     %imshow(testMap);
     
@@ -124,7 +129,7 @@ end
         % to the background. 
         
         obj.detector = vision.ForegroundDetector('NumGaussians', 3, ...
-            'NumTrainingFrames', 40, 'MinimumBackgroundRatio', 0.5);
+            'NumTrainingFrames', 50, 'MinimumBackgroundRatio', 0.5);
         
         % Connected groups of foreground pixels are likely to correspond to moving
         % objects.  The blob analysis system object is used to find such groups
