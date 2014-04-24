@@ -134,7 +134,7 @@ end
         % to the background. 
         
         obj.detector = vision.ForegroundDetector('NumGaussians', 3, ...
-            'NumTrainingFrames', 2, 'MinimumBackgroundRatio', 0.5);
+            'NumTrainingFrames', 40, 'MinimumBackgroundRatio', 0.3);
         
         % Connected groups of foreground pixels are likely to correspond to moving
         % objects.  The blob analysis system object is used to find such groups
