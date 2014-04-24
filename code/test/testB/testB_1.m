@@ -24,7 +24,7 @@ set(0,'DefaultFigureWindowStyle','docked') %dock the figures..just a personal pr
 %base_dir = 'E:\Dropbox\Student_dave\flies_SD_frames\duplicates_removed\';
 %base_dir = 'maddenNew/';
 %base_dir = 'packers/';
-base_dir = 'leftSkew/';
+base_dir = '../data/frames/packers_nobg/';
 
 
 cd(base_dir);
@@ -39,7 +39,7 @@ f_list =  dir('*jpg');
 %using fspecial, we will make a laplacian of a gaussian (LOG) template to convolve (pass over)
 %over the image to find blobs!
 
-hsizeh = 30  %you will need to iterative test these values two values. the bigger they are, the larger the blob they will find!
+hsizeh = 150  %you will need to iterative test these values two values. the bigger they are, the larger the blob they will find!
 sigmah =6   %
 h = fspecial('log', hsizeh, sigmah)
 % % % % subplot(121); imagesc(h)
@@ -55,7 +55,7 @@ Y = cell(1,length(f_list));  %detection Y coordinate indice
 
 
 for i = 2:length(f_list)-1
-%while ~isDone(obj.reader)
+%while ~isDone(obj.reader)img
     display(f_list(i).name);
     img_real = (imread(f_list(i).name)); %just for plottin purposes
     %img_real = (imread(frame.name)); %just for plottin purposes
@@ -65,7 +65,7 @@ for i = 2:length(f_list)-1
 % % % %     img = (img > 100);
 % % % %     img = (img * 255);
 % % % %     imshow(int8(img))
-% % % %     
+%untitled.jpg % % %     
 % % % %                 
 % % % %                 img_tmp = double(imread(f_list(i-1).name));
 % % % %                 img1 = img_tmp(:,:,1); 
@@ -93,11 +93,7 @@ for i = 2:length(f_list)-1
        
     %do the blob filter!
     blob_img = conv2(img,h,'same');
-% % % %     blob_img1 = conv2(img1,h,'same');
-% % % %     blob_img2 = conv2(img2,h,'same');
-%     colormap(jet)
-%     imagesc(blob_img1)
-%     colormap(jet)
+    %blob_img = conv2(img,h,'valid');
     imagesc(blob_img)
     colormap(jet)
 %     imagesc(blob_img2)
@@ -113,13 +109,27 @@ for i = 2:length(f_list)-1
 % % % %        end   
 % % % %     
     
-    colormap(jet)
-    imagesc(blob_img)
-    colormap(jet)
+% % % %     colormap(jet)
+% % % %     imagesc(blob_img)
+% % % %     colormap(jet)
     
     %threshold the image to blobs only: you'll need to decide what your
     %threshold level is..you can use your eyes or a histogram :P
-    idx = find(blob_img < 0.5); 
+    blob_ori=blob_img;
+    
+    idx = find(blob_ori <-0.5); 
+    blob_img(idx) = nan ;
+    imagesc(blob_img)
+    
+    blob_img=blob_ori;
+    
+    idx = find(blob_ori <-1); 
+    blob_img(idx) = nan ;
+    imagesc(blob_img)
+    
+    blob_img=blob_ori;
+    
+    idx = find(blob_ori <-1.5); 
     blob_img(idx) = nan ;
     imagesc(blob_img)
     
