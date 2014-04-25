@@ -24,14 +24,18 @@ set(0,'DefaultFigureWindowStyle','docked') %dock the figures..just a personal pr
 % MAKE_GD_VID=1;
 % MAKE_LM_VID=1;
 % MAKE_CLUSTER_VID=1;
-%MAKE_CENTROID_VID=1;
+% MAKE_CENTROID_VID=1;
+% MAKE_TRACKS_VID=1;
 
 MAKE_GD_VID=0;
 MAKE_LM_VID=0;
 MAKE_CLUSTER_VID=0;
-MAKE_CENTROID_VID=1;
+MAKE_CENTROID_VID=0;
+MAKE_TRACKS_VID=1;
 
 ext='mp4';
+centerAll=[];
+% centerAll=double(ones(1,1));
 
 base_dir = '../data/packers_A/1_data';
 read_dir = strcat(base_dir,'/noBG');
@@ -57,6 +61,12 @@ if(MAKE_CLUSTER_VID==1)
 end
 
 
+if(MAKE_TRACKS_VID==1)
+    tracksVid=VideoWriter(strcat(base_dir,'/tracks.',ext),'MPEG-4');
+    tracksVid.FrameRate=inputVid.FrameRate;
+    open(tracksVid);
+end
+
 if(MAKE_CENTROID_VID==1)
     cenVid1=VideoWriter(strcat(base_dir,'/centroid1.',ext),'MPEG-4');
     cenVid1.FrameRate=inputVid.FrameRate;
@@ -66,8 +76,6 @@ if(MAKE_CENTROID_VID==1)
     cenVid2.FrameRate=inputVid.FrameRate;
     open(cenVid2);
 end
-
-
 
 %% get listing of frames so that you can cycle through them easily.
 fullfile(read_dir,'/*jpg')
@@ -188,6 +196,14 @@ for i = 1:length(imgList)
     end    
     
     [ idx,ctrs ] = getCentroids( Y{i}, X{i}, 11 );    
+    
+        centerAll=[centerAll;ctrs];
+%     if(ISEMPTY(centerAll)==1)
+%         centerAll=ctrs;
+%     else
+%         centerAll=[centerAll;ctrs];
+%     end
+    
     plot(ctrs(:,1),ctrs(:,2),'yx',...
         'MarkerSize',12,'LineWidth',2)
     plot(ctrs(:,1),ctrs(:,2),'yo',...
@@ -219,6 +235,22 @@ for i = 1:length(imgList)
         close(f4);
     end
     
+    
+    if(MAKE_TRACKS_VID==1)
+        
+        f5=figure();
+        set(f5,'visible','off');
+        imshow(img_real)
+        hold on
+        plot(centerAll(:,1),centerAll(:,2),'m.')
+        saveas(f5,'temp.jpg');
+        tempI=imread('temp.jpg');
+        writeVideo(tracksVid,tempI);
+        delete('temp.jpg');
+        close(f5);
+    end
+
+    
     %pause(.1);
     %}
     
@@ -242,6 +274,10 @@ end
 if(MAKE_CENTROID_VID==1)
      close(cenVid1);
      close(cenVid2);
+end
+
+if(MAKE_TRACKS_VID==1)
+    close(tracksVid);
 end
 
 %save it!
