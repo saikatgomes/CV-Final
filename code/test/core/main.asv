@@ -50,12 +50,12 @@ function main()
         frame = playerDetector.reader.step();
         imshow(frame);
         
-%         if(frameCount<51)
-%             frame=imread(strcat(fileName,'bg.jpg'));
-%         else
-%             
-%         end            
-%         imshow(frame);
+        if(frameCount<51)
+            frame=imread(strcat(fileName,'bg.jpg'));
+        else
+            
+        end            
+        imshow(frame);
         
         %img_tmp = double(frame); %load in the image and convert to double too allow for computations on the image
         img_bw = frame(:,:,1); %reduce to just the first dimension, we don't care about color (rgb) values here.
@@ -64,11 +64,11 @@ function main()
         [centroids, bboxes, mask] = detectObjects(frame);
         predictNewLocationsOfTracks();
         
-%         if(frameCount<51)
-%             mask=uint8(mask);
-%         else
-%             tmp=1;
-%         end 
+        if(frameCount<51)
+            mask=uint8(mask);
+        else
+            tmp=1;
+        end 
         
 %         forMap(:,:,1)=double(frame(:,:,1).*uint8(mask));
 %         forMap(:,:,2)=double(frame(:,:,2).*uint8(mask));
@@ -85,8 +85,8 @@ function main()
         imagesc(blob_ori); 
         colormap(jet)
         
-        idx = find(blob_ori > -.5); 
-        blob_ori(idx) = 0 ;
+        idx = find(blob_ori > -1.5); 
+        blob_ori(idx) = nan ;
         imagesc(blob_ori); 
         colormap(jet)
         
