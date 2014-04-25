@@ -25,7 +25,8 @@ close all;
 %set(0,'DefaultFigureWindowStyle','docked') %dock the figures..just a personal preference you don't need this.
 
 
-base_dir = '../data/packers_A/1_data';
+%base_dir = '../data/packers_A/1_data';
+base_dir='../data/packers_lowTexture/1b_big_data';
 read_dir = strcat(base_dir,'/noBG');
 
 % MAKE_GD_VID=1;
@@ -37,9 +38,11 @@ read_dir = strcat(base_dir,'/noBG');
 MAKE_GD_VID=1;
 MAKE_HM_VID=1;
 MAKE_LM_VID=1;
-MAKE_CLUSTER_VID=0;
-MAKE_CENTROID_VID=0;
-MAKE_TRACKS_VID=0;
+MAKE_CLUSTER_VID=1;
+MAKE_CENTROID_VID=1;
+MAKE_TRACKS_VID=1;
+
+SHOW_PLOTS=0;
 
 ext='mp4';
 centerAll=[];
@@ -131,7 +134,9 @@ for i = 1:length(imgList)
     
     if(MAKE_GD_VID==1)
         f1 = figure();
-        set(f1,'visible','off');
+        if(SHOW_PLOTS==0)
+            set(f1,'visible','off');
+        end
         imagesc(blob_img)
         colormap(jet)
         colorbar
@@ -149,7 +154,9 @@ for i = 1:length(imgList)
             hMap=hMap+blob_img;
         end
         f15 = figure();
-        set(f15,'visible','off');
+        if(SHOW_PLOTS==0)
+            set(f15,'visible','off');
+        end
         imagesc(hMap)
         colormap(jet)
         colorbar
@@ -182,7 +189,10 @@ for i = 1:length(imgList)
     
     if(MAKE_LM_VID==1)
         f2 = figure();
-        set(f2,'visible','off');
+        
+        if(SHOW_PLOTS==0)
+            set(f2,'visible','off');
+        end
         imagesc(blob_img)
         colorbar
         saveas(f2,'temp.jpg');
@@ -218,7 +228,9 @@ for i = 1:length(imgList)
     
     if(MAKE_CLUSTER_VID==1)
         f3=figure();
-        set(f3,'visible','off');
+        if(SHOW_PLOTS==0)
+            set(f3,'visible','off');
+        end
         imshow(img_real)
         hold on
         for j = 1:length(X{i})
@@ -247,7 +259,9 @@ for i = 1:length(imgList)
     
     if(MAKE_CENTROID_VID==1)
         f4=figure();
-        set(f4,'visible','off');
+        if(SHOW_PLOTS==0)
+            set(f4,'visible','off');
+        end
         imshow(img_real)
         hold on
         plot(ctrs(:,1),ctrs(:,2),'yx',...
@@ -264,7 +278,9 @@ for i = 1:length(imgList)
     
     if(MAKE_TRACKS_VID==1)
         f5=figure();
-        set(f5,'visible','off');
+        if(SHOW_PLOTS==0)
+            set(f5,'visible','off');
+        end
         imshow(img_real)
         hold on
         plot(centerAll(:,1),centerAll(:,2),'m.')

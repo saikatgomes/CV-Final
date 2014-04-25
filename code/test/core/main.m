@@ -10,7 +10,8 @@ function main()
     WRITE_NO_BG=1;
     MAKE_NO_BG_VID=1;
     
-    fileName='../data/packers_A/1';
+    %fileName='../data/packers_A/1';
+    fileName='../data/packers_lowTexture/1b_big';
     dataDir=strcat(fileName,'_data/');
     minBlobArea=300;
     ext='mp4';
