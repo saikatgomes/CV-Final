@@ -10,16 +10,14 @@ function main()
     fileName='../data/packers_A/1';
     minBlobArea=300;
     ext='mp4';
+    delay=5;
     
-    addBackground( fileName,ext );
-    %bgImg=getAveGB(fileName,ext,1);
+    addBackground( fileName,ext,delay);
+    mkdir(strcat(fileName,'noBG/'));
     
-    
-
     %create player detector
-    %playerDetector.reader = vision.VideoFileReader(strcat(fileName,'_Processed.',ext));
-    playerDetector.reader = vision.VideoFileReader(strcat(fileName,'.',ext));
-    %mkdir(strcat(fileName,'noBG/'));
+    playerDetector.reader = vision.VideoFileReader(strcat(fileName,'_Processed.',ext));
+    %playerDetector.reader = vision.VideoFileReader(strcat(fileName,'.',ext));
 
     playerDetector.videoPlayer = vision.VideoPlayer('Position', [20, 400, 700, 400]);
     playerDetector.maskPlayer = vision.VideoPlayer('Position', [740, 400, 700, 400]);
@@ -41,17 +39,16 @@ function main()
 
     nextTrackID=1;
     frameCount=0;
-
-    hsizeh = 30  %need to iterative test these values two values. the bigger they are, the larger the blob they will find!
-    sigmah = 6   %
-    h = fspecial('log', hsizeh, sigmah);
-    
+% 
+%     hsizeh = 30  %need to iterative test these values two values. the bigger they are, the larger the blob they will find!
+%     sigmah = 6   %
+%     h = fspecial('log', hsizeh, sigmah);    
 
     while ~isDone(playerDetector.reader)
 
         frameCount=frameCount+1;
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] processing frame -> ',num2str(frameCount)));
-        
+               
         frame = playerDetector.reader.step();
         imshow(frame);
                 
@@ -67,17 +64,22 @@ function main()
         forMap(:,:,3)=double(frame(:,:,3).*mask);
         imshow(forMap); 
         
-        forMap_bw=forMap(:,:,1); 
-        imshow(forMap_bw);   
         
-        blob_ori = conv2(forMap_bw,h,'same');
-        imagesc(blob_ori); 
-        colormap(jet)
+        if(frameCount>delay)
+            imwrite(forMap,strcat(fileName,'_noBG/',num2str(frameCount-delay),'.jpg'));
+        end
         
-        idx = find(blob_ori > -.5); 
-        blob_ori(idx) = 0 ;
-        imagesc(blob_ori); 
-        colormap(jet)
+%         forMap_bw=forMap(:,:,1); 
+%         imshow(forMap_bw);   
+%         
+%         blob_ori = conv2(forMap_bw,h,'same');
+%         imagesc(blob_ori); 
+%         colormap(jet)
+%         
+%         idx = find(blob_ori > -.5); 
+%         blob_ori(idx) = 0 ;
+%         imagesc(blob_ori); 
+%         colormap(jet)
                         
         [assignments, unassignedTracks, unassignedDetections] = ...
             detectionToTrackAssignment();

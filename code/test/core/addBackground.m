@@ -1,9 +1,7 @@
-function [  ] = addBackground( fName,ext )
+function [  ] = addBackground( fName,ext,delay )
 
 bgImgName=strcat(fName,'_BG.jpg');
 processedVidName=strcat(fName,'_Processed.',ext);
-
-
 
 if exist(processedVidName,'file')
     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ',processedVidName,' already exists.'));
@@ -23,7 +21,7 @@ else
     outVid.FrameRate=inputVid.FrameRate;
     open(outVid);
     
-    for i=1:50
+    for i=1:delay
         writeVideo(outVid,bgImg);
     end
     
