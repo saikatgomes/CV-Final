@@ -17,6 +17,7 @@ function main()
     
 
     %create player detector
+    %playerDetector.reader = vision.VideoFileReader(strcat(fileName,'_Processed.',ext));
     playerDetector.reader = vision.VideoFileReader(strcat(fileName,'.',ext));
     %mkdir(strcat(fileName,'noBG/'));
 
