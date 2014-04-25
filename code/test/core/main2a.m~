@@ -172,7 +172,7 @@ for i = 1:length(imgList)
     % % %         axis off
     % % %     subplot(212)
     f3=figure();
-    set(f3,'visible','off');
+%     set(f3,'visible','off');
     imshow(img_real)
     hold on
     for j = 1:length(X{i})
@@ -204,14 +204,10 @@ for i = 1:length(imgList)
     
     if(MAKE_CENTROID_VID==1)
         f4=figure();
-        set(f4,'visible','off');
-        imshow(img_real)
-        hold on
         plot(ctrs(:,1),ctrs(:,2),'yx',...
             'MarkerSize',12,'LineWidth',2)
         plot(ctrs(:,1),ctrs(:,2),'yo',...
             'MarkerSize',12,'LineWidth',2)
-        hold off;
         saveas(f4,'temp.jpg');
         tempI=imread('temp.jpg');
         writeVideo(cenVid2,tempI);
@@ -240,8 +236,7 @@ if(MAKE_CLUSTER_VID==1)
 end
 
 if(MAKE_CENTROID_VID==1)
-     close(cenVid1);
-     close(cenVid2);
+     close(clusterVid);
 end
 
 %save it!

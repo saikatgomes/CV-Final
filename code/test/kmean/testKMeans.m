@@ -21,3 +21,13 @@ plot(ctrs(:,1),ctrs(:,2),'ko',...
 legend('Cluster 1','Cluster 2','Centroids',...
     'Location','NW')
 hold off
+
+% x = gallery('uniformdata',[1 10],0);
+% y = gallery('uniformdata',[1 10],1);
+figure()
+x = ctrs(:,1);
+y = ctrs(:,2);
+voronoi(x,y)
+
+[v,c]=voronoin(ctrs);
+ctrs
