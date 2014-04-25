@@ -1,7 +1,7 @@
 function [  ] = addBackground( fName,ext,delay )
 
-bgImgName=strcat(fName,'_BG.jpg');
-processedVidName=strcat(fName,'_Processed.',ext);
+bgImgName=strcat(fName,'_data/BG.jpg');
+processedVidName=strcat(fName,'_data/edited.',ext);
 
 if exist(processedVidName,'file')
     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ',processedVidName,' already exists.'));
@@ -17,7 +17,7 @@ else
     
     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] adding average background to video.'));
     inputVid=VideoReader(strcat(fName,'.',ext));
-    outVid=VideoWriter(strcat(fName,'_Processed.',ext),'MPEG-4');
+    outVid=VideoWriter(processedVidName,'MPEG-4');
     outVid.FrameRate=inputVid.FrameRate;
     open(outVid);
     

@@ -7,16 +7,28 @@ function main()
     % minBlobArea=125;
     % minBlobArea=50;
     
+    WRITE_NO_BG=1;
+    MAKE_NO_BG_VID=1;
+    
     fileName='../data/packers_A/1';
+    dataDir=strcat(fileName,'_data/');
     minBlobArea=300;
     ext='mp4';
     delay=5;
     
-    addBackground( fileName,ext,delay);
-    mkdir(strcat(fileName,'noBG/'));
+    mkdir(dataDir);
+    mkdir(strcat(dataDir,'/noBG/'));
+    addBackground(fileName,ext,delay);
+    
+    if(MAKE_NO_BG_VID==1)        
+        outVid=VideoWriter(strcat(dataDir,'/noBGVid.',ext),'MPEG-4');
+        inputVid=VideoReader(strcat(dataDir,'edited.',ext));
+        outVid.FrameRate=inputVid.FrameRate;
+        open(outVid);
+    end
     
     %create player detector
-    playerDetector.reader = vision.VideoFileReader(strcat(fileName,'_Processed.',ext));
+    playerDetector.reader = vision.VideoFileReader(strcat(dataDir,'edited.',ext));
     %playerDetector.reader = vision.VideoFileReader(strcat(fileName,'.',ext));
 
     playerDetector.videoPlayer = vision.VideoPlayer('Position', [20, 400, 700, 400]);
@@ -65,8 +77,13 @@ function main()
         imshow(forMap); 
         
         
-        if(frameCount>delay)
-            imwrite(forMap,strcat(fileName,'_noBG/',num2str(frameCount-delay),'.jpg'));
+        if(WRITE_NO_BG==1 && frameCount>delay)
+            imwrite(forMap,strcat(fileName,'_data/noBG/',num2str(frameCount-delay),'.jpg'));
+        end
+        
+        if(MAKE_NO_BG_VID==1 && frameCount>delay)
+            %img=read(inputVid,frameCount-delay);
+            writeVideo(outVid,forMap);
         end
         
 %         forMap_bw=forMap(:,:,1); 
@@ -91,6 +108,10 @@ function main()
 
         displayTrackingResults();
 
+    end
+    
+    if(MAKE_NO_BG_VID==1)        
+        close(outVid);
     end
     
     function [centroids, bboxes, mask] = detectObjects(frame)

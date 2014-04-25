@@ -24,7 +24,8 @@ set(0,'DefaultFigureWindowStyle','docked') %dock the figures..just a personal pr
 %base_dir = 'E:\Dropbox\Student_dave\flies_SD_frames\duplicates_removed\';
 %base_dir = 'maddenNew/';
 %base_dir = 'packers/';
-base_dir = '../data/frames/packers_nobg/';
+%base_dir = '../data/frames/packers_A/1noBG';
+base_dir = '../data/packers_A/1noBG';
 
 
 cd(base_dir);

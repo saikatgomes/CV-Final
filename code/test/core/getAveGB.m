@@ -16,7 +16,7 @@ ave=sum/count;
 bgImg=double(ave);
 %imshow(bgImg);
 if(isWrite==1)
-    imwrite(bgImg,strcat(fName,'_BG.jpg'));
+    imwrite(bgImg,strcat(fName,'_data/BG.jpg'));
 end
 
 end
