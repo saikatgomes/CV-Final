@@ -11,6 +11,7 @@ function main()
     minBlobArea=300;
     ext='mp4';
     
+    bgImg=getAveGB(fileName,ext,1);
     
     
 

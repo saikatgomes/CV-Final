@@ -8,5 +8,5 @@ while ~isDone(D)
    sum=sum+frame;
 end
 ave=sum/c;
-imshow(double(ave));
+%imshow(double(ave));
 imwrite(double(ave),'../data/packers_A/1bg.jpg');
