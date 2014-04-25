@@ -112,13 +112,9 @@ h = fspecial('log', hsizeh, sigmah)
 % % % % colormap(jet)
 
 
-%frame = obj.reader.step();
-
 %% iteratively (frame by frame) find flies and save the X Y coordinates!
 X = cell(1,length(imgList)); %detection X coordinate indice
 Y = cell(1,length(imgList));  %detection Y coordinate indice
-
-%cd(base_dir);
 
 for i = 1:length(imgList)
     
@@ -169,27 +165,13 @@ for i = 1:length(imgList)
     
     %threshold the image to blobs only: you'll need to decide what your
     %threshold level is..you can use your eyes or a histogram :P
-    blob_ori=blob_img;
-    
-    %     idx = find(blob_ori >-0.5);
-    %     blob_img(idx) = nan ;
-    %     imagesc(blob_img)
-    %
-    %     blob_img=blob_ori;
-    %
-    %     idx = find(blob_ori >-1);
-    %     blob_img(idx) = nan ;
-    %     imagesc(blob_img)
-    %
-    %     blob_img=blob_ori;
-    
+    blob_ori=blob_img;    
     idx = find(blob_ori >-1.5);
     blob_img(idx) = nan ;
     
     
     if(MAKE_LM_VID==1)
-        f2 = figure();
-        
+        f2 = figure();        
         if(SHOW_PLOTS==0)
             set(f2,'visible','off');
         end
