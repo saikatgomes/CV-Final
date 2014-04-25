@@ -10,6 +10,9 @@ function main()
     fileName='../data/packers_A/1';
     minBlobArea=300;
     ext='mp4';
+    
+    
+    
 
     %create player detector
     playerDetector.reader = vision.VideoFileReader(strcat(fileName,'.',ext));
@@ -40,7 +43,6 @@ function main()
     sigmah = 6   %
     h = fspecial('log', hsizeh, sigmah);
     
-    bgframe=imread(strcat(fileName,'bg.jpg'));
 
     while ~isDone(playerDetector.reader)
 
@@ -49,14 +51,7 @@ function main()
         
         frame = playerDetector.reader.step();
         imshow(frame);
-        
-%         if(frameCount<51)
-%             frame=imread(strcat(fileName,'bg.jpg'));
-%         else
-%             
-%         end            
-%         imshow(frame);
-        
+                
         %img_tmp = double(frame); %load in the image and convert to double too allow for computations on the image
         img_bw = frame(:,:,1); %reduce to just the first dimension, we don't care about color (rgb) values here.
         imshow(img_bw); 
@@ -64,15 +59,6 @@ function main()
         [centroids, bboxes, mask] = detectObjects(frame);
         predictNewLocationsOfTracks();
         
-%         if(frameCount<51)
-%             mask=uint8(mask);
-%         else
-%             tmp=1;
-%         end 
-        
-%         forMap(:,:,1)=double(frame(:,:,1).*uint8(mask));
-%         forMap(:,:,2)=double(frame(:,:,2).*uint8(mask));
-%         forMap(:,:,3)=double(frame(:,:,3).*uint8(mask));
         forMap(:,:,1)=double(frame(:,:,1).*mask);
         forMap(:,:,2)=double(frame(:,:,2).*mask);
         forMap(:,:,3)=double(frame(:,:,3).*mask);
@@ -89,30 +75,7 @@ function main()
         blob_ori(idx) = 0 ;
         imagesc(blob_ori); 
         colormap(jet)
-        
-
-%         subplot(231); imshow(frame); 
-%         colormap('default')
-%         subplot(234); imshow((img_bw));
-%         colormap('default')
-%         subplot(232); imshow(forMap); 
-%         colormap('default')
-%         subplot(235); imshow((forMap_bw));
-%         colormap('default')
-%         subplot(233); imagesc(blob_ori); 
-%         colormap(jet)
-%         subplot(236); imagesc(blob_img);
-%         colormap(jet)
-        
-%         colormap('default') 
-%         imshow((img_bw));
-%         imshow(forMap);
-%         imshow((forMap_bw));
-%         imagesc(blob_ori); 
-%         colormap(jet)
-%         imagesc(blob_img);
-        %colormap(jet)
-                
+                        
         [assignments, unassignedTracks, unassignedDetections] = ...
             detectionToTrackAssignment();
 
