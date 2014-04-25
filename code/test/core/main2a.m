@@ -26,7 +26,7 @@ close all;
 
 
 %base_dir = '../data/packers_A/1_data';
-base_dir='../data/packers_lowTexture/1b_big_data';
+base_dir='../data/packers_lowTexture/1a_big_data';
 read_dir = strcat(base_dir,'/noBG');
 
 % MAKE_GD_VID=1;
