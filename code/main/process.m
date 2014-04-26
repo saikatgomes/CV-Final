@@ -1,34 +1,23 @@
     function [] = process( fileName, ext )
     warning('off','all');
-    WRITE_NO_BG=1;
-    MAKE_NO_BG_VID=1;
-    dataDir=strcat(fileName,'_data/');
+    
+    WRITE_NO_BG=0;
+    MAKE_NO_BG_VID=0;
+    MAKE_GD_VID=1;
+    MAKE_HM_VID=1;
+    MAKE_LM_VID=1;
+    MAKE_CLUSTER_VID=1;
+    MAKE_CENTROID_VID=1;
+    MAKE_TRACKS_VID=1;
+    SHOW_PLOTS=0;
+    
+    base_dir=strcat(fileName,'_data/');
     minBlobArea=300;
-    ext='mp4';
-    delay=5;
-
-    mkdir(dataDir);
-    addBackground(fileName,ext,delay);
-
-    if(WRITE_NO_BG==1)
-        mkdir(strcat(dataDir,'/noBG/'));
-    end
-
-    if(MAKE_NO_BG_VID==1)
-        outVid=VideoWriter(strcat(dataDir,'/noBGVid.',ext),'MPEG-4');
-        inputVid=VideoReader(strcat(dataDir,'edited.',ext));
-        outVid.FrameRate=inputVid.FrameRate;
-        open(outVid);
-    end
-
-    playerDetector.reader = vision.VideoFileReader(strcat(dataDir,'edited.',ext));
-    playerDetector.detector = vision.ForegroundDetector('NumGaussians', 3, ...
-        'NumTrainingFrames', 50, 'MinimumBackgroundRatio', 0.7);
-    playerDetector.blobAnalyser = vision.BlobAnalysis('BoundingBoxOutputPort', true, ...
-        'AreaOutputPort', true, 'CentroidOutputPort', true, ...
-        'MinimumBlobArea', minBlobArea); %, 'MaximumBlobArea', 150
-
+    delay=5;   
+    initialize();
+    
     frameCount=0;
+    centerAll=[];
     
     while ~isDone(playerDetector.reader)
 
@@ -50,20 +39,278 @@
         end
         
         %[~, centroids, bboxes] = playerDetector.blobAnalyser.step(mask);
-        forMap(:,:,1)=double(frame(:,:,1).*mask);
-        forMap(:,:,2)=double(frame(:,:,2).*mask);
-        forMap(:,:,3)=double(frame(:,:,3).*mask);
+        fgImg(:,:,1)=double(frame(:,:,1).*mask);
+        fgImg(:,:,2)=double(frame(:,:,2).*mask);
+        fgImg(:,:,3)=double(frame(:,:,3).*mask);
         
         if(WRITE_NO_BG==1 && frameCount>delay)
-            imwrite(forMap,strcat(fileName,'_data/noBG/',num2str(frameCount-delay),'.jpg'));
+            imwrite(fgImg,strcat(fileName,'_data/noBG/',num2str(frameCount-delay),'.jpg'));
+        end
+        if(MAKE_NO_BG_VID==1 && frameCount>delay)
+            writeVideo(outVid,fgImg);
+        end     
+        
+        img = fgImg(:,:,1); %reduce to just the first dimension, we don't care about color (rgb) values here.
+        
+        display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... building blob.'));
+        blob_img = conv2(img,h,'same');
+
+        if(MAKE_GD_VID==1)
+            f1 = figure();
+            if(SHOW_PLOTS==0)
+                set(f1,'visible','off');
+            end
+            imagesc(blob_img)
+            colormap(jet)
+            colorbar
+            saveas(f1,'temp.jpg');
+            tempI=imread('temp.jpg');
+            writeVideo(gdVid,tempI);
+            delete('temp.jpg');
+            close(f1);
         end
 
-        if(MAKE_NO_BG_VID==1 && frameCount>delay)
-            writeVideo(outVid,forMap);
+        if(MAKE_HM_VID==1)
+            if(frameCount==1)
+                hMap=blob_img;
+            else
+                hMap=hMap+blob_img;
+            end
+            f15 = figure();
+            if(SHOW_PLOTS==0)
+                set(f15,'visible','off');
+            end
+            imagesc(hMap)
+            colormap(jet)
+            colorbar
+            saveas(f15,'temp.jpg');
+            tempI=imread('temp.jpg');
+            writeVideo(hmVid,tempI);
+            delete('temp.jpg');
+            close(f15);
+        end
+
+        %threshold the image to blobs only: you'll need to decide what your
+        %threshold level is..you can use your eyes or a histogram :P
+        blob_ori=blob_img;    
+        idx = find(blob_ori >-1.5);
+        blob_img(idx) = nan ;
+
+
+        if(MAKE_LM_VID==1)
+            f2 = figure();        
+            if(SHOW_PLOTS==0)
+                set(f2,'visible','off');
+            end
+            imagesc(blob_img)
+            colorbar
+            saveas(f2,'temp.jpg');
+            tempI=imread('temp.jpg');
+            writeVideo(lmVid,tempI);
+            delete('temp.jpg');
+            close(f2);
+        end
+
+        %now we have an image of hills and valleys..some are distinct, some
+        %overlap..but you can still see the peak...most of the time.
+        %use this GREAT 2-d local max/min finder
+        %http://www.mathworks.com/matlabcentral/fileexchange/12275-extrema-m-extrema2-m
+        %it find the blob peak indices for this video, there should be ~11
+
+        display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... finding extemas.'));
+        addpath('../lib/extrema');
+        [zmax,imax,zmin,imin] = extrema2(blob_img);
+        [X{i},Y{i}] = ind2sub(size(blob_img),imax);
+        rmpath('../lib/extrema');
+        %for plotting
+        %%{
+        clf
+        % % %     subplot(211);
+        % % %     imagesc(blob_img)
+        % % %         axis off
+        % % %     subplot(212)
+
+        display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... finding clusters.'));
+        [ idx,ctrs ] = getCentroids( Y{i}, X{i}, 11 );
+        centerAll=[centerAll;ctrs];
+
+
+        if(MAKE_CLUSTER_VID==1)
+            f3=figure();
+            if(SHOW_PLOTS==0)
+                set(f3,'visible','off');
+            end
+            imshow(img_real)
+            hold on
+            for j = 1:length(X{i})
+                plot(Y{i}(j),X{i}(j),'or')
+            end
+            axis off
+            saveas(f3,'temp.jpg');
+            tempI=imread('temp.jpg');
+            writeVideo(clusterVid,tempI);
+            delete('temp.jpg');
+
+            plot(ctrs(:,1),ctrs(:,2),'yx',...
+                'MarkerSize',12,'LineWidth',2)
+            plot(ctrs(:,1),ctrs(:,2),'yo',...
+                'MarkerSize',12,'LineWidth',2)
+
+            if(MAKE_CENTROID_VID==1)
+                saveas(f3,'temp.jpg');
+                tempI=imread('temp.jpg');
+                writeVideo(cenVid1,tempI);
+                delete('temp.jpg');
+            end
+
+            close(f3);
+        end
+
+        if(MAKE_CENTROID_VID==1)
+            f4=figure();
+            if(SHOW_PLOTS==0)
+                set(f4,'visible','off');
+            end
+            imshow(img_real)
+            hold on
+            plot(ctrs(:,1),ctrs(:,2),'yx',...
+                'MarkerSize',12,'LineWidth',2)
+            plot(ctrs(:,1),ctrs(:,2),'yo',...
+                'MarkerSize',12,'LineWidth',2)
+            hold off;
+            saveas(f4,'temp.jpg');
+            tempI=imread('temp.jpg');
+            writeVideo(cenVid2,tempI);
+            delete('temp.jpg');
+            close(f4);
+        end
+
+        if(MAKE_TRACKS_VID==1)
+            f5=figure();
+            if(SHOW_PLOTS==0)
+                set(f5,'visible','off');
+            end
+            imshow(img_real)
+            hold on
+            plot(centerAll(:,1),centerAll(:,2),'m.')
+            saveas(f5,'temp.jpg');
+            tempI=imread('temp.jpg');
+            writeVideo(tracksVid,tempI);
+            delete('temp.jpg');
+            close(f5);
+        end       
+    end
+    
+    closeVids();
+
+    %save it!
+    save('players_detected.mat',  'X','Y')
+    display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Step1 Done!!!'));
+    
+    
+    function initialize()
+        mkdir(dataDir);
+        addBackground(fileName,ext,delay);
+
+        if(WRITE_NO_BG==1)
+            mkdir(strcat(base_dir,'/noBG/'));
+        end
+
+        if(MAKE_NO_BG_VID==1)
+            outVid=VideoWriter(strcat(base_dir,'/noBGVid.',ext),'MPEG-4');
+            inputVid=VideoReader(strcat(base_dir,'edited.',ext));
+            outVid.FrameRate=inputVid.FrameRate;
+            open(outVid);
+        end
+
+        inputVid=VideoReader(strcat(base_dir,'/edited.',ext));
+
+        if(MAKE_GD_VID==1)
+            gdVid=VideoWriter(strcat(base_dir,'/gradient.',ext),'MPEG-4');
+            gdVid.FrameRate=inputVid.FrameRate;
+            open(gdVid);
+        end
+
+        if(MAKE_HM_VID==1)
+            hmVid=VideoWriter(strcat(base_dir,'/heatMap.',ext),'MPEG-4');
+            hmVid.FrameRate=inputVid.FrameRate;
+            open(hmVid);
+        end
+
+        if(MAKE_LM_VID==1)
+            lmVid=VideoWriter(strcat(base_dir,'/localMins.',ext),'MPEG-4');
+            lmVid.FrameRate=inputVid.FrameRate;
+            open(lmVid);
+        end
+
+        if(MAKE_CLUSTER_VID==1)
+            clusterVid=VideoWriter(strcat(base_dir,'/clusters.',ext),'MPEG-4');
+            clusterVid.FrameRate=inputVid.FrameRate;
+            open(clusterVid);
+        end
+
+
+        if(MAKE_TRACKS_VID==1)
+            tracksVid=VideoWriter(strcat(base_dir,'/tracks.',ext),'MPEG-4');
+            tracksVid.FrameRate=inputVid.FrameRate;
+            open(tracksVid);
+        end
+
+        if(MAKE_CENTROID_VID==1)
+            cenVid1=VideoWriter(strcat(base_dir,'/centroid1.',ext),'MPEG-4');
+            cenVid1.FrameRate=inputVid.FrameRate;
+            open(cenVid1);
+
+            cenVid2=VideoWriter(strcat(base_dir,'/centroid2.',ext),'MPEG-4');
+            cenVid2.FrameRate=inputVid.FrameRate;
+            open(cenVid2);
+        end
+        
+        playerDetector.reader = vision.VideoFileReader(strcat(dataDir,'edited.',ext));
+        playerDetector.detector = vision.ForegroundDetector('NumGaussians', 3, ...
+            'NumTrainingFrames', 50, 'MinimumBackgroundRatio', 0.7);
+        playerDetector.blobAnalyser = vision.BlobAnalysis('BoundingBoxOutputPort', true, ...
+            'AreaOutputPort', true, 'CentroidOutputPort', true, ...
+            'MinimumBlobArea', minBlobArea); %, 'MaximumBlobArea', 150
+        
+        hsizeh = 150;  %you will need to iterative test these values two values. the bigger they are, the larger the blob they will find!
+        sigmah =6;   %
+        h = fspecial('log', hsizeh, sigmah);
+        % iteratively (frame by frame) find flies and save the X Y coordinates!
+        X = cell(1,length(imgList)); %detection X coordinate indice
+        Y = cell(1,length(imgList));  %detection Y coordinate indice
+        
+    end
+    
+    function closeVids()
+        if(MAKE_NO_BG_VID==1)
+            close(outVid);
+        end
+        if(MAKE_GD_VID==1)
+            close(gdVid);
+        end
+
+        if(MAKE_HM_VID==1)
+            close(hmVid);
+        end
+
+        if(MAKE_LM_VID==1)
+            close(lmVid);
+        end
+
+        if(MAKE_CLUSTER_VID==1)
+            close(clusterVid);
+        end
+
+        if(MAKE_CENTROID_VID==1)
+            close(cenVid1);
+            close(cenVid2);
+        end
+
+        if(MAKE_TRACKS_VID==1)
+            close(tracksVid);
         end
     end
-    if(MAKE_NO_BG_VID==1)
-        close(outVid);
-    end
+
 end
 
