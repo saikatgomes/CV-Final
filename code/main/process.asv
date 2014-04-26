@@ -2,14 +2,14 @@
     warning('off','all');
     
     WRITE_NO_BG=0;
-    MAKE_NO_BG_VID=1;
+    MAKE_NO_BG_VID=0;
     MAKE_GD_VID=1;
     MAKE_HM_VID=1;
     MAKE_LM_VID=1;
     MAKE_CLUSTER_VID=1;
     MAKE_CENTROID_VID=1;
     MAKE_TRACKS_VID=1;
-    SHOW_PLOTS=0;
+    SHOW_PLOTS=1;
     
     base_dir=strcat(fileName,'_data/');
     minBlobArea=300;
@@ -50,15 +50,26 @@
         img_tmp = double(imread('temp.jpg')); %load in the image and convert to double too allow for computations on the image
         img = img_tmp(:,:,1); %reduce to just the first dimension, we don't care about color (rgb) values here.
 
+        imshow(img);
         if(WRITE_NO_BG==1 && frameCount>delay)
             imwrite(fgImg,strcat(fileName,'_data/noBG/',num2str(frameCount-delay),'.jpg'));
         end
         if(MAKE_NO_BG_VID==1 && frameCount>delay)
             writeVideo(outVid,fgImg);
         end     
-               
+        
+%         img = double(fgImg(:,:,1)); %reduce to just the first dimension, we don't care about color (rgb) values here.
+%         %imshow(uint8(img));
+        
+%     imshow(img);
+        
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... building blob.'));
         blob_img = conv2(img,h,'same');
+        
+
+%         
+%         M=max(max(blob_img));
+%         m=min(min(blob_img));
         
         if(MAKE_GD_VID==1)
             f1 = figure();
@@ -100,11 +111,16 @@
         %threshold level is..you can use your eyes or a histogram :P
         %blob_ori=blob_img;   
         
+%         M=max(max(blob_img));
+%         m=min(min(blob_img));
+        
+        %t=(M-m)/2;
         t=-1.5;
         
         %idx = find(blob_img >-1.5);
         idx = find(blob_img > t);
         blob_img(idx) = nan ;
+
 
         if(MAKE_LM_VID==1)
             f2 = figure();        
@@ -212,21 +228,15 @@
     end
     
     M=max(max(hMap));
-    m=min(min(hMap));    
-    normalHM = (hMap-m)/(M-m);
+    m=min(min(hMap));
     
-    f6=figure();
-    if(SHOW_PLOTS==0)
-        set(f6,'visible','off');
-    end
-    imagesc(normalHM)
-    colormap(jet)
-    colorbar    
-    saveas(f5,strcat(base_dir,'/heatMapTotal.jpg'));
-    close(f6);
+    normalHM = (hMap-m)/(M-n);
+            imagesc(hMap)
+            colormap(jet)
+            colorbar
     
-    save(strcat(base_dir,'/centers.mat'),centerAll);
-    save(strcat(base_dir,'/heatMap.mat'),normalHM);    
+    
+    
     
     closeVids();
 

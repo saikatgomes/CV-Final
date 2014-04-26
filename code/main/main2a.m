@@ -26,7 +26,7 @@ close all;
 
 
 %base_dir = '../data/packers_A/1_data';
-base_dir='../../data/both/5_data';
+base_dir='../../data/both/1_data';
 read_dir = strcat(base_dir,'/noBG');
 
 % MAKE_GD_VID=1;
@@ -35,12 +35,12 @@ read_dir = strcat(base_dir,'/noBG');
 % MAKE_CENTROID_VID=1;
 % MAKE_TRACKS_VID=1;
 
-MAKE_GD_VID=1;
-MAKE_HM_VID=1;
-MAKE_LM_VID=1;
-MAKE_CLUSTER_VID=1;
-MAKE_CENTROID_VID=1;
-MAKE_TRACKS_VID=1;
+MAKE_GD_VID=0;
+MAKE_HM_VID=0;
+MAKE_LM_VID=0;
+MAKE_CLUSTER_VID=0;
+MAKE_CENTROID_VID=0;
+MAKE_TRACKS_VID=0;
 
 SHOW_PLOTS=0;
 
@@ -124,6 +124,8 @@ for i = 1:length(imgList)
     img_tmp = double(imread(readImg)); %load in the image and convert to double too allow for computations on the image
     img = img_tmp(:,:,1); %reduce to just the first dimension, we don't care about color (rgb) values here.
     
+    imshow(img);
+    
     %do the blob filter!
     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... building blob.'));
     blob_img = conv2(img,h,'same');
@@ -163,12 +165,21 @@ for i = 1:length(imgList)
         close(f15);
     end
     
+        M=max(max(blob_img));
+        m=min(min(blob_img));
+        
+        t=(M-m)/2;
     %threshold the image to blobs only: you'll need to decide what your
     %threshold level is..you can use your eyes or a histogram :P
     blob_ori=blob_img;    
     idx = find(blob_ori >-1.5);
     blob_img(idx) = nan ;
     
+    
+        M=max(max(blob_img));
+        m=min(min(blob_img));
+        
+        t=(M-m)/2;
     
     if(MAKE_LM_VID==1)
         f2 = figure();        
