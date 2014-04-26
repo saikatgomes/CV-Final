@@ -225,18 +225,19 @@
     saveas(f5,strcat(base_dir,'/heatMapTotal.jpg'));
     close(f6);
     
-    save(strcat(base_dir,'/centers.mat'),centerAll);
-    save(strcat(base_dir,'/heatMap.mat'),normalHM);    
+    save(strcat(base_dir,'/centers.mat'),'centerAll');
+    save(strcat(base_dir,'/heatMap.mat'),'normalHM');    
     
     closeVids();
 
     %save it!
-    save('players_detected.mat',  'X','Y')
+    save(strcat(base_dir,'/players_detected.mat'),  'X','Y')
     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Step1 Done!!!'));
     
     
     function initialize()
         mkdir(base_dir);
+        
         addBackground(fileName,ext,delay);
 
         if(WRITE_NO_BG==1)
