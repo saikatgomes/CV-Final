@@ -1,24 +1,44 @@
-% filename{1}='../../data/both/8';
-% filename{2}='../../data/both/5';
-% filename{3}='../../data/both/6';
-% filename{4}='../../data/both/7';
-filename{6}='../../data/packer_multi_res/1a_big';
-filename{7}='../../data/packer_multi_res/1a_med';
-filename{8}='../../data/packer_multi_res/1a_small';
-filename{9}='../../data/packers_lowTexture/1a_big';
-filename{10}='../../data/colts_A/1';
-filename{11}='../../data/colts_A/2';
-filename{12}='../../data/packers_lowTexture/1b_big';
-filename{13}='../../data/packers_A/1';
 
-% fullfile(read_dir,'/*jpg')
-% imageNames  =  dir(fullfile(read_dir,'/*jpg'));
-% imageNames  = {imageNames.name}';
-% imageStrings = regexp([imageNames{:}],'(\d*)','match');
-% imageNumbers = str2double(imageStrings);
-% [~,sortedIndices] = sort(imageNumbers);
-% imgList = imageNames(sortedIndices);
+myaddress = 'cs766vision@gmail.com';
+mypassword = 'moneyball123';
 
-for i=6:length(filename)
-   process(filename{i},'mp4'); 
+setpref('Internet','E_mail',myaddress);
+setpref('Internet','SMTP_Server','smtp.gmail.com');
+setpref('Internet','SMTP_Username',myaddress);
+setpref('Internet','SMTP_Password',mypassword);
+
+props = java.lang.System.getProperties;
+props.setProperty('mail.smtp.auth','true');
+props.setProperty('mail.smtp.socketFactory.class', ...
+    'javax.net.ssl.SSLSocketFactory');
+props.setProperty('mail.smtp.socketFactory.port','465');
+
+mainDir='../../data/';
+
+d = dir(mainDir);
+isub = [d(:).isdir];
+folderName = {d(isub).name}';
+folderName(ismember(folderName,{'.','..'})) = [];
+
+for i=1:length(folderName)
+    fPath=fullfile(strcat(mainDir,folderName{i}),'/*mp4');
+    fileName  =  dir(fPath);
+    fileName  = {fileName.name}';
+    
+    for j=1:length(fileName)
+        fullFileName=strcat(mainDir,folderName{i},'/',fileName{j});
+        display(strcat(datestr(now,'HH:MM:SS'),' [INFO] proccessing >',fullFileName));
+        fName=fullFileName(1:length(fullFileName)-4);
+        try
+            process(fName,'mp4');
+            sendmail('saikatgomes@gmail.com', 'TESTBOT: Success', strcat('Success: ',fullFileName));
+        catch ME
+            sendmail('saikatgomes@gmail.com', 'TESTBOT: Fail', strcat('error: ', ...
+                ME.message,'.......... iden: ',ME.identifier,' ............... file',fullFileName));
+            display(strcat(datestr(now,'HH:MM:SS'),' [ERROR] FAILED proccessing ',fullFileName));
+        end
+    end
+    
+    
 end
+

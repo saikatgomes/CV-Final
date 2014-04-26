@@ -1,7 +1,7 @@
 function [  ] = addBackground( fName,ext,delay )
 
-bgImgName=strcat(fName,'_data/BG.jpg');
-processedVidName=strcat(fName,'_data/edited.',ext);
+bgImgName=strcat(fName,'/BG.jpg');
+processedVidName=strcat(fName,'/edited.',ext);
 
 if exist(processedVidName,'file')
     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ',processedVidName,' already exists.'));

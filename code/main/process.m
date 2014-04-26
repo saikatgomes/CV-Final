@@ -11,9 +11,12 @@
     MAKE_TRACKS_VID=1;
     SHOW_PLOTS=0;
     
-    base_dir=strcat(fileName,'_data/');
+%     base_dir=strcat(fileName,'_data/');
+    base_dir=fileName;
     minBlobArea=300;
     delay=5;   
+    
+    THRESHOLD=-1.5;
     ishMap=0;
     initialize();
     
@@ -100,10 +103,9 @@
         %threshold level is..you can use your eyes or a histogram :P
         %blob_ori=blob_img;   
         
-        t=-1.5;
         
         %idx = find(blob_img >-1.5);
-        idx = find(blob_img > t);
+        idx = find(blob_img > THRESHOLD);
         blob_img(idx) = nan ;
 
         if(MAKE_LM_VID==1)
@@ -222,36 +224,54 @@
     imagesc(normalHM)
     colormap(jet)
     colorbar    
-    saveas(f5,strcat(base_dir,'/heatMapTotal.jpg'));
+    saveas(f6,strcat(base_dir,'/heatMapTotal.jpg'));
     close(f6);
     
-    save(strcat(base_dir,'/centers.mat'),'centerAll');
-    save(strcat(base_dir,'/heatMap.mat'),'normalHM');    
+    f7=figure();
+    if(SHOW_PLOTS==0)
+        set(f7,'visible','off');
+    end
+    imshow(zeros(size(img_real,1),size(img_real,2),3))
+    plot(centerAll(:,1),centerAll(:,2),'m.')
+    saveas(f7,strcat(base_dir,'/steps.jpg'));
+    close(f7);
     
     closeVids();
+    
+    dataDir=strcat(base_dir,'/data');
+    mkdir(dataDir);
+    
+    save(strcat(dataDir,'/centers.mat'),'centerAll');
+    save(strcat(dataDir,'/heatMap.mat'),'normalHM');  
+    save(strcat(dataDir,'/X.mat'),'X'); 
+    save(strcat(dataDir,'/Y.mat'),'Y');   
+    save(strcat(dataDir,'/players_detected.mat'),  'X','Y')
+      
+    copyfile('index.html',base_dir);
+    moveFile(strcat(base_dir,'.',ext),strcat(base_dir,'/original.',ext));
+    
 
     %save it!
-    save(strcat(base_dir,'/players_detected.mat'),  'X','Y')
-    display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Step1 Done!!!'));
+    display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Proccessing done on :',fileName));
     
     
     function initialize()
-        mkdir(base_dir);
-        
+        mkdir(base_dir);        
         addBackground(fileName,ext,delay);
 
         if(WRITE_NO_BG==1)
             mkdir(strcat(base_dir,'/noBG/'));
         end
 
+        
+        inputVid=VideoReader(strcat(base_dir,'/edited.',ext));
+        
         if(MAKE_NO_BG_VID==1)
             outVid=VideoWriter(strcat(base_dir,'/noBGVid.',ext),'MPEG-4');
-            inputVid=VideoReader(strcat(base_dir,'edited.',ext));
             outVid.FrameRate=inputVid.FrameRate;
             open(outVid);
         end
 
-        inputVid=VideoReader(strcat(base_dir,'/edited.',ext));
 
         if(MAKE_GD_VID==1)
             gdVid=VideoWriter(strcat(base_dir,'/gradient.',ext),'MPEG-4');
@@ -294,7 +314,7 @@
             open(cenVid2);
         end
         
-        playerDetector.reader = vision.VideoFileReader(strcat(base_dir,'edited.',ext));
+        playerDetector.reader = vision.VideoFileReader(strcat(base_dir,'/edited.',ext));
         playerDetector.detector = vision.ForegroundDetector('NumGaussians', 3, ...
             'NumTrainingFrames', 50, 'MinimumBackgroundRatio', 0.7);
         playerDetector.blobAnalyser = vision.BlobAnalysis('BoundingBoxOutputPort', true, ...
