@@ -1,6 +1,7 @@
     function [] = process( fileName, ext )
     warning('off','all');
-    
+        
+    hostName=getHostName();
     WRITE_NO_BG=0;
     MAKE_NO_BG_VID=1;
     MAKE_GD_VID=1;
@@ -48,9 +49,9 @@
         fgImg(:,:,2)=double(frame(:,:,2).*mask);
         fgImg(:,:,3)=double(frame(:,:,3).*mask);
         
-        imwrite(fgImg,'temp.jpg');
-        img_real = imread('temp.jpg');
-        img_tmp = double(imread('temp.jpg')); %load in the image and convert to double too allow for computations on the image
+        imwrite(fgImg,strcat(hostName,'_temp.jpg'));
+        img_real = imread(strcat(hostName,'_temp.jpg'));
+        img_tmp = double(imread(strcat(hostName,'_temp.jpg'))); %load in the image and convert to double too allow for computations on the image
         img = img_tmp(:,:,1); %reduce to just the first dimension, we don't care about color (rgb) values here.
 
         if(WRITE_NO_BG==1 && frameCount>delay)
@@ -71,10 +72,10 @@
             imagesc(blob_img)
             colormap(jet)
             colorbar
-            saveas(f1,'temp.jpg');
-            tempI=imread('temp.jpg');
+            saveas(f1,strcat(hostName,'_temp.jpg'));
+            tempI=imread(strcat(hostName,'_temp.jpg'));
             writeVideo(gdVid,tempI);
-            delete('temp.jpg');
+            delete(strcat(hostName,'_temp.jpg'));
             close(f1);
         end
 
@@ -92,10 +93,10 @@
             imagesc(hMap)
             colormap(jet)
             colorbar
-            saveas(f15,'temp.jpg');
-            tempI=imread('temp.jpg');
+            saveas(f15,strcat(hostName,'_temp.jpg'));
+            tempI=imread(strcat(hostName,'_temp.jpg'));
             writeVideo(hmVid,tempI);
-            delete('temp.jpg');
+            delete(strcat(hostName,'_temp.jpg'));
             close(f15);
         end
 
@@ -115,10 +116,10 @@
             end
             imagesc(blob_img)
             colorbar
-            saveas(f2,'temp.jpg');
-            tempI=imread('temp.jpg');
+            saveas(f2,strcat(hostName,'_temp.jpg'));
+            tempI=imread(strcat(hostName,'_temp.jpg'));
             writeVideo(lmVid,tempI);
-            delete('temp.jpg');
+            delete(strcat(hostName,'_temp.jpg'));
             close(f2);
         end
 
@@ -158,10 +159,10 @@
                 plot(Y{i}(j),X{i}(j),'or')
             end
             axis off
-            saveas(f3,'temp.jpg');
-            tempI=imread('temp.jpg');
+            saveas(f3,strcat(hostName,'_temp.jpg'));
+            tempI=imread(strcat(hostName,'_temp.jpg'));
             writeVideo(clusterVid,tempI);
-            delete('temp.jpg');
+            delete(strcat(hostName,'_temp.jpg'));
 
             plot(ctrs(:,1),ctrs(:,2),'yx',...
                 'MarkerSize',12,'LineWidth',2)
@@ -169,10 +170,10 @@
                 'MarkerSize',12,'LineWidth',2)
 
             if(MAKE_CENTROID_VID==1)
-                saveas(f3,'temp.jpg');
-                tempI=imread('temp.jpg');
+                saveas(f3,strcat(hostName,'_temp.jpg'));
+                tempI=imread(strcat(hostName,'_temp.jpg'));
                 writeVideo(cenVid1,tempI);
-                delete('temp.jpg');
+                delete(strcat(hostName,'_temp.jpg'));
             end
 
             close(f3);
@@ -190,10 +191,10 @@
             plot(ctrs(:,1),ctrs(:,2),'yo',...
                 'MarkerSize',12,'LineWidth',2)
             hold off;
-            saveas(f4,'temp.jpg');
-            tempI=imread('temp.jpg');
+            saveas(f4,strcat(hostName,'_temp.jpg'));
+            tempI=imread(strcat(hostName,'_temp.jpg'));
             writeVideo(cenVid2,tempI);
-            delete('temp.jpg');
+            delete(strcat(hostName,'_temp.jpg'));
             close(f4);
         end
 
@@ -205,10 +206,10 @@
             imshow(img_real)
             hold on
             plot(centerAll(:,1),centerAll(:,2),'m.')
-            saveas(f5,'temp.jpg');
-            tempI=imread('temp.jpg');
+            saveas(f5,strcat(hostName,'_temp.jpg'));
+            tempI=imread(strcat(hostName,'_temp.jpg'));
             writeVideo(tracksVid,tempI);
-            delete('temp.jpg');
+            delete(strcat(hostName,'_temp.jpg'));
             close(f5);
         end       
     end
@@ -227,14 +228,14 @@
     saveas(f6,strcat(base_dir,'/heatMapTotal.jpg'));
     close(f6);
     
-    f7=figure();
-    if(SHOW_PLOTS==0)
-        set(f7,'visible','off');
-    end
-    imshow(zeros(size(img_real,1),size(img_real,2),3))
-    plot(centerAll(:,1),centerAll(:,2),'m.')
-    saveas(f7,strcat(base_dir,'/steps.jpg'));
-    close(f7);
+%     f7=figure();
+%     if(SHOW_PLOTS==0)
+%         set(f7,'visible','off');
+%     end
+%     imshow(zeros(size(img_real,1),size(img_real,2),3))
+%     plot(centerAll(:,1),centerAll(:,2),'m.')
+%     saveas(f7,strcat(base_dir,'/steps.jpg'));
+%     close(f7);
     
     closeVids();
     
@@ -248,7 +249,7 @@
     save(strcat(dataDir,'/players_detected.mat'),  'X','Y')
       
     copyfile('index.html',base_dir);
-    moveFile(strcat(base_dir,'.',ext),strcat(base_dir,'/original.',ext));
+    movefile(strcat(base_dir,'.',ext),strcat(base_dir,'/original.',ext));
     
 
     %save it!

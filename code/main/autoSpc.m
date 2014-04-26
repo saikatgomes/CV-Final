@@ -1,3 +1,6 @@
+function [] = autoSpc( mainDir )
+
+
 
 myaddress = 'cs766vision@gmail.com';
 mypassword = 'moneyball123';
@@ -13,7 +16,7 @@ props.setProperty('mail.smtp.socketFactory.class', ...
     'javax.net.ssl.SSLSocketFactory');
 props.setProperty('mail.smtp.socketFactory.port','465');
 
-mainDir='../../data/';
+%mainDir='../../data/';
 hostName=getHostName();
 
 d = dir(mainDir);
@@ -52,5 +55,10 @@ for i=1:length(folderName)
     end
     
     
+end
+
+
+
+
 end
 
