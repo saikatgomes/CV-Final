@@ -177,7 +177,7 @@
         % % %     subplot(212)
 
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... finding clusters.'));
-        [ idx,ctrs ] = getCentroids( Y{i}, X{i},numOfClusters );        
+        [ idx,ctrs  ,SUMD, DistMat ] = getCentroids( Y{i}, X{i},numOfClusters );        
         new_ctrs = verifyClusters(ctrs,35);      
         centerAll=[centerAll;ctrs];
         newCenterAll=[newCenterAll;new_ctrs];
