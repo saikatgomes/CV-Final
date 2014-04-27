@@ -33,10 +33,10 @@ function [ myVid, playerDetector ] = initSetup( fileName, ext, PRINT_VID )
     if(myVid.WRITE_NO_BG==1)
         mkdir(strcat(base_dir,'/noBG/'));
     end
-    
+        
     myVid.inputVid=VideoReader(strcat(base_dir,'/edited.',ext));  
     myVid.FrameRate=myVid.inputVid.FrameRate;
-    myVid.totNumOfFrame = myVid.FrameRate;
+    myVid.totNumOfFrame = myVid.inputVid.NumberOfFrames;
 
     if(myVid.MAKE_NO_BG_VID==1)
         myVid.outVid=VideoWriter(strcat(base_dir,'/noBGVid.',ext),'MPEG-4');
