@@ -1,4 +1,4 @@
-    function [] = process( fileName, ext ,PRINT_VID,LIB_PATH)
+    function [] = process( fileName, ext ,PRINT_VID,LIB_PATH, k)
     
     warning('off','all');
             
@@ -176,7 +176,7 @@
         % % %     subplot(212)
 
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... finding clusters.'));
-        [ idx,ctrs ] = getCentroids( Y{i}, X{i}, 22 );        
+        [ idx,ctrs ] = getCentroids( Y{i}, X{i}, k );        
         new_ctrs = verifyClusters(ctrs,35);      
         centerAll=[centerAll;ctrs];
         newCenterAll=[newCenterAll;new_ctrs];
