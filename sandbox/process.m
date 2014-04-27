@@ -1,6 +1,7 @@
-    function [] = process( fileName, ext ,PRINT_VID)
+    function [] = process( fileName, ext ,PRINT_VID,LIB_PATH)
+    
     warning('off','all');
-        
+            
     hostName=getHostName();
     if(PRINT_VID==1)
         MAKE_NO_BG_VID=1;
@@ -21,7 +22,7 @@
     end
     
     WRITE_NO_BG=0;
-    SHOW_PLOTS=0;
+    SHOW_PLOTS=1;
     
 %     base_dir=strcat(fileName,'_data/');
     base_dir=fileName;
@@ -83,6 +84,12 @@
             imagesc(blob_img)
             colormap(jet)
             colorbar
+            M=max(max(blob_img));
+            m=min(min(blob_img));    
+            normalHM = (blob_img-m)/(M-m);
+            imagesc(normalHM)
+            colormap(jet)
+            colorbar
             saveas(f1,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
             writeVideo(gdVid,tempI);
@@ -103,6 +110,12 @@
                 set(f15,'visible','off');
             end
             imagesc(hMap)
+            colormap(jet)
+            colorbar
+            M=max(max(hMap));
+            m=min(min(hMap));    
+            normalHM = (hMap-m)/(M-m);
+            imagesc(normalHM)
             colormap(jet)
             colorbar
             saveas(f15,strcat(hostName,'_temp.jpg'));
@@ -142,10 +155,10 @@
 
         i=i+1;
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... finding extemas.'));
-        addpath('../code/lib/extrema');
+        addpath(LIB_PATH);
         [zmax,imax,zmin,imin] = extrema2(blob_img);
         [X{i},Y{i}] = ind2sub(size(blob_img),imax);
-        rmpath('../code/lib/extrema');
+        rmpath(LIB_PATH);
         %for plotting
         %%{
         clf

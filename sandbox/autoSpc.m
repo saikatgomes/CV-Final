@@ -41,7 +41,7 @@ function [] = autoSpc( mainDir ,outDir)
             fName=fullFileName(1:length(fullFileName)-4);
             try
                 startTime=datestr(now,'HH:MM:SS');
-                process(fName,'mp4',0);
+                process(fName,'mp4',0,'../code/lib/extrema');
                 delete(lockFileName);
                 endTime=datestr(now,'HH:MM:SS');
                 sendmail('saikatgomes@gmail.com', 'TESTBOT: Success', ...
