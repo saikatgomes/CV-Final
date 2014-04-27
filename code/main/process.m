@@ -158,6 +158,8 @@
         new_ctrs = verifyClusters(ctrs,35);      
         centerAll=[centerAll;ctrs];
         newCenterAll=[newCenterAll;new_ctrs];
+        X_new{goodFrame}=new_ctrs(:,1);
+        Y_new{goodFrame}=new_ctrs(:,2);
         
         if(exist('newCenterEnd','var')==0 && frameCount>1)            
             newCenterEnd(frameCount-1)=1;
@@ -344,6 +346,8 @@
     save(strcat(dataDir,'/heatMap.mat'),'normalHM');  
     save(strcat(dataDir,'/X.mat'),'X'); 
     save(strcat(dataDir,'/Y.mat'),'Y');   
+    save(strcat(dataDir,'/X_new.mat'),'X_new'); 
+    save(strcat(dataDir,'/Y_new.mat'),'Y_new'); 
     save(strcat(dataDir,'/players_detected.mat'),  'X','Y'); 
     movefile(strcat(base_dir,'.',ext),strcat(base_dir,'/original.',ext));   
     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Proccessing done on :',fileName));       
