@@ -1,21 +1,43 @@
-    function [] = process( fileName, ext ,PRINT_VID, LIB_PATH, numOfClusters)
+    function [] = process( fileName, ext ,PRINT_VID,LIB_PATH, numOfClusters)
     
     warning('off','all');
-               
-    [ myVid, playerDetector ] = initSetup( fileName, ext, PRINT_VID );   
+            
+    hostName=getHostName();
     
-    base_dir=myVid.base_dir;
-    delay=myVid.delay;
-    hostName=getHostName(); 
+    if(PRINT_VID==1)
+        MAKE_NO_BG_VID=1;
+        MAKE_GD_VID=1;
+        MAKE_HM_VID=1;
+        MAKE_LM_VID=1;
+        MAKE_CLUSTER_VID=1;
+        MAKE_CENTROID_VID=1;
+        MAKE_TRACKS_VID=1;        
+    else
+        MAKE_NO_BG_VID=0;
+        MAKE_GD_VID=0;
+        MAKE_HM_VID=0;
+        MAKE_LM_VID=0;
+        MAKE_CLUSTER_VID=0;
+        MAKE_CENTROID_VID=0;
+        MAKE_TRACKS_VID=0;        
+    end
+    
+    WRITE_NO_BG=0;
+    SHOW_PLOTS=0;
+    
+    base_dir=fileName;
+    minBlobArea=300;
+    delay=5;   
+    
     THRESHOLD=-1.5;
-    ishMap=0;        
+    ishMap=0;
+    
+    initialize();
+    
     frameCount=0;
     centerAll=[];
     newCenterAll=[];
-    goodFrame=0;
-    hsizeh = 150;  %you will need to iterative test these values two values. the bigger they are, the larger the blob they will find!
-    sigmah =6;   %
-    h = fspecial('log', hsizeh, sigmah);  
+    i=0;
     
     while ~isDone(playerDetector.reader)
 
@@ -38,7 +60,8 @@
         %playerDetector.blobAnalyser
         obj=playerDetector.blobAnalyser;
         
-        [area, centroids, bboxes] = obj.step(mask);        
+        [area, centroids, bboxes] = obj.step(mask);
+        
 %         
 %         % Perform blob analysis to find connected components.
 %         [~, centroids, bboxes] = obj.blobAnalyser.step(mask);
@@ -52,19 +75,19 @@
         img_tmp = double(imread(strcat(hostName,'_temp.jpg'))); %load in the image and convert to double too allow for computations on the image
         img = img_tmp(:,:,1); %reduce to just the first dimension, we don't care about color (rgb) values here.
 
-        if(myVid.WRITE_NO_BG==1 && frameCount>delay)
-            imwrite(fgImg,strcat(base_dir,'/noBG/',num2str(frameCount-delay),'.jpg'));
+        if(WRITE_NO_BG==1 && frameCount>delay)
+            imwrite(fgImg,strcat(fileName,'_data/noBG/',num2str(frameCount-delay),'.jpg'));
         end
-        if(myVid.MAKE_NO_BG_VID==1 && frameCount>delay)
-            writeVideo(myVid.outVid,fgImg);
+        if(MAKE_NO_BG_VID==1 && frameCount>delay)
+            writeVideo(outVid,fgImg);
         end     
                
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... building blob.'));
         blob_img = conv2(img,h,'same');
         
-        if(myVid.MAKE_GD_VID==1)
+        if(MAKE_GD_VID==1)
             f1 = figure();
-            if(myVid.SHOW_PLOTS==0)
+            if(SHOW_PLOTS==0)
                 set(f1,'visible','off');
             end
             imagesc(blob_img)
@@ -78,7 +101,7 @@
             colorbar
             saveas(f1,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
-            writeVideo(myVid.gdVid,tempI);
+            writeVideo(gdVid,tempI);
             delete(strcat(hostName,'_temp.jpg'));
             close(f1);
         end
@@ -90,9 +113,9 @@
             hMap=hMap+blob_img;
         end
         
-        if(myVid.MAKE_HM_VID==1)            
+        if(MAKE_HM_VID==1)            
             f15 = figure();
-            if(myVid.SHOW_PLOTS==0)
+            if(SHOW_PLOTS==0)
                 set(f15,'visible','off');
             end
             imagesc(hMap)
@@ -106,7 +129,7 @@
             colorbar
             saveas(f15,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
-            writeVideo(myVid.hmVid,tempI);
+            writeVideo(hmVid,tempI);
             delete(strcat(hostName,'_temp.jpg'));
             close(f15);
         end
@@ -119,16 +142,16 @@
         idx = find(blob_img > THRESHOLD);
         blob_img(idx) = nan ;
 
-        if(myVid.MAKE_LM_VID==1)
+        if(MAKE_LM_VID==1)
             f2 = figure();        
-            if(myVid.SHOW_PLOTS==0)
+            if(SHOW_PLOTS==0)
                 set(f2,'visible','off');
             end
             imagesc(blob_img)
             colorbar
             saveas(f2,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
-            writeVideo(myVid.lmVid,tempI);
+            writeVideo(lmVid,tempI);
             delete(strcat(hostName,'_temp.jpg'));
             close(f2);
         end
@@ -139,11 +162,11 @@
         %http://www.mathworks.com/matlabcentral/fileexchange/12275-extrema-m-extrema2-m
         %it find the blob peak indices for this video, there should be ~11
 
-        goodFrame=goodFrame+1;
+        i=i+1;
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... finding extemas.'));
         addpath(LIB_PATH);
         [zmax,imax,zmin,imin] = extrema2(blob_img);
-        [X{goodFrame},Y{goodFrame}] = ind2sub(size(blob_img),imax);
+        [X{i},Y{i}] = ind2sub(size(blob_img),imax);
         rmpath(LIB_PATH);
         %for plotting
         %%{
@@ -154,7 +177,7 @@
         % % %     subplot(212)
 
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... finding clusters.'));
-        [ idx,ctrs  ,SUMD, DistMat ] = getCentroids( Y{goodFrame}, X{goodFrame},numOfClusters );        
+        [ idx,ctrs  ,SUMD, DistMat ] = getCentroids( Y{i}, X{i},numOfClusters );        
         new_ctrs = verifyClusters(ctrs,35);      
         centerAll=[centerAll;ctrs];
         newCenterAll=[newCenterAll;new_ctrs];
@@ -164,20 +187,20 @@
         end
         newCenterEnd(frameCount)=length(newCenterAll);
 
-        if(myVid.MAKE_CLUSTER_VID==1)
+        if(MAKE_CLUSTER_VID==1)
             f3=figure();
-            if(myVid.SHOW_PLOTS==0)
+            if(SHOW_PLOTS==0)
                 set(f3,'visible','off');
             end
             imshow(img_real)
             hold on
-            for j = 1:length(X{goodFrame})
-                plot(Y{goodFrame}(j),X{goodFrame}(j),'or')
+            for j = 1:length(X{i})
+                plot(Y{i}(j),X{i}(j),'or')
             end
             axis off
             saveas(f3,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
-            writeVideo(myVid.clusterVid,tempI);
+            writeVideo(clusterVid,tempI);
             delete(strcat(hostName,'_temp.jpg'));
 
             plot(ctrs(:,1),ctrs(:,2),'yx',...
@@ -191,10 +214,10 @@
             plot(new_ctrs(:,1),new_ctrs(:,2),'go',...
                 'MarkerSize',12,'LineWidth',2)
 
-            if(myVid.MAKE_CENTROID_VID==1)
+            if(MAKE_CENTROID_VID==1)
                 saveas(f3,strcat(hostName,'_temp.jpg'));
                 tempI=imread(strcat(hostName,'_temp.jpg'));
-                writeVideo(myVid.cenVid1,tempI);
+                writeVideo(cenVid1,tempI);
                 delete(strcat(hostName,'_temp.jpg'));
             end
             
@@ -207,9 +230,9 @@
             close(f3);
         end
 
-        if(myVid.MAKE_CENTROID_VID==1)
+        if(MAKE_CENTROID_VID==1)
             f4=figure();
-            if(myVid.SHOW_PLOTS==0)
+            if(SHOW_PLOTS==0)
                 set(f4,'visible','off');
             end
             imshow(img_real)
@@ -229,7 +252,7 @@
             hold off;
             saveas(f4,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
-            writeVideo(myVid.cenVid2,tempI);
+            writeVideo(cenVid2,tempI);
             
 %             
 %             plot(centroids(:,1),centroids(:,2),'bx',...
@@ -241,9 +264,9 @@
             close(f4);
         end
 
-        if(myVid.MAKE_TRACKS_VID==1)
+        if(MAKE_TRACKS_VID==1)
             f5=figure();
-            if(myVid.SHOW_PLOTS==0)
+            if(SHOW_PLOTS==0)
                 set(f5,'visible','off');
             end
             imshow(img_real)
@@ -256,7 +279,7 @@
                 if(newCenterEnd(k+1)==0)
                     continue;
                 end
-                half=myVid.totNumOfFrame/2;
+                half=totNumOfFrame/2;
                 %theColor=[ plotColor 255 255];
                 if (k<half)
                     R=(1- (k/half));
@@ -273,8 +296,8 @@
             end
             saveas(f5,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
-            writeVideo(myVid.tracksVid1,tempI);
-            if(frameCount==myVid.totNumOfFrame)
+            writeVideo(tracksVid1,tempI);
+            if(frameCount==totNumOfFrame)
                 copyfile(strcat(hostName,'_temp.jpg'),strcat(base_dir,...
                     '/tracksTotal.jpg'));
             end           
@@ -282,7 +305,7 @@
             
             close(f5);
             f55=figure();
-            if(myVid.SHOW_PLOTS==0)
+            if(SHOW_PLOTS==0)
                 set(f5,'visible','off');
             end
             imshow(frame)
@@ -295,7 +318,7 @@
                 if(newCenterEnd(k+1)==0)
                     continue;
                 end
-                half=myVid.totNumOfFrame/2;
+                half=totNumOfFrame/2;
                 %theColor=[ plotColor 255 255];
                 if (k<half)
                     R=(1- (k/half));
@@ -312,8 +335,8 @@
             end
             saveas(f55,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
-            writeVideo(myVid.tracksVid2,tempI);
-            if(frameCount==myVid.totNumOfFrame)
+            writeVideo(tracksVid2,tempI);
+            if(frameCount==totNumOfFrame)
                 copyfile(strcat(hostName,'_temp.jpg'),strcat(base_dir, ...
                     '/tracksTotal2.jpg'));
             end           
@@ -326,7 +349,7 @@
     m=min(min(hMap));    
     normalHM = (hMap-m)/(M-m);    
     f6=figure();
-    if(myVid.SHOW_PLOTS==0)
+    if(SHOW_PLOTS==0)
         set(f6,'visible','off');
     end
     imagesc(normalHM)
@@ -335,7 +358,7 @@
     saveas(f6,strcat(base_dir,'/heatMapTotal.jpg'));
     close(f6);
         
-    closeVids(myVid);    
+    closeVids();    
     dataDir=strcat(base_dir,'/data');
     mkdir(dataDir);
     copyfile('index.html',base_dir);    
@@ -346,7 +369,100 @@
     save(strcat(dataDir,'/Y.mat'),'Y');   
     save(strcat(dataDir,'/players_detected.mat'),  'X','Y'); 
     movefile(strcat(base_dir,'.',ext),strcat(base_dir,'/original.',ext));   
-    display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Proccessing done on :',fileName));       
+    display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Proccessing done on :',fileName));
+    
+    
+    function initialize()
+        mkdir(base_dir);        
+        addBackground(fileName,ext,delay);
+
+        if(WRITE_NO_BG==1)
+            mkdir(strcat(base_dir,'/noBG/'));
+        end
+        
+        inputVid=VideoReader(strcat(base_dir,'/edited.',ext));        
+        totNumOfFrame = inputVid.NumberOfFrames;
+        
+        if(MAKE_NO_BG_VID==1)
+            outVid=VideoWriter(strcat(base_dir,'/noBGVid.',ext),'MPEG-4');
+            outVid.FrameRate=inputVid.FrameRate;
+            open(outVid);
+        end
+        if(MAKE_GD_VID==1)
+            gdVid=VideoWriter(strcat(base_dir,'/gradient.',ext),'MPEG-4');
+            gdVid.FrameRate=inputVid.FrameRate;
+            open(gdVid);
+        end
+        if(MAKE_HM_VID==1)
+            hmVid=VideoWriter(strcat(base_dir,'/heatMap.',ext),'MPEG-4');
+            hmVid.FrameRate=inputVid.FrameRate;
+            open(hmVid);
+        end
+        if(MAKE_LM_VID==1)
+            lmVid=VideoWriter(strcat(base_dir,'/localMins.',ext),'MPEG-4');
+            lmVid.FrameRate=inputVid.FrameRate;
+            open(lmVid);
+        end
+        if(MAKE_CLUSTER_VID==1)
+            clusterVid=VideoWriter(strcat(base_dir,'/clusters.',ext),'MPEG-4');
+            clusterVid.FrameRate=inputVid.FrameRate;
+            open(clusterVid);
+        end
+        if(MAKE_TRACKS_VID==1)
+            tracksVid1=VideoWriter(strcat(base_dir,'/tracks.',ext),'MPEG-4');
+            tracksVid1.FrameRate=inputVid.FrameRate;
+            open(tracksVid1);
+            tracksVid2=VideoWriter(strcat(base_dir,'/tracks2.',ext),'MPEG-4');
+            tracksVid2.FrameRate=inputVid.FrameRate;
+            open(tracksVid2);
+        end
+        if(MAKE_CENTROID_VID==1)
+            cenVid1=VideoWriter(strcat(base_dir,'/centroid1.',ext),'MPEG-4');
+            cenVid1.FrameRate=inputVid.FrameRate;
+            open(cenVid1);
+
+            cenVid2=VideoWriter(strcat(base_dir,'/centroid2.',ext),'MPEG-4');
+            cenVid2.FrameRate=inputVid.FrameRate;
+            open(cenVid2);
+        end
+        
+        playerDetector.reader = vision.VideoFileReader(strcat(base_dir,'/edited.',ext));
+        playerDetector.detector = vision.ForegroundDetector('NumGaussians', 3, ...
+            'NumTrainingFrames', 50, 'MinimumBackgroundRatio', 0.7);
+        playerDetector.blobAnalyser = vision.BlobAnalysis('BoundingBoxOutputPort', true, ...
+            'AreaOutputPort', true, 'CentroidOutputPort', true, ...
+            'MinimumBlobArea', minBlobArea); %, 'MaximumBlobArea', 150
+        
+        hsizeh = 150;  %you will need to iterative test these values two values. the bigger they are, the larger the blob they will find!
+        sigmah =6;   %
+        h = fspecial('log', hsizeh, sigmah);      
+    end
+    
+    function closeVids()
+        if(MAKE_NO_BG_VID==1)
+            close(outVid);
+        end
+        if(MAKE_GD_VID==1)
+            close(gdVid);
+        end
+        if(MAKE_HM_VID==1)
+            close(hmVid);
+        end
+        if(MAKE_LM_VID==1)
+            close(lmVid);
+        end
+        if(MAKE_CLUSTER_VID==1)
+            close(clusterVid);
+        end
+        if(MAKE_CENTROID_VID==1)
+            close(cenVid1);
+            close(cenVid2);
+        end
+        if(MAKE_TRACKS_VID==1)
+            close(tracksVid1);
+            close(tracksVid2);
+        end
+    end
 
 end
 
