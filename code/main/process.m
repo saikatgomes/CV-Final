@@ -22,7 +22,7 @@
     end
     
     WRITE_NO_BG=0;
-    SHOW_PLOTS=1;
+    SHOW_PLOTS=0;
     
 %     base_dir=strcat(fileName,'_data/');
     base_dir=fileName;
