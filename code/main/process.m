@@ -304,6 +304,7 @@
     mkdir(dataDir);
     
     save(strcat(dataDir,'/centers.mat'),'centerAll');
+    save(strcat(dataDir,'/centers2.mat'),'newCenterAll');
     save(strcat(dataDir,'/heatMap.mat'),'normalHM');  
     save(strcat(dataDir,'/X.mat'),'X'); 
     save(strcat(dataDir,'/Y.mat'),'Y');   
