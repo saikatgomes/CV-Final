@@ -289,14 +289,14 @@
                     G=(1- ((k-half)/half));                
                 end
                     theColor=[ R G 1];    
-                plot( newCenterAll(newCenterEnd(k):newCenterEnd(k+1),1) , newCenterAll(newCenterEnd(k):newCenterEnd(k+1),2),'o','MarkerFaceColor', theColor,'MarkerSize',3)              
+                plot( newCenterAll(newCenterEnd(k):newCenterEnd(k+1),1) , newCenterAll(newCenterEnd(k):newCenterEnd(k+1),2),'o','MarkerFaceColor', theColor,'MarkerEdgeColor','none','MarkerSize',2)              
             end
             %plot(newCenterAll(:,1),newCenterAll(:,2),'o','MarkerFaceColor', theColor,'MarkerSize',4)
             saveas(f5,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
             writeVideo(tracksVid,tempI);
             if(frameCount==totNumOfFrame)
-                copyfile(strcat(hostName,'_temp.jpg'),'tracksTotal.jpg');
+                copyfile(strcat(hostName,'_temp.jpg'),strcat(base_dir,'/tracksTotal.jpg'));
             end
             delete(strcat(hostName,'_temp.jpg'));
             close(f5);
