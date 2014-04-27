@@ -1,4 +1,4 @@
-    function [] = process( fileName, ext ,PRINT_VID,LIB_PATH)
+    function [] = process( fileName, ext ,PRINT_VID,LIB_PATH, numOfClusters)
     
     warning('off','all');
             
@@ -176,7 +176,7 @@
         % % %     subplot(212)
 
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... finding clusters.'));
-        [ idx,ctrs ] = getCentroids( Y{i}, X{i}, 22 );        
+        [ idx,ctrs ] = getCentroids( Y{i}, X{i},numOfClusters );        
         new_ctrs = verifyClusters(ctrs,35);      
         centerAll=[centerAll;ctrs];
         newCenterAll=[newCenterAll;new_ctrs];
@@ -202,10 +202,10 @@
             writeVideo(clusterVid,tempI);
             delete(strcat(hostName,'_temp.jpg'));
 
-% % % % % % %             plot(ctrs(:,1),ctrs(:,2),'yx',...
-% % % % % % %                 'MarkerSize',12,'LineWidth',2)
-% % % % % % %             plot(ctrs(:,1),ctrs(:,2),'yo',...
-% % % % % % %                 'MarkerSize',12,'LineWidth',2)
+            plot(ctrs(:,1),ctrs(:,2),'yx',...
+                'MarkerSize',12,'LineWidth',2)
+            plot(ctrs(:,1),ctrs(:,2),'yo',...
+                'MarkerSize',12,'LineWidth',2)
             
             
             plot(new_ctrs(:,1),new_ctrs(:,2),'gx',...
