@@ -22,7 +22,7 @@
     end
     
     WRITE_NO_BG=0;
-    SHOW_PLOTS=1;
+    SHOW_PLOTS=0;
     
 %     base_dir=strcat(fileName,'_data/');
     base_dir=fileName;
@@ -279,16 +279,25 @@
                 if(newCenterEnd(k+1)==0)
                     continue;
                 end
-                k
-                plotColor=(1- (newCenterEnd(k+1)/totNumOfFrame))
+                half=totNumOfFrame/2;
                 %theColor=[ plotColor 255 255];
-                theColor=[ plotColor 1 1]';
-                plot( newCenterAll(newCenterEnd(k):newCenterEnd(k+1),1) , newCenterAll(newCenterEnd(k):newCenterEnd(k+1),2),'o','MarkerFaceColor', theColor,'MarkerSize',8)              
+                if (k<half)
+                    R=(1- (k/half));
+                    G=1;
+                else
+                    R=0;   
+                    G=(1- ((k-half)/half));                
+                end
+                    theColor=[ R G 1];    
+                plot( newCenterAll(newCenterEnd(k):newCenterEnd(k+1),1) , newCenterAll(newCenterEnd(k):newCenterEnd(k+1),2),'o','MarkerFaceColor', theColor,'MarkerSize',3)              
             end
             %plot(newCenterAll(:,1),newCenterAll(:,2),'o','MarkerFaceColor', theColor,'MarkerSize',4)
             saveas(f5,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
             writeVideo(tracksVid,tempI);
+            if(frameCount==totNumOfFrame)
+                copyfile(strcat(hostName,'_temp.jpg'),'tracksTotal.jpg');
+            end
             delete(strcat(hostName,'_temp.jpg'));
             close(f5);
         end       

@@ -40,7 +40,7 @@ for i=1:length(folderName)
         try
             startTime=datestr(now,'HH:MM:SS');
             process(fName,'mp4',1,'../lib/extrema');
-            delete(lockFileName);
+            %delete(lockFileName);
             endTime=datestr(now,'HH:MM:SS');
             sendmail('saikatgomes@gmail.com', 'TESTBOT: Success', ...
                 strcat('Success: ',fullFileName,' @ ',hostName,' ____ START:',startTime,' _____ END:',endTime));
