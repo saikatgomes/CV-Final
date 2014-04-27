@@ -3,6 +3,7 @@
     warning('off','all');
             
     hostName=getHostName();
+    
     if(PRINT_VID==1)
         MAKE_NO_BG_VID=1;
         MAKE_GD_VID=1;
@@ -24,13 +25,13 @@
     WRITE_NO_BG=0;
     SHOW_PLOTS=0;
     
-%     base_dir=strcat(fileName,'_data/');
     base_dir=fileName;
     minBlobArea=300;
     delay=5;   
     
     THRESHOLD=-1.5;
     ishMap=0;
+    
     initialize();
     
     frameCount=0;

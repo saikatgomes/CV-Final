@@ -1,5 +1,6 @@
 function [ new_ctrs ] = verifyClusters( ctrs ,minDist)
 
+    %TODO: check the max distance within cluster to eleiminate long chains
     c=0;
     while(size(ctrs,1)>0)
         sum1=ctrs(1,1);
