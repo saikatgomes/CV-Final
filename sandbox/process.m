@@ -35,6 +35,7 @@
     
     frameCount=0;
     centerAll=[];
+    newCenterAll=[];
     i=0;
     
     while ~isDone(playerDetector.reader)
@@ -55,8 +56,15 @@
             display(strcat(datestr(now,'HH:MM:SS'),' [INFO] skipping frame -> ',num2str(frameCount)));
             continue;
         end
+        %playerDetector.blobAnalyser
+        obj=playerDetector.blobAnalyser;
         
-        %[~, centroids, bboxes] = playerDetector.blobAnalyser.step(mask);
+        [area, centroids, bboxes] = obj.step(mask);
+        
+%         
+%         % Perform blob analysis to find connected components.
+%         [~, centroids, bboxes] = obj.blobAnalyser.step(mask);
+        
         fgImg(:,:,1)=double(frame(:,:,1).*mask);
         fgImg(:,:,2)=double(frame(:,:,2).*mask);
         fgImg(:,:,3)=double(frame(:,:,3).*mask);
@@ -168,9 +176,15 @@
         % % %     subplot(212)
 
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... finding clusters.'));
-        [ idx,ctrs ] = getCentroids( Y{i}, X{i}, 22 );
+        [ idx,ctrs ] = getCentroids( Y{i}, X{i}, 22 );        
+        new_ctrs = verifyClusters(ctrs,35);      
         centerAll=[centerAll;ctrs];
-
+        newCenterAll=[newCenterAll;new_ctrs];
+        
+        if(exist('newCenterEnd','var')==0 && frameCount>1)            
+            newCenterEnd(frameCount-1)=1;
+        end
+        newCenterEnd(frameCount)=length(newCenterAll);
 
         if(MAKE_CLUSTER_VID==1)
             f3=figure();
@@ -188,9 +202,15 @@
             writeVideo(clusterVid,tempI);
             delete(strcat(hostName,'_temp.jpg'));
 
-            plot(ctrs(:,1),ctrs(:,2),'yx',...
+% % % % % % %             plot(ctrs(:,1),ctrs(:,2),'yx',...
+% % % % % % %                 'MarkerSize',12,'LineWidth',2)
+% % % % % % %             plot(ctrs(:,1),ctrs(:,2),'yo',...
+% % % % % % %                 'MarkerSize',12,'LineWidth',2)
+            
+            
+            plot(new_ctrs(:,1),new_ctrs(:,2),'gx',...
                 'MarkerSize',12,'LineWidth',2)
-            plot(ctrs(:,1),ctrs(:,2),'yo',...
+            plot(new_ctrs(:,1),new_ctrs(:,2),'go',...
                 'MarkerSize',12,'LineWidth',2)
 
             if(MAKE_CENTROID_VID==1)
@@ -199,6 +219,12 @@
                 writeVideo(cenVid1,tempI);
                 delete(strcat(hostName,'_temp.jpg'));
             end
+            
+            
+            plot(centroids(:,1),centroids(:,2),'gx',...
+                'MarkerSize',6,'LineWidth',3)
+            plot(centroids(:,1),centroids(:,2),'go',...
+                'MarkerSize',6,'LineWidth',3)
 
             close(f3);
         end
@@ -210,14 +236,29 @@
             end
             imshow(img_real)
             hold on
-            plot(ctrs(:,1),ctrs(:,2),'yx',...
+
+% % % % % % %             plot(ctrs(:,1),ctrs(:,2),'yx',...
+% % % % % % %                 'MarkerSize',12,'LineWidth',2)
+% % % % % % %             plot(ctrs(:,1),ctrs(:,2),'yo',...
+% % % % % % %                 'MarkerSize',12,'LineWidth',2)
+            
+            
+            plot(new_ctrs(:,1),new_ctrs(:,2),'gx',...
                 'MarkerSize',12,'LineWidth',2)
-            plot(ctrs(:,1),ctrs(:,2),'yo',...
+            plot(new_ctrs(:,1),new_ctrs(:,2),'go',...
                 'MarkerSize',12,'LineWidth',2)
+            
             hold off;
             saveas(f4,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
             writeVideo(cenVid2,tempI);
+            
+%             
+%             plot(centroids(:,1),centroids(:,2),'bx',...
+%                 'MarkerSize',6,'LineWidth',3)
+%             plot(centroids(:,1),centroids(:,2),'bo',...
+%                 'MarkerSize',6,'LineWidth',3)
+            
             delete(strcat(hostName,'_temp.jpg'));
             close(f4);
         end
@@ -229,10 +270,34 @@
             end
             imshow(img_real)
             hold on
-            plot(centerAll(:,1),centerAll(:,2),'m.')
+            plot(centerAll(:,1),centerAll(:,2),'m.','MarkerSize',4)
+            %plot(newCenterAll(:,1),newCenterAll(:,2),'c.','MarkerSize',9)
+            for k=1:length(newCenterEnd)-1      
+                if(newCenterEnd(k)<1)
+                    continue;
+                end
+                if(newCenterEnd(k+1)==0)
+                    continue;
+                end
+                half=totNumOfFrame/2;
+                %theColor=[ plotColor 255 255];
+                if (k<half)
+                    R=(1- (k/half));
+                    G=1;
+                else
+                    R=0;   
+                    G=(1- ((k-half)/half));                
+                end
+                    theColor=[ R G 1];    
+                plot( newCenterAll(newCenterEnd(k):newCenterEnd(k+1),1) , newCenterAll(newCenterEnd(k):newCenterEnd(k+1),2),'o','MarkerFaceColor', theColor,'MarkerEdgeColor','none','MarkerSize',2)              
+            end
+            %plot(newCenterAll(:,1),newCenterAll(:,2),'o','MarkerFaceColor', theColor,'MarkerSize',4)
             saveas(f5,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
             writeVideo(tracksVid,tempI);
+            if(frameCount==totNumOfFrame)
+                copyfile(strcat(hostName,'_temp.jpg'),strcat(base_dir,'/tracksTotal.jpg'));
+            end
             delete(strcat(hostName,'_temp.jpg'));
             close(f5);
         end       
@@ -267,6 +332,7 @@
     mkdir(dataDir);
     
     save(strcat(dataDir,'/centers.mat'),'centerAll');
+    save(strcat(dataDir,'/centers2.mat'),'newCenterAll');
     save(strcat(dataDir,'/heatMap.mat'),'normalHM');  
     save(strcat(dataDir,'/X.mat'),'X'); 
     save(strcat(dataDir,'/Y.mat'),'Y');   
@@ -290,6 +356,8 @@
 
         
         inputVid=VideoReader(strcat(base_dir,'/edited.',ext));
+        
+        totNumOfFrame = inputVid.NumberOfFrames;
         
         if(MAKE_NO_BG_VID==1)
             outVid=VideoWriter(strcat(base_dir,'/noBGVid.',ext),'MPEG-4');
