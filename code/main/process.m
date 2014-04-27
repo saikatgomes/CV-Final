@@ -23,7 +23,7 @@
     end
     
     WRITE_NO_BG=0;
-    SHOW_PLOTS=0;
+    SHOW_PLOTS=1;
     
     base_dir=fileName;
     minBlobArea=300;
@@ -435,7 +435,7 @@
         
         hsizeh = 150;  %you will need to iterative test these values two values. the bigger they are, the larger the blob they will find!
         sigmah =6;   %
-        h = fspecial('log', hsizeh, sigmah)        
+        h = fspecial('log', hsizeh, sigmah);      
     end
     
     function closeVids()
