@@ -15,6 +15,7 @@ props.setProperty('mail.smtp.socketFactory.port','465');
 
 mainDir='../../sandbox/data99/';
 hostName=getHostName();
+k=33;
 
 d = dir(mainDir);
 isub = [d(:).isdir];
@@ -39,7 +40,7 @@ for i=1:length(folderName)
         fName=fullFileName(1:length(fullFileName)-4);
         try
             startTime=datestr(now,'HH:MM:SS');
-            process(fName,'mp4',1,'../lib/extrema',22);
+            process(fName,'mp4',1,'../lib/extrema',k);
             %delete(lockFileName);
             endTime=datestr(now,'HH:MM:SS');
             sendmail('saikatgomes@gmail.com', 'TESTBOT: Success', ...
