@@ -22,7 +22,7 @@
     end
     
     WRITE_NO_BG=0;
-    SHOW_PLOTS=0;
+    SHOW_PLOTS=1;
     
 %     base_dir=strcat(fileName,'_data/');
     base_dir=fileName;
@@ -180,6 +180,11 @@
         new_ctrs = verifyClusters(ctrs,35);      
         centerAll=[centerAll;ctrs];
         newCenterAll=[newCenterAll;new_ctrs];
+        
+        if(exist('newCenterEnd','var')==0 && frameCount>1)            
+            newCenterEnd(frameCount-1)=1;
+        end
+        newCenterEnd(frameCount)=length(newCenterAll);
 
         if(MAKE_CLUSTER_VID==1)
             f3=figure();
@@ -266,7 +271,21 @@
             imshow(img_real)
             hold on
             plot(centerAll(:,1),centerAll(:,2),'m.','MarkerSize',4)
-            plot(newCenterAll(:,1),newCenterAll(:,2),'c.','MarkerSize',9)
+            %plot(newCenterAll(:,1),newCenterAll(:,2),'c.','MarkerSize',9)
+            for k=1:length(newCenterEnd)-1      
+                if(newCenterEnd(k)<1)
+                    continue;
+                end
+                if(newCenterEnd(k+1)==0)
+                    continue;
+                end
+                k
+                plotColor=(1- (newCenterEnd(k+1)/totNumOfFrame))
+                %theColor=[ plotColor 255 255];
+                theColor=[ plotColor 1 1]';
+                plot( newCenterAll(newCenterEnd(k):newCenterEnd(k+1),1) , newCenterAll(newCenterEnd(k):newCenterEnd(k+1),2),'o','MarkerFaceColor', theColor,'MarkerSize',8)              
+            end
+            %plot(newCenterAll(:,1),newCenterAll(:,2),'o','MarkerFaceColor', theColor,'MarkerSize',4)
             saveas(f5,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
             writeVideo(tracksVid,tempI);
@@ -328,6 +347,8 @@
 
         
         inputVid=VideoReader(strcat(base_dir,'/edited.',ext));
+        
+        totNumOfFrame = inputVid.NumberOfFrames;
         
         if(MAKE_NO_BG_VID==1)
             outVid=VideoWriter(strcat(base_dir,'/noBGVid.',ext),'MPEG-4');
