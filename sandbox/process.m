@@ -3,6 +3,7 @@
     warning('off','all');
             
     hostName=getHostName();
+    
     if(PRINT_VID==1)
         MAKE_NO_BG_VID=1;
         MAKE_GD_VID=1;
@@ -22,15 +23,15 @@
     end
     
     WRITE_NO_BG=0;
-    SHOW_PLOTS=0;
+    SHOW_PLOTS=1;
     
-%     base_dir=strcat(fileName,'_data/');
     base_dir=fileName;
     minBlobArea=300;
     delay=5;   
     
     THRESHOLD=-1.5;
     ishMap=0;
+    
     initialize();
     
     frameCount=0;
@@ -176,7 +177,7 @@
         % % %     subplot(212)
 
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... finding clusters.'));
-        [ idx,ctrs ] = getCentroids( Y{i}, X{i},numOfClusters );        
+        [ idx,ctrs  ,SUMD, DistMat ] = getCentroids( Y{i}, X{i},numOfClusters );        
         new_ctrs = verifyClusters(ctrs,35);      
         centerAll=[centerAll;ctrs];
         newCenterAll=[newCenterAll;new_ctrs];
@@ -271,7 +272,6 @@
             imshow(img_real)
             hold on
             plot(centerAll(:,1),centerAll(:,2),'m.','MarkerSize',4)
-            %plot(newCenterAll(:,1),newCenterAll(:,2),'c.','MarkerSize',9)
             for k=1:length(newCenterEnd)-1      
                 if(newCenterEnd(k)<1)
                     continue;
@@ -288,15 +288,18 @@
                     R=0;   
                     G=(1- ((k-half)/half));                
                 end
-                    theColor=[ R G 1];    
-                plot( newCenterAll(newCenterEnd(k):newCenterEnd(k+1),1) , newCenterAll(newCenterEnd(k):newCenterEnd(k+1),2),'o','MarkerFaceColor', theColor,'MarkerEdgeColor','none','MarkerSize',2)              
+                theColor=[ R G 1];    
+                plot( newCenterAll(newCenterEnd(k):newCenterEnd(k+1),1) , ...
+                    newCenterAll(newCenterEnd(k):newCenterEnd(k+1),2),'o', ...
+                    'MarkerFaceColor', theColor,'MarkerEdgeColor','none',...
+                    'MarkerSize',2)  
             end
-            %plot(newCenterAll(:,1),newCenterAll(:,2),'o','MarkerFaceColor', theColor,'MarkerSize',4)
             saveas(f5,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
             writeVideo(tracksVid1,tempI);
             if(frameCount==totNumOfFrame)
-                copyfile(strcat(hostName,'_temp.jpg'),strcat(base_dir,'/tracksTotal.jpg'));
+                copyfile(strcat(hostName,'_temp.jpg'),strcat(base_dir,...
+                    '/tracksTotal.jpg'));
             end           
             delete(strcat(hostName,'_temp.jpg'));
             
@@ -308,7 +311,6 @@
             imshow(frame)
             hold on
             plot(centerAll(:,1),centerAll(:,2),'m.','MarkerSize',4)
-            %plot(newCenterAll(:,1),newCenterAll(:,2),'c.','MarkerSize',9)
             for k=1:length(newCenterEnd)-1      
                 if(newCenterEnd(k)<1)
                     continue;
@@ -325,15 +327,18 @@
                     R=0;   
                     G=(1- ((k-half)/half));                
                 end
-                    theColor=[ R G 1];    
-                plot( newCenterAll(newCenterEnd(k):newCenterEnd(k+1),1) , newCenterAll(newCenterEnd(k):newCenterEnd(k+1),2),'o','MarkerFaceColor', theColor,'MarkerEdgeColor','none','MarkerSize',2)              
+                theColor=[ R G 1];    
+                plot( newCenterAll(newCenterEnd(k):newCenterEnd(k+1),1) , ...
+                    newCenterAll(newCenterEnd(k):newCenterEnd(k+1),2),'o', ...
+                    'MarkerFaceColor', theColor,'MarkerEdgeColor','none',...
+                    'MarkerSize',2)              
             end
-            %plot(newCenterAll(:,1),newCenterAll(:,2),'o','MarkerFaceColor', theColor,'MarkerSize',4)
             saveas(f55,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
             writeVideo(tracksVid2,tempI);
             if(frameCount==totNumOfFrame)
-                copyfile(strcat(hostName,'_temp.jpg'),strcat(base_dir,'/tracksTotal2.jpg'));
+                copyfile(strcat(hostName,'_temp.jpg'),strcat(base_dir, ...
+                    '/tracksTotal2.jpg'));
             end           
             delete(strcat(hostName,'_temp.jpg'));
             close(f55);            
@@ -342,8 +347,7 @@
     
     M=max(max(hMap));
     m=min(min(hMap));    
-    normalHM = (hMap-m)/(M-m);
-    
+    normalHM = (hMap-m)/(M-m);    
     f6=figure();
     if(SHOW_PLOTS==0)
         set(f6,'visible','off');
@@ -353,33 +357,18 @@
     colorbar    
     saveas(f6,strcat(base_dir,'/heatMapTotal.jpg'));
     close(f6);
-    
-%     f7=figure();
-%     if(SHOW_PLOTS==0)
-%         set(f7,'visible','off');
-%     end
-%     imshow(zeros(size(img_real,1),size(img_real,2),3))
-%     plot(centerAll(:,1),centerAll(:,2),'m.')
-%     saveas(f7,strcat(base_dir,'/steps.jpg'));
-%     close(f7);
-    
-    closeVids();
-    
+        
+    closeVids();    
     dataDir=strcat(base_dir,'/data');
     mkdir(dataDir);
-    
+    copyfile('index.html',base_dir);    
     save(strcat(dataDir,'/centers.mat'),'centerAll');
     save(strcat(dataDir,'/centers2.mat'),'newCenterAll');
     save(strcat(dataDir,'/heatMap.mat'),'normalHM');  
     save(strcat(dataDir,'/X.mat'),'X'); 
     save(strcat(dataDir,'/Y.mat'),'Y');   
-    save(strcat(dataDir,'/players_detected.mat'),  'X','Y')
-      
-    copyfile('index.html',base_dir);
-    movefile(strcat(base_dir,'.',ext),strcat(base_dir,'/original.',ext));
-    
-
-    %save it!
+    save(strcat(dataDir,'/players_detected.mat'),  'X','Y'); 
+    movefile(strcat(base_dir,'.',ext),strcat(base_dir,'/original.',ext));   
     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Proccessing done on :',fileName));
     
     
@@ -390,10 +379,8 @@
         if(WRITE_NO_BG==1)
             mkdir(strcat(base_dir,'/noBG/'));
         end
-
         
-        inputVid=VideoReader(strcat(base_dir,'/edited.',ext));
-        
+        inputVid=VideoReader(strcat(base_dir,'/edited.',ext));        
         totNumOfFrame = inputVid.NumberOfFrames;
         
         if(MAKE_NO_BG_VID==1)
@@ -401,33 +388,26 @@
             outVid.FrameRate=inputVid.FrameRate;
             open(outVid);
         end
-
-
         if(MAKE_GD_VID==1)
             gdVid=VideoWriter(strcat(base_dir,'/gradient.',ext),'MPEG-4');
             gdVid.FrameRate=inputVid.FrameRate;
             open(gdVid);
         end
-
         if(MAKE_HM_VID==1)
             hmVid=VideoWriter(strcat(base_dir,'/heatMap.',ext),'MPEG-4');
             hmVid.FrameRate=inputVid.FrameRate;
             open(hmVid);
         end
-
         if(MAKE_LM_VID==1)
             lmVid=VideoWriter(strcat(base_dir,'/localMins.',ext),'MPEG-4');
             lmVid.FrameRate=inputVid.FrameRate;
             open(lmVid);
         end
-
         if(MAKE_CLUSTER_VID==1)
             clusterVid=VideoWriter(strcat(base_dir,'/clusters.',ext),'MPEG-4');
             clusterVid.FrameRate=inputVid.FrameRate;
             open(clusterVid);
         end
-
-
         if(MAKE_TRACKS_VID==1)
             tracksVid1=VideoWriter(strcat(base_dir,'/tracks.',ext),'MPEG-4');
             tracksVid1.FrameRate=inputVid.FrameRate;
@@ -436,7 +416,6 @@
             tracksVid2.FrameRate=inputVid.FrameRate;
             open(tracksVid2);
         end
-
         if(MAKE_CENTROID_VID==1)
             cenVid1=VideoWriter(strcat(base_dir,'/centroid1.',ext),'MPEG-4');
             cenVid1.FrameRate=inputVid.FrameRate;
@@ -456,11 +435,7 @@
         
         hsizeh = 150;  %you will need to iterative test these values two values. the bigger they are, the larger the blob they will find!
         sigmah =6;   %
-        h = fspecial('log', hsizeh, sigmah);
-        % iteratively (frame by frame) find flies and save the X Y coordinates!
-% % % %         X = cell(1,length(imgList)); %detection X coordinate indice
-% % % %         Y = cell(1,length(imgList));  %detection Y coordinate indice
-        
+        h = fspecial('log', hsizeh, sigmah);      
     end
     
     function closeVids()
@@ -470,24 +445,19 @@
         if(MAKE_GD_VID==1)
             close(gdVid);
         end
-
         if(MAKE_HM_VID==1)
             close(hmVid);
         end
-
         if(MAKE_LM_VID==1)
             close(lmVid);
         end
-
         if(MAKE_CLUSTER_VID==1)
             close(clusterVid);
         end
-
         if(MAKE_CENTROID_VID==1)
             close(cenVid1);
             close(cenVid2);
         end
-
         if(MAKE_TRACKS_VID==1)
             close(tracksVid1);
             close(tracksVid2);
