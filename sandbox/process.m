@@ -294,12 +294,49 @@
             %plot(newCenterAll(:,1),newCenterAll(:,2),'o','MarkerFaceColor', theColor,'MarkerSize',4)
             saveas(f5,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
-            writeVideo(tracksVid,tempI);
+            writeVideo(tracksVid1,tempI);
             if(frameCount==totNumOfFrame)
                 copyfile(strcat(hostName,'_temp.jpg'),strcat(base_dir,'/tracksTotal.jpg'));
-            end
+            end           
             delete(strcat(hostName,'_temp.jpg'));
+            
             close(f5);
+            f55=figure();
+            if(SHOW_PLOTS==0)
+                set(f5,'visible','off');
+            end
+            imshow(frame)
+            hold on
+            plot(centerAll(:,1),centerAll(:,2),'m.','MarkerSize',4)
+            %plot(newCenterAll(:,1),newCenterAll(:,2),'c.','MarkerSize',9)
+            for k=1:length(newCenterEnd)-1      
+                if(newCenterEnd(k)<1)
+                    continue;
+                end
+                if(newCenterEnd(k+1)==0)
+                    continue;
+                end
+                half=totNumOfFrame/2;
+                %theColor=[ plotColor 255 255];
+                if (k<half)
+                    R=(1- (k/half));
+                    G=1;
+                else
+                    R=0;   
+                    G=(1- ((k-half)/half));                
+                end
+                    theColor=[ R G 1];    
+                plot( newCenterAll(newCenterEnd(k):newCenterEnd(k+1),1) , newCenterAll(newCenterEnd(k):newCenterEnd(k+1),2),'o','MarkerFaceColor', theColor,'MarkerEdgeColor','none','MarkerSize',2)              
+            end
+            %plot(newCenterAll(:,1),newCenterAll(:,2),'o','MarkerFaceColor', theColor,'MarkerSize',4)
+            saveas(f55,strcat(hostName,'_temp.jpg'));
+            tempI=imread(strcat(hostName,'_temp.jpg'));
+            writeVideo(tracksVid2,tempI);
+            if(frameCount==totNumOfFrame)
+                copyfile(strcat(hostName,'_temp.jpg'),strcat(base_dir,'/tracksTotal2.jpg'));
+            end           
+            delete(strcat(hostName,'_temp.jpg'));
+            close(f55);            
         end       
     end
     
@@ -392,9 +429,12 @@
 
 
         if(MAKE_TRACKS_VID==1)
-            tracksVid=VideoWriter(strcat(base_dir,'/tracks.',ext),'MPEG-4');
-            tracksVid.FrameRate=inputVid.FrameRate;
-            open(tracksVid);
+            tracksVid1=VideoWriter(strcat(base_dir,'/tracks.',ext),'MPEG-4');
+            tracksVid1.FrameRate=inputVid.FrameRate;
+            open(tracksVid1);
+            tracksVid2=VideoWriter(strcat(base_dir,'/tracks2.',ext),'MPEG-4');
+            tracksVid2.FrameRate=inputVid.FrameRate;
+            open(tracksVid2);
         end
 
         if(MAKE_CENTROID_VID==1)
@@ -449,7 +489,8 @@
         end
 
         if(MAKE_TRACKS_VID==1)
-            close(tracksVid);
+            close(tracksVid1);
+            close(tracksVid2);
         end
     end
 
