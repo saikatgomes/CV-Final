@@ -23,7 +23,7 @@
     end
     
     WRITE_NO_BG=0;
-    SHOW_PLOTS=1;
+    SHOW_PLOTS=0;
     
     base_dir=fileName;
     minBlobArea=300;
