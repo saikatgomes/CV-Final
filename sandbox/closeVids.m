@@ -1,5 +1,6 @@
 function [  ] = closeVids( myVid )
 
+    close(myVid.new);
     if(myVid.MAKE_NO_BG_VID==1)
         close(myVid.outVid);
     end

@@ -4,6 +4,8 @@
                
     [ myVid, playerDetector ] = initSetup( fileName, ext, PRINT_VID );   
     
+    %myVid.SHOW_PLOTS=1; %OVERRIDE!
+    
     base_dir=myVid.base_dir;
     delay=myVid.delay;
     hostName=getHostName(); 
@@ -34,7 +36,9 @@
         if(M==0)
             display(strcat(datestr(now,'HH:MM:SS'),' [INFO] skipping frame -> ',num2str(frameCount)));
             continue;
-        end
+        end       
+        
+        writeVideo(myVid.new,frame);
         %playerDetector.blobAnalyser
         obj=playerDetector.blobAnalyser;
         
@@ -158,6 +162,8 @@
         new_ctrs = verifyClusters(ctrs,35);      
         centerAll=[centerAll;ctrs];
         newCenterAll=[newCenterAll;new_ctrs];
+        X_new{goodFrame}=new_ctrs(:,1);
+        Y_new{goodFrame}=new_ctrs(:,2);
         
         if(exist('newCenterEnd','var')==0 && frameCount>1)            
             newCenterEnd(frameCount-1)=1;
@@ -229,8 +235,7 @@
             hold off;
             saveas(f4,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
-            writeVideo(myVid.cenVid2,tempI);
-            
+            writeVideo(myVid.cenVid2,tempI);            
 %             
 %             plot(centroids(:,1),centroids(:,2),'bx',...
 %                 'MarkerSize',6,'LineWidth',3)
@@ -257,7 +262,6 @@
                     continue;
                 end
                 half=myVid.totNumOfFrame/2;
-                %theColor=[ plotColor 255 255];
                 if (k<half)
                     R=(1- (k/half));
                     G=1;
@@ -296,7 +300,6 @@
                     continue;
                 end
                 half=myVid.totNumOfFrame/2;
-                %theColor=[ plotColor 255 255];
                 if (k<half)
                     R=(1- (k/half));
                     G=1;
@@ -332,6 +335,9 @@
     imagesc(normalHM)
     colormap(jet)
     colorbar    
+%   oneFrame=im2frame(zbuffer_cdata(f6));
+%   oneImg=(oneFrame.cdata);            
+%     imwrite(oneImg,strcat(base_dir,'/heatMapTotal.jpg'));
     saveas(f6,strcat(base_dir,'/heatMapTotal.jpg'));
     close(f6);
         
@@ -344,7 +350,12 @@
     save(strcat(dataDir,'/heatMap.mat'),'normalHM');  
     save(strcat(dataDir,'/X.mat'),'X'); 
     save(strcat(dataDir,'/Y.mat'),'Y');   
+    save(strcat(dataDir,'/X_new.mat'),'X_new'); 
+    save(strcat(dataDir,'/Y_new.mat'),'Y_new'); 
     save(strcat(dataDir,'/players_detected.mat'),  'X','Y'); 
+    
+    part2FX(base_dir);
+    
     movefile(strcat(base_dir,'.',ext),strcat(base_dir,'/original.',ext));   
     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Proccessing done on :',fileName));       
 
