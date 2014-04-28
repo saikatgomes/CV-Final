@@ -1,7 +1,7 @@
 
 clear
-load('../../sandbox/data99/data_test/X_new.mat')
-load('../../sandbox/data99/data_test/Y_new.mat')
+load('../../sandbox/data_test/X_new.mat')
+load('../../sandbox/data_test/Y_new.mat')
 %load('../../sandbox/data99/data_test/X.mat')
 %load('../../sandbox/data99/data_test/Y.mat')
 
@@ -53,8 +53,8 @@ nF =  find(isnan(Q_estimate(1,:))==1,1)-1 ; %initize number of track estimates
 % 
 % playerDetector.reader = vision.VideoFileReader('../../sandbox/data99/data_test/noBGVid.mp4');
 % inputVid=VideoReader('../../sandbox/data99/data_test/noBGVid.mp4');
-playerDetector.reader = vision.VideoFileReader('../../sandbox/data99/data_test/packers.mp4');
-inputVid=VideoReader('../../sandbox/data99/data_test/packers.mp4');
+playerDetector.reader = vision.VideoFileReader('../../sandbox/data_test/new.mp4');
+inputVid=VideoReader('../../sandbox/data_test/new.mp4');
 % 
 %         myVid.outVid=VideoWriter(strcat(base_dir,'/noBGVid.',ext),'MPEG-4');
 %         myVid.outVid.FrameRate=myVid.FrameRate;
@@ -148,7 +148,7 @@ for t = S_frame:totNumOfFrame-1
         
         
         clf
-        imshow(double(img));
+        imshow(frame);
 
         hold on;
         plot(Y{t}(:),X{t}(:),'or'); % the actual tracking

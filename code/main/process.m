@@ -34,7 +34,9 @@
         if(M==0)
             display(strcat(datestr(now,'HH:MM:SS'),' [INFO] skipping frame -> ',num2str(frameCount)));
             continue;
-        end
+        end       
+        
+        writeVideo(myVid.new,frame);
         %playerDetector.blobAnalyser
         obj=playerDetector.blobAnalyser;
         
