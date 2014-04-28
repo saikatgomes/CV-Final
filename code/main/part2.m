@@ -56,13 +56,14 @@ nF =  find(isnan(Q_estimate(1,:))==1,1)-1 ; %initize number of track estimates
 playerDetector.reader = vision.VideoFileReader('../../sandbox/data_test/new.mp4');
 inputVid=VideoReader('../../sandbox/data_test/new.mp4');
 % 
-%         myVid.outVid=VideoWriter(strcat(base_dir,'/noBGVid.',ext),'MPEG-4');
-%         myVid.outVid.FrameRate=myVid.FrameRate;
-%         open(myVid.outVid);
+        outVid=VideoWriter('../../sandbox/data_test/tracked.mp4','MPEG-4');
+        outVid.FrameRate=inputVid.FrameRate;
+        open(outVid);
         
 totNumOfFrame = inputVid.NumberOfFrames;
 frameCount=S_frame-1;
 
+        f=figure();
 for t = S_frame:totNumOfFrame-1 
     
         frameCount=frameCount+1;
@@ -171,7 +172,14 @@ for t = S_frame:totNumOfFrame-1
                 axis off
             end
         end
-        pause(.1);
+        
+        F=getframe(f);
+        
+        writeVideo(outVid,F);
+        %pause(.05);
         
         
 end
+
+        close(f);
+close(outVid);
