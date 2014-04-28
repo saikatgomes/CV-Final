@@ -353,6 +353,9 @@
     save(strcat(dataDir,'/X_new.mat'),'X_new'); 
     save(strcat(dataDir,'/Y_new.mat'),'Y_new'); 
     save(strcat(dataDir,'/players_detected.mat'),  'X','Y'); 
+    
+    part2FX(base_dir);
+    
     movefile(strcat(base_dir,'.',ext),strcat(base_dir,'/original.',ext));   
     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Proccessing done on :',fileName));       
 

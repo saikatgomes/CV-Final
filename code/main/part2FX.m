@@ -1,9 +1,11 @@
+function [  ] = part2FX( base_dir )
 
-clear
-load('../../sandbox/data_test/X_new.mat')
-load('../../sandbox/data_test/Y_new.mat')
-%load('../../sandbox/data99/data_test/X.mat')
-%load('../../sandbox/data99/data_test/Y.mat')
+load(strcat(base_dir,'/data/X_new.mat'));
+load(strcat(base_dir,'/data/Y_new.mat'));
+% load('../../sandbox/data_test/X_new.mat')
+% load('../../sandbox/data_test/Y_new.mat')
+
+% '../../sandbox/data99/test_4_26/packers'
 
 %CHRISCROSSS :(
 X=Y_new;
@@ -53,10 +55,10 @@ nF =  find(isnan(Q_estimate(1,:))==1,1)-1 ; %initize number of track estimates
 %
 % playerDetector.reader = vision.VideoFileReader('../../sandbox/data99/data_test/noBGVid.mp4');
 % inputVid=VideoReader('../../sandbox/data99/data_test/noBGVid.mp4');
-playerDetector.reader = vision.VideoFileReader('../../sandbox/data_test/new.mp4');
-inputVid=VideoReader('../../sandbox/data_test/new.mp4');
+playerDetector.reader = vision.VideoFileReader(strcat(base_dir,'/new.mp4'));
+inputVid=VideoReader(strcat(base_dir,'/new.mp4'));
 %
-outVid=VideoWriter('../../sandbox/data_test/tracked.mp4','MPEG-4');
+outVid=VideoWriter(strcat(base_dir,'/tracked_paths.mp4'),'MPEG-4');
 outVid.FrameRate=inputVid.FrameRate;
 open(outVid);
 
@@ -152,7 +154,7 @@ for t = S_frame:totNumOfFrame-1
     imshow(frame);
     
     hold on;
-    plot(Y{t}(:),X{t}(:),'oy','MarkerSize',30,'LineWidth',2); % the actual tracking
+    plot(Y{t}(:),X{t}(:),'ow','MarkerSize',30,'LineWidth',2); % the actual tracking
     
     T = size(Q_loc_estimateX,2);
     Ms = [3 5]; %marker sizes
@@ -183,3 +185,7 @@ end
 
 close(f);
 close(outVid);
+
+
+end
+
