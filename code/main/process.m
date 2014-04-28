@@ -4,6 +4,8 @@
                
     [ myVid, playerDetector ] = initSetup( fileName, ext, PRINT_VID );   
     
+    %myVid.SHOW_PLOTS=1; %OVERRIDE!
+    
     base_dir=myVid.base_dir;
     delay=myVid.delay;
     hostName=getHostName(); 
@@ -233,8 +235,7 @@
             hold off;
             saveas(f4,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
-            writeVideo(myVid.cenVid2,tempI);
-            
+            writeVideo(myVid.cenVid2,tempI);            
 %             
 %             plot(centroids(:,1),centroids(:,2),'bx',...
 %                 'MarkerSize',6,'LineWidth',3)
@@ -261,7 +262,6 @@
                     continue;
                 end
                 half=myVid.totNumOfFrame/2;
-                %theColor=[ plotColor 255 255];
                 if (k<half)
                     R=(1- (k/half));
                     G=1;
@@ -300,7 +300,6 @@
                     continue;
                 end
                 half=myVid.totNumOfFrame/2;
-                %theColor=[ plotColor 255 255];
                 if (k<half)
                     R=(1- (k/half));
                     G=1;
@@ -336,6 +335,9 @@
     imagesc(normalHM)
     colormap(jet)
     colorbar    
+%   oneFrame=im2frame(zbuffer_cdata(f6));
+%   oneImg=(oneFrame.cdata);            
+%     imwrite(oneImg,strcat(base_dir,'/heatMapTotal.jpg'));
     saveas(f6,strcat(base_dir,'/heatMapTotal.jpg'));
     close(f6);
         

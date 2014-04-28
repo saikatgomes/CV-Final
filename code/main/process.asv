@@ -4,6 +4,8 @@
                
     [ myVid, playerDetector ] = initSetup( fileName, ext, PRINT_VID );   
     
+    %myVid.SHOW_PLOTS=1; %OVERRIDE!
+    
     base_dir=myVid.base_dir;
     delay=myVid.delay;
     hostName=getHostName(); 
@@ -78,9 +80,16 @@
             imagesc(normalHM)
             colormap(jet)
             colorbar
+            
+%             
+%             oneFrame=im2frame(zbuffer_cdata(f1));
+%             oneImg=(oneFrame.cdata);
+%             
+%             writeVideo(myVid.gdVid,oneImg);
+            
             saveas(f1,strcat(hostName,'_temp.jpg'));
-            writeVideo(myVid.gdVid,tempI);
             tempI=imread(strcat(hostName,'_temp.jpg'));
+            writeVideo(myVid.gdVid,tempI);
             delete(strcat(hostName,'_temp.jpg'));
             close(f1);
         end
@@ -106,6 +115,10 @@
             imagesc(normalHM)
             colormap(jet)
             colorbar
+%             oneFrame=im2frame(zbuffer_cdata(f15));
+%             oneImg=(oneFrame.cdata);
+%             
+%             writeVideo(myVid.hmVid,oneImg);
             saveas(f15,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
             writeVideo(myVid.hmVid,tempI);
@@ -128,6 +141,10 @@
             end
             imagesc(blob_img)
             colorbar
+%             oneFrame=im2frame(zbuffer_cdata(f2));
+%             oneImg=(oneFrame.cdata);
+%             
+%             writeVideo(myVid.lmVid,oneImg);
             saveas(f2,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
             writeVideo(myVid.lmVid,tempI);
@@ -179,6 +196,10 @@
                 plot(Y{goodFrame}(j),X{goodFrame}(j),'or')
             end
             axis off
+%             oneFrame=im2frame(zbuffer_cdata(f3));
+%             oneImg=(oneFrame.cdata);
+%             
+%             writeVideo(myVid.clusterVid,oneImg);
             saveas(f3,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
             writeVideo(myVid.clusterVid,tempI);
@@ -196,6 +217,10 @@
                 'MarkerSize',12,'LineWidth',2)
 
             if(myVid.MAKE_CENTROID_VID==1)
+%             oneFrame=im2frame(zbuffer_cdata(f3));
+%             oneImg=(oneFrame.cdata);
+%             
+%                 writeVideo(myVid.cenVid1,oneImg);
                 saveas(f3,strcat(hostName,'_temp.jpg'));
                 tempI=imread(strcat(hostName,'_temp.jpg'));
                 writeVideo(myVid.cenVid1,tempI);
@@ -233,8 +258,7 @@
             hold off;
             saveas(f4,strcat(hostName,'_temp.jpg'));
             tempI=imread(strcat(hostName,'_temp.jpg'));
-            writeVideo(myVid.cenVid2,tempI);
-            
+            writeVideo(myVid.cenVid2,tempI);            
 %             
 %             plot(centroids(:,1),centroids(:,2),'bx',...
 %                 'MarkerSize',6,'LineWidth',3)
@@ -261,7 +285,6 @@
                     continue;
                 end
                 half=myVid.totNumOfFrame/2;
-                %theColor=[ plotColor 255 255];
                 if (k<half)
                     R=(1- (k/half));
                     G=1;
@@ -300,7 +323,6 @@
                     continue;
                 end
                 half=myVid.totNumOfFrame/2;
-                %theColor=[ plotColor 255 255];
                 if (k<half)
                     R=(1- (k/half));
                     G=1;
@@ -336,6 +358,9 @@
     imagesc(normalHM)
     colormap(jet)
     colorbar    
+%   oneFrame=im2frame(zbuffer_cdata(f6));
+%   oneImg=(oneFrame.cdata);            
+%     imwrite(oneImg,strcat(base_dir,'/heatMapTotal.jpg'));
     saveas(f6,strcat(base_dir,'/heatMapTotal.jpg'));
     close(f6);
         
