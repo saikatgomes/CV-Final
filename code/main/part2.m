@@ -50,9 +50,16 @@ P_estimate = P;  %covariance estimator
 strk_trks = zeros(1,2000);  %counter of how many strikes a track has gotten
 nD = size(X{S_frame},1); %initize number of detections
 nF =  find(isnan(Q_estimate(1,:))==1,1)-1 ; %initize number of track estimates
-
-playerDetector.reader = vision.VideoFileReader('../../sandbox/data99/data_test/noBGVid.mp4');
-inputVid=VideoReader('../../sandbox/data99/data_test/noBGVid.mp4');  
+% 
+% playerDetector.reader = vision.VideoFileReader('../../sandbox/data99/data_test/noBGVid.mp4');
+% inputVid=VideoReader('../../sandbox/data99/data_test/noBGVid.mp4');
+playerDetector.reader = vision.VideoFileReader('../../sandbox/data99/data_test/packers.mp4');
+inputVid=VideoReader('../../sandbox/data99/data_test/packers.mp4');
+% 
+%         myVid.outVid=VideoWriter(strcat(base_dir,'/noBGVid.',ext),'MPEG-4');
+%         myVid.outVid.FrameRate=myVid.FrameRate;
+%         open(myVid.outVid);
+        
 totNumOfFrame = inputVid.NumberOfFrames;
 frameCount=S_frame-1;
 
@@ -135,7 +142,7 @@ for t = S_frame:totNumOfFrame-1
 
         %if a track has a strike greater than 6, delete the tracking. i.e.
         %make it nan first vid = 3
-        bad_trks = find(strk_trks > 6);
+        bad_trks = find(strk_trks > 10);
         Q_estimate(:,bad_trks) = NaN;
         
         
@@ -164,7 +171,7 @@ for t = S_frame:totNumOfFrame-1
                 axis off
             end
         end
-        pause(.2);
+        pause(.1);
         
         
 end
