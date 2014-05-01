@@ -7,7 +7,8 @@ function [ myVid, playerDetector ] = initSetup( fileName, ext, PRINT_VID )
         myVid.MAKE_LM_VID=1;
         myVid.MAKE_CLUSTER_VID=1;
         myVid.MAKE_CENTROID_VID=1;
-        myVid.MAKE_TRACKS_VID=1;        
+        myVid.MAKE_TRACKS_VID=1;       
+        myVid.MAKE_HM_PIC=1;        
     else
         myVid.MAKE_NO_BG_VID=0;
         myVid.MAKE_GD_VID=0;
@@ -15,7 +16,8 @@ function [ myVid, playerDetector ] = initSetup( fileName, ext, PRINT_VID )
         myVid.MAKE_LM_VID=0;
         myVid.MAKE_CLUSTER_VID=0;
         myVid.MAKE_CENTROID_VID=0;
-        myVid.MAKE_TRACKS_VID=0;        
+        myVid.MAKE_TRACKS_VID=0;         
+        myVid.MAKE_HM_PIC=0;       
     end
 
     myVid.WRITE_NO_BG=0;

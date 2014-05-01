@@ -29,18 +29,18 @@ for i=1:length(folderName)
     
     for j=1:length(fileName)
         fullFileName=strcat(mainDir,folderName{i},'/',fileName{j});
-%         lockFileName=strcat(fullFileName,'.LOCK');
-%         if(exist(lockFileName,'file')==2)
-%             display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Skipping >[',fullFileName,'] as lock file found' ));
-%             continue;
-%         else
-%             fclose(fopen(lockFileName, 'w'));
-%         end
+        %         lockFileName=strcat(fullFileName,'.LOCK');
+        %         if(exist(lockFileName,'file')==2)
+        %             display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Skipping >[',fullFileName,'] as lock file found' ));
+        %             continue;
+        %         else
+        %             fclose(fopen(lockFileName, 'w'));
+        %         end
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] proccessing >',fullFileName));
         fName=fullFileName(1:length(fullFileName)-4);
         try
             startTime=datestr(now,'HH:MM:SS');
-            process(fName,'mp4',1,'../lib/extrema',k);
+            process(fName,'mp4',0,k);
             %delete(lockFileName);
             endTime=datestr(now,'HH:MM:SS');
             sendmail('saikatgomes@gmail.com', 'TESTBOT: Success', ...
