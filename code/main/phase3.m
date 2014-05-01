@@ -6,14 +6,20 @@ load(strcat(base_dir,'/data/phase2_data.mat'));
 
 player = struct('id','',...
     'position','',...
+    'startFrame','',...
+    'lastFrame','',...
     'lastKnownX','',...
     'lastKnownY','',...
     'startingX','',...
     'startingY','',...
     'trackX','',...
     'trackY','',...
+    'trackX_net','',...
+    'trackY_net','',...
     'smoothTrackX','',...
     'smoothTrackY','',...
+    'smoothTrackX_net','',...
+    'smoothTrackY_net','',...
     'steps','',...
     'isOutOfBounds','');
 
@@ -52,86 +58,124 @@ for trackN=1:size(Q_loc_estimateY,2)
     playerCollection.count=p_count;
     onePlayer = struct('id','',...
         'position','',...
+        'startFrame','',...
+        'lastFrame','',...
         'lastKnownX','',...
         'lastKnownY','',...
         'startingX','',...
         'startingY','',...
         'trackX','',...
         'trackY','',...
+        'trackX_net','',...
+        'trackY_net','',...
         'smoothTrackX','',...
         'smoothTrackY','',...
+        'smoothTrackX_net','',...
+        'smoothTrackY_net','',...
         'steps','',...
         'isOutOfBounds','');
     onePlayer.id=p_count;
     onePlayer.position='unknown';
+    onePlayer.startFrame=st;
+    onePlayer.lastFrame=last;
     onePlayer.lastKnownX=Q_loc_estimateX(last,trackN);
     onePlayer.lastKnownY=Q_loc_estimateY(last,trackN);
     onePlayer.startingX=Q_loc_estimateX(st,trackN);
     onePlayer.startingY=Q_loc_estimateY(st,trackN);
-    onePlayer.trackX=Q_loc_estimateX(st:last,trackN);
-    onePlayer.trackY=Q_loc_estimateY(st:last,trackN);
+    onePlayer.trackX=Q_loc_estimateX(:,trackN);
+    onePlayer.trackY=Q_loc_estimateY(:,trackN);
+    onePlayer.trackX_net=Q_loc_estimateX(st:last,trackN);
+    onePlayer.trackY_net=Q_loc_estimateY(st:last,trackN);
     onePlayer.steps=last-st+1;
     onePlayer.isOutOfBounds=1;
     playerCollection.list(p_count)=onePlayer;
 end
 
  playerCollection.list(playerCollection.count+1:end)=[];
- playerCollection.list_original=playerCollection.list;
+ playerCollection.list_unsorted=playerCollection.list;
  addpath('sort/');
  playerCollection.list = nestedSortStruct(playerCollection.list, 'steps');
  %C = nestedSortStruct(A, {'year', 'name'});
  rmpath('sort/');
 
 
-close all;
+%close all;
 set(0,'DefaultFigureWindowStyle','docked')
 
-f2=figure()
+
+
+f2=figure();
 BG=imread(strcat(base_dir,'/BG.jpg'));
 imshow(frame);
 hold on;
 Ms = [3 5]; %marker sizes
 c_list = ['r' 'b' 'g' 'c' 'm' 'y'];
-for i=1:nF
-    st=NaN;
-    last=NaN;
+for i=1:playerCollection.count
+    onePlayer=playerCollection.list(i);
+    st=onePlayer.startFrame;
+    last=onePlayer.lastFrame;
     Sz = mod(i,2)+1; %pick marker size
     Cz = mod(i,6)+1; %pick color
-    for j=1:totNumOfFrame
-        if(isnan(st))
-            if(~isnan(Q_loc_estimateY(j,i)))
-                st=j;
-            end
-        else
-            if(isnan(Q_loc_estimateY(j,i)))
-                last=j-1;
-                break;
-            end
-        end
-    end
-    if(isnan(last))
-        last= totNumOfFrame;
-    end
-    if(~isnan(st) && ~isnan(last))
-        if(last~=totNumOfFrame-1)
-            last=last-3;
-        end
-        tmX = Q_loc_estimateX(st:last,i);
-        tmY = Q_loc_estimateY(st:last,i);
-        plot(tmY,tmX,'.-','markersize',Ms(Sz),'color',c_list(Cz),'linewidth',3)
-        text(Q_loc_estimateY(last,i), Q_loc_estimateX(last,i), strcat('......',num2str(i),'[E:',num2str(last),']'),  'BackgroundColor', 'none', 'FontSize', 12,'FontWeight','normal','Color',c_list(Cz))
-        text(Q_loc_estimateY(st,i), Q_loc_estimateX(st,i), strcat('............',num2str(i),'[S',num2str(st),']'),  'BackgroundColor', 'none', 'FontSize', 12,'FontWeight','normal','Color',c_list(Cz))
-        
-        % % % %             if(last~=totNumOfFrame)
-        % % % %                 tmX = Q_loc_estimateX(last-3:last,i);
-        % % % %                 tmY = Q_loc_estimateY(last-3:last,i);
-        % % % %                 plot(tmY,tmX,'.:','markersize',Ms(Sz),'color',c_list(Cz),'linewidth',3)
-        % % % %             end
-        continue;
-    end
+
+    tmX = onePlayer.trackX(st:last);
+    tmY = onePlayer.trackY(st:last);
+    plot(tmY,tmX,'.-','markersize',1,'color',c_list(Cz),'linewidth',1)
+    text(onePlayer.lastKnownY, onePlayer.lastKnownX, strcat('......',num2str(i),'[E:',num2str(last),']'),  'BackgroundColor', 'none', 'FontSize', 9,'FontWeight','normal','Color',c_list(Cz))
+    text(onePlayer.startingY, onePlayer.startingX, strcat('............',num2str(i),'[S',num2str(st),']'),  'BackgroundColor', 'none', 'FontSize', 9,'FontWeight','normal','Color',c_list(Cz))
+
     
 end
-close(f2);
+%close(f2);
+
+% % % % % % % f2=figure()
+% % % % % % % BG=imread(strcat(base_dir,'/BG.jpg'));
+% % % % % % % imshow(frame);
+% % % % % % % hold on;
+% % % % % % % Ms = [3 5]; %marker sizes
+% % % % % % % c_list = ['r' 'b' 'g' 'c' 'm' 'y'];
+% % % % % % % for i=1:nF
+% % % % % % %     st=NaN;
+% % % % % % %     last=NaN;
+% % % % % % %     Sz = mod(i,2)+1; %pick marker size
+% % % % % % %     Cz = mod(i,6)+1; %pick color
+% % % % % % %     for j=1:totNumOfFrame
+% % % % % % %         if(isnan(st))
+% % % % % % %             if(~isnan(Q_loc_estimateY(j,i)))
+% % % % % % %                 st=j;
+% % % % % % %             end
+% % % % % % %         else
+% % % % % % %             if(isnan(Q_loc_estimateY(j,i)))
+% % % % % % %                 last=j-1;
+% % % % % % %                 break;
+% % % % % % %             end
+% % % % % % %         end
+% % % % % % %     end
+% % % % % % %     if(isnan(last))
+% % % % % % %         last= totNumOfFrame;
+% % % % % % %     end
+% % % % % % %     if(~isnan(st) && ~isnan(last))
+% % % % % % %         if(last~=totNumOfFrame-1)
+% % % % % % %             last=last-3;
+% % % % % % %         end
+% % % % % % %         tmX = Q_loc_estimateX(st:last,i);
+% % % % % % %         tmY = Q_loc_estimateY(st:last,i);
+% % % % % % %         plot(tmY,tmX,'.-','markersize',Ms(Sz),'color',c_list(Cz),'linewidth',3)
+% % % % % % %         text(Q_loc_estimateY(last,i), Q_loc_estimateX(last,i), strcat('......',num2str(i),'[E:',num2str(last),']'),  'BackgroundColor', 'none', 'FontSize', 12,'FontWeight','normal','Color',c_list(Cz))
+% % % % % % %         text(Q_loc_estimateY(st,i), Q_loc_estimateX(st,i), strcat('............',num2str(i),'[S',num2str(st),']'),  'BackgroundColor', 'none', 'FontSize', 12,'FontWeight','normal','Color',c_list(Cz))
+% % % % % % %         
+% % % % % % %         % % % %             if(last~=totNumOfFrame)
+% % % % % % %         % % % %                 tmX = Q_loc_estimateX(last-3:last,i);
+% % % % % % %         % % % %                 tmY = Q_loc_estimateY(last-3:last,i);
+% % % % % % %         % % % %                 plot(tmY,tmX,'.:','markersize',Ms(Sz),'color',c_list(Cz),'linewidth',3)
+% % % % % % %         % % % %             end
+% % % % % % %         continue;
+% % % % % % %     end
+% % % % % % %     
+% % % % % % % end
+% % % % % % % close(f2);
+
+temp=0;
+
 f3=figure();
 imshow(frame);
 isTrackDone=zeros(nF,1);
