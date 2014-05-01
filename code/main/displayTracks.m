@@ -1,4 +1,4 @@
-function [  ] = displayTracks( playerCollection, frame , isPrint, isShowEnds dir)
+function [  ] = displayTracks( playerCollection, frame , dir, fName , isPrint, isShowEnds )
 
     f=figure();
     imshow(frame);
@@ -24,8 +24,9 @@ function [  ] = displayTracks( playerCollection, frame , isPrint, isShowEnds dir
         end
     end
     if(isPrint==1)       
-        saveas(f,strcat(dir,'/tracks_',datestr(now,'HH-MM-SS'),'.jpg')); 
+        saveas(f,strcat(dir,'/',fName,'_',datestr(now,'HH-MM-SS'),'.jpg')); 
     end
+    hold off;
     %close(f2);
 
 
