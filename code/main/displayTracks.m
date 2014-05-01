@@ -11,6 +11,9 @@ function [  ] = displayTracks( playerCollection, frame , dir, fName , isPrint, i
         Cz = mod(i,6)+1; %pick color
         tmX = onePlayer.trackX(st:last);
         tmY = onePlayer.trackY(st:last);
+        
+        plot(onePlayer.smoothTrackY_net(1:end,1),onePlayer.smoothTrackX_net(1:end,1),'w.-','markersize',1,'linewidth',1)
+        
         plot(tmY,tmX,'.-','markersize',1,'color',c_list(Cz),'linewidth',1)
         if(isShowEnds==1)
             text(onePlayer.lastKnownY, onePlayer.lastKnownX, ...
