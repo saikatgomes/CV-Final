@@ -19,7 +19,7 @@ for ii=1:length(isTrackDone)
     
     
     %try 3 frames later:
-    for jj=-2:2
+    for jj=0:4
 % % %         lastX
 % % %         lastY
 % % %         Q_loc_estimateY(lastEnd+jj,ii)
@@ -48,7 +48,7 @@ for ii=1:length(isTrackDone)
                 if(f_end(numFound)==totNumOfFrame)
                     return;
                 else
-                   [ t_num, f_start, f_end, isTrackDone, numFound ] = srgGetNextTrack(   t_num, f_start, f_end,numFound, Q_loc_estimateY, Q_loc_estimateX , isTrackDone, totNumOfFrame);
+                   [ t_num, f_start, f_end, isTrackDone, numFound ] = findNearTracks(   t_num, f_start, f_end,numFound, Q_loc_estimateY, Q_loc_estimateX , isTrackDone, totNumOfFrame);
                    return;
                 end
             end

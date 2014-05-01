@@ -1,7 +1,0 @@
-    function [] = process( fileName, ext ,PRINT_VID, LIB_PATH, numOfClusters)
-    warning('off','all');
-               
-    [ myVid, playerDetector ] = initSetup( fileName, ext, PRINT_VID );   
-    
-end
-

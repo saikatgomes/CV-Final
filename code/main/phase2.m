@@ -66,7 +66,7 @@ nF =  find(isnan(Q_estimate(1,:))==1,1)-1 ; %initize number of track estimates
 %
 % playerDetector.reader = vision.VideoFileReader('../../sandbox/data99/data_test/noBGVid.mp4');
 % inputVid=VideoReader('../../sandbox/data99/data_test/noBGVid.mp4');
-playerDetector.reader = vision.VideoFileReader(strcat(base_dir,'/new.mp4'));
+oneReader.reader = vision.VideoFileReader(strcat(base_dir,'/new.mp4'));
 inputVid=VideoReader(strcat(base_dir,'/new.mp4'));
 %
 % % % % % % outVid=VideoWriter(strcat(base_dir,'/tracked_paths.mp4'),'MPEG-4');
@@ -76,16 +76,16 @@ inputVid=VideoReader(strcat(base_dir,'/new.mp4'));
 totNumOfFrame = inputVid.NumberOfFrames;
 frameCount=S_frame-1;
 
-f=figure();
+% f=figure();
 for t = S_frame:totNumOfFrame-1
     
     frameCount=frameCount+1;
     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] processing frame -> ',num2str(frameCount)));
-    frame = playerDetector.reader.step();
+    frame = oneReader.reader.step();
     img = frame(:,:,1);
     
-    clf
-    imshow(frame);
+% % % %     clf
+% % % %     imshow(frame);
     % make the given detections matrix
     Q_loc_meas = [X{t} Y{t}];
     

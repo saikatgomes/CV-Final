@@ -7,6 +7,7 @@ close all;
 set(0,'DefaultFigureWindowStyle','docked')
 
 f2=figure()
+BG=imread(strcat(base_dir,'/BG.jpg'));
 imshow(frame);
 hold on;
 Ms = [3 5]; %marker sizes

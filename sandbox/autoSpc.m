@@ -42,21 +42,21 @@ function [] = autoSpc( mainDir ,outDir)
             fName=fullFileName(1:length(fullFileName)-4);
             try
                 startTime=datestr(now,'HH:MM:SS');
-                process(fName,'mp4',1,'../code/lib/extrema',numOfClusters);
+                process(fName,'mp4',0,numOfClusters);
                 delete(lockFileName);
                 endTime=datestr(now,'HH:MM:SS');
                 sendmail('saikatgomes@gmail.com', 'TESTBOT: Success', ...
                     strcat('Success: ',fullFileName,' @ ',hostName,' ____ START:',startTime,' _____ END:',endTime));
             catch ME   
                 mkdir(strcat('error/',folderName{i},'/'));
-                movefile(fullFileName,strcat('error/',folderName{i},'/',fileName{j}));
-                delete(lockFileName);
+                %movefile(fullFileName,strcat('error/',folderName{i},'/',fileName{j}));
+                %delete(lockFileName);
                 sendmail('saikatgomes@gmail.com', 'TESTBOT: Fail', strcat('error: ', ...
                     ME.message,'.......... iden: ',ME.identifier,' ............... file',fullFileName,' @ ',hostName));
                 display(strcat(datestr(now,'HH:MM:SS'),' [ERROR] FAILED proccessing ',fullFileName));
             end
         end    
-        movefile(strcat(mainDir,folderName{i}),outDir,'f');
+        %movefile(strcat(mainDir,folderName{i}),outDir,'f');
 
     end
 end
