@@ -13,9 +13,9 @@ plot([w*.33 w*.33]',[1 h]','y.:','markersize',1,'linewidth',1)
 plot([w*.66 w*.66]',[1 h]','y.:','markersize',1,'linewidth',1)    
 
 plot([w*.4 w*.4]',[1 h]','r.:','markersize',1,'linewidth',1)
-plot([w*.6 w*.6]',[1 h]','r.:','markersize',1,'linewidth',1)
+plot([w*.59 w*.59]',[1 h]','r.:','markersize',1,'linewidth',1)
 
-plot([1 w]',[h*.66 h*.66]','y.:','markersize',1,'linewidth',1)
+plot([1 w]',[h*.64 h*.64]','y.:','markersize',1,'linewidth',1)
 
     for i=1:playerCollection.count
         onePlayer=playerCollection.list(i);
