@@ -1,17 +1,30 @@
 function [playerCollection ] = updateStats( playerCollection )
-    
+
     count=playerCollection.count ;
     allStartsX=NaN(count,1);
     allStartsY=NaN(count,1);
     allEndsX=NaN(count,1);
     allEndsY=NaN(count,1);
-    
-    for i=1:count  
+
+    for i=1:count
         onePlayer=playerCollection.list(i);
-        steps = onePlayer.steps;
+        steps = onePlayer.steps;        
+        
+        onePlayer.smoothTrackY_net =smooth(onePlayer.trackY_net,'moving');
+        onePlayer.smoothTrackX_net =smooth(onePlayer.trackX_net,'moving');
+        
+        %srg test #####################################
+        %super smooth!
+        onePlayer.smoothTrackY_net =smooth(onePlayer.smoothTrackY_net,'moving');
+        onePlayer.smoothTrackX_net =smooth(onePlayer.smoothTrackX_net,'moving');
+        onePlayer.smoothTrackY_net =smooth(onePlayer.smoothTrackY_net,'moving');
+        onePlayer.smoothTrackX_net =smooth(onePlayer.smoothTrackX_net,'moving');
+        %srg test #####################################       
+        
         distance=0;
         smoothDistance=0;
         velocitySum=0;
+        
         for t=1:steps-1
             d=pdist([onePlayer.trackY_net(t) onePlayer.trackX_net(t); ...
                 onePlayer.trackY_net(t+1) onePlayer.trackX_net(t+1)]);
@@ -33,32 +46,30 @@ function [playerCollection ] = updateStats( playerCollection )
         onePlayer.smoothDistance=smoothDistance;
         onePlayer.aveVel=velocitySum/steps;
         playerCollection.list(i)=onePlayer;
-        
+
         allStartsX(i)=onePlayer.startingX;
         allStartsY(i)=onePlayer.startingY;
         allEndsX(i)=onePlayer.lastKnownX;
         allEndsY(i)=onePlayer.lastKnownY;
-        
     end
-    
+
     playerCollection.allStartsX=allStartsX;
     playerCollection.allStartsY=allStartsY;
     playerCollection.allEndsX=allEndsX;
     playerCollection.allEndsY=allEndsY;
-    
-    
+
     est_dist = pdist([ allStartsX allStartsY  ; ...
-                        allEndsX allEndsY]);
+        allEndsX allEndsY]);
     est_dist = squareform(est_dist); %make square
     %est_dist = est_dist(1:nF,nF+1:end) ; %limit to just the tracks to detection distances
     est_dist=est_dist(1:count,count+1:end);
-    
+
     th=playerCollection.threshold;
-    
+
     [candidateStart candidateEnd]=find(est_dist<th);
     playerCollection.candidateStart=candidateStart;
     playerCollection.candidateEnd=candidateEnd;
-    
+
 
 end
 
