@@ -27,9 +27,7 @@ if(isPrint==1)
     open(est_tracks);
 end
 
-
 oneReader = vision.VideoFileReader(strcat(base_dir,'/new.mp4'));
-
 totNumOfFrame=playerCollection.totNumOfFrame;
 count=playerCollection.count ;
 
@@ -47,9 +45,6 @@ for j=1:totNumOfFrame
             continue;
         end
         %pause(.1);
-        plot(onePlayer.smoothTrackY(j,1),...
-            onePlayer.smoothTrackX(j,1),...
-            'o','markersize',9,'linewidth',8,'Color',c_list(Cz));
         
         if(j>st+2)            
             d=pdist([onePlayer.smoothTrackY(j) onePlayer.smoothTrackX(j); ...
@@ -66,26 +61,35 @@ for j=1:totNumOfFrame
         
         v=d/2;
         v = sprintf('%.2f',v);
+        cdist=onePlayer.cumDistance(j);
+        cdist = sprintf('%.2f',cdist);        
         
-        disStr=[strcat('............',num2str(i),10, '           (',num2str(v),')')];
+        plot(onePlayer.smoothTrackY(j,1),...
+            onePlayer.smoothTrackX(j,1),...
+            'wo','markersize',9,'linewidth',8);
+        plot(onePlayer.smoothTrackY(j,1),...
+            onePlayer.smoothTrackX(j,1),...
+            'o','markersize',8,'linewidth',8,'Color',c_list(Cz));
+        
+        disStr=[strcat('............',num2str(i), ...
+                    10,...
+                    '           [V: ',num2str(v),']',...
+                    10,...
+                    '           [D: ',num2str(cdist),']'    )];
         
         plot(onePlayer.smoothTrackY(st:j,1),...
             onePlayer.smoothTrackX(st:j,1),...
-            'w.-','markersize',1,'linewidth',1);
-                text(onePlayer.smoothTrackY(j,1), onePlayer.smoothTrackX(j,1), ...
-                disStr,...
-                'BackgroundColor', 'none', 'FontSize', 9,'FontWeight','normal',...
-                'Color','w')           
-        
+            '.-','markersize',1,'linewidth',1,'Color',c_list(Cz));
+        text(onePlayer.smoothTrackY(j,1), onePlayer.smoothTrackX(j,1), ...
+        disStr,...
+        'BackgroundColor', 'none', 'FontSize', 7,'FontWeight','normal',...
+        'Color','w')                   
     end
-    
-    
+        
     plot([w*.33 w*.33]',[1 h]','y.:','markersize',1,'linewidth',1)
-    plot([w*.66 w*.66]',[1 h]','y.:','markersize',1,'linewidth',1)
-    
+    plot([w*.66 w*.66]',[1 h]','y.:','markersize',1,'linewidth',1)    
     plot([w*.4 w*.4]',[1 h]','r.:','markersize',1,'linewidth',1)
-    plot([w*.59 w*.59]',[1 h]','r.:','markersize',1,'linewidth',1)
-    
+    plot([w*.59 w*.59]',[1 h]','r.:','markersize',1,'linewidth',1)    
     plot([1 w]',[h*.64 h*.64]','y.:','markersize',1,'linewidth',1)
     
     hold off;
