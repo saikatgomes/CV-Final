@@ -31,6 +31,8 @@ playerCollection.list(2000)=player;
 playerCollection.count=0;
 playerCollection.threshold=50;
 playerCollection.totNumOfFrame=totNumOfFrame;
+playerCollection.screenH=size(frame,1);
+playerCollection.screenW=size(frame,2);
 
 for trackN=1:size(Q_loc_estimateY,2)
     m=min( Q_loc_estimateY(:,trackN));
@@ -94,8 +96,6 @@ for trackN=1:size(Q_loc_estimateY,2)
     onePlayer.startingY=Q_loc_estimateY(st,trackN);    
     onePlayer.trackX=Q_loc_estimateX(1:totNumOfFrame,trackN);
     onePlayer.trackY=Q_loc_estimateY(1:totNumOfFrame,trackN); 
-%     onePlayer.trackX=Q_loc_estimateX(1:end,trackN);
-%     onePlayer.trackY=Q_loc_estimateY(1:end,trackN);
     onePlayer.trackX_net=Q_loc_estimateX(st:last,trackN);
     onePlayer.trackY_net=Q_loc_estimateY(st:last,trackN);   
     

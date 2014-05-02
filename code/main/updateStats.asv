@@ -61,16 +61,15 @@ function [playerCollection ] = updateStats( playerCollection )
         onePlayer.distance=distance;
         onePlayer.smoothDistance=smoothDistance;
         onePlayer.aveVel=velocitySum/steps;
-        if(onePlayer.startingY<(w*.33)||onePlayer.startingY>(w*.66))
-            onePlayer.position='WR';
-        end
         playerCollection.list(i)=onePlayer;
 
         allStartsX(i)=onePlayer.startingX;
         allStartsY(i)=onePlayer.startingY;
         allEndsX(i)=onePlayer.lastKnownX;
         allEndsY(i)=onePlayer.lastKnownY;
-                
+        
+        if(onePlayer.startingY>w
+        
     end
 
     playerCollection.allStartsX=allStartsX;
