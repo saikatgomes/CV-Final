@@ -96,8 +96,8 @@ for trackN=1:size(Q_loc_estimateY,2)
     onePlayer.startingY=Q_loc_estimateY(st,trackN);    
     onePlayer.trackX=Q_loc_estimateX(1:totNumOfFrame,trackN);
     onePlayer.trackY=Q_loc_estimateY(1:totNumOfFrame,trackN); 
-    onePlayer.trackX_net=Q_loc_estimateX(st:last,trackN);
-    onePlayer.trackY_net=Q_loc_estimateY(st:last,trackN);   
+%     onePlayer.trackX_net=Q_loc_estimateX(st:last,trackN);
+%     onePlayer.trackY_net=Q_loc_estimateY(st:last,trackN);   
     
     onePlayer.steps=last-st+1;
     onePlayer.isOutOfBounds=1;

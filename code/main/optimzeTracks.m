@@ -45,6 +45,7 @@ function [ isFound ] = optimzeTracks( playerCollection )
                 end
                 if(foundCount>0)
                     m=min(foundList);
+                    %playerCollection= mergeTracks( playerCollection, p, m );
                     display(strcat('main:',num2str(p),10,'possible:',num2str(foundList),'...candicate:',num2str(m)));
                     %display(strcat('t=',num2str(t),',d=',num2str(d),10,'main:',num2str(p),10,'possible:',num2str(foundList)));
                 end

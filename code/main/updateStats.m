@@ -12,6 +12,11 @@ function [playerCollection ] = updateStats( playerCollection )
     for i=1:count
         onePlayer=playerCollection.list(i);
         steps = onePlayer.steps;        
+
+        st=onePlayer.startFrame;
+        last=onePlayer.lastFrame;
+        onePlayer.trackX_net=onePlayer.trackX(st:last);
+        onePlayer.trackY_net=onePlayer.trackY(st:last);   
         
         onePlayer.smoothTrackY_net =smooth(onePlayer.trackY_net,'moving');
         onePlayer.smoothTrackX_net =smooth(onePlayer.trackX_net,'moving');

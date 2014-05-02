@@ -13,11 +13,6 @@ function [ playerCollection ] = mergeTracks( playerCollection, parent, child )
            parentPlayer.trackX(i)=childPlayer.trackX(i);
            parentPlayer.trackY(i)=childPlayer.trackY(i);
        end
-       parentPlayer.lastKnownX=childPlayer.lastKnownX;
-       parentPlayer.lastKnownY=childPlayer.lastKnownY;
-       parentPlayer.lastFrame=childPlayer.lastFrame;
-       parentPlayer.steps=parentPlayer.steps+childPlayer.steps;
-       parentPlayer.isOutOfBounds=childPlayer.isOutOfBounds;
         
     elseif(c_start>p_last+1)
         %need to interpolate!
