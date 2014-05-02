@@ -111,10 +111,10 @@ rmpath('sort/');
 
 playerCollection= updateStats( playerCollection );
 
-displayTracks( playerCollection, frame , base_dir , 'phase3_1' , 1, 0 );
-displayTracks( playerCollection, frame , base_dir , 'phase3_1_with_ends' , 1, 1 );
+% displayTracks( playerCollection, frame , base_dir , 'phase3_1' , 1, 0 );
+% displayTracks( playerCollection, frame , base_dir , 'phase3_1_with_ends' , 1, 1 );
 
-
+displayTracksContinuous( playerCollection, frame );
 
 
 
