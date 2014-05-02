@@ -34,6 +34,10 @@ function [playerCollection ] = updateStats( playerCollection )
         smoothDistance=0;
         velocitySum=0;
         
+        onePlayer.cumDistance=NaN(totNumOfFrame,1);
+        
+        onePlayer.cumDistance(st)=0;
+        
         for t=1:steps-1
             d=pdist([onePlayer.trackY_net(t) onePlayer.trackX_net(t); ...
                 onePlayer.trackY_net(t+1) onePlayer.trackX_net(t+1)]);
@@ -41,6 +45,7 @@ function [playerCollection ] = updateStats( playerCollection )
             d=pdist([onePlayer.smoothTrackY_net(t) onePlayer.smoothTrackX_net(t); ...
                 onePlayer.smoothTrackY_net(t+1) onePlayer.smoothTrackX_net(t+1)]);
             smoothDistance=smoothDistance+d;
+            onePlayer.cumDistance(st+t)=smoothDistance;
             if(t<steps-1)
                 d2= pdist([onePlayer.smoothTrackY_net(t+1) onePlayer.smoothTrackX_net(t+1); ...
                     onePlayer.smoothTrackY_net(t+2) onePlayer.smoothTrackX_net(t+2)]);
