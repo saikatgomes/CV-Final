@@ -28,6 +28,7 @@ player = struct('id','',...
     );
 playerCollection.list(2000)=player;
 playerCollection.count=0;
+playerCollection.threshold=50;
 
 for trackN=1:size(Q_loc_estimateY,2)
     m=min( Q_loc_estimateY(:,trackN));

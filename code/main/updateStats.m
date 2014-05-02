@@ -51,6 +51,14 @@ function [playerCollection ] = updateStats( playerCollection )
                         allEndsX allEndsY]);
     est_dist = squareform(est_dist); %make square
     %est_dist = est_dist(1:nF,nF+1:end) ; %limit to just the tracks to detection distances
+    est_dist=est_dist(1:count,count+1:end);
+    
+    th=playerCollection.threshold;
+    
+    [candidateStart candidateEnd]=find(est_dist<th);
+    playerCollection.candidateStart=candidateStart;
+    playerCollection.candidateEnd=candidateEnd;
+    
 
 end
 
