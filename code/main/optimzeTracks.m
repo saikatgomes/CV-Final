@@ -1,0 +1,5 @@
+function [  ] = optimzeTracks( playerCollection )
+
+
+end
+
