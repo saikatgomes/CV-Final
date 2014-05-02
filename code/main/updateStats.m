@@ -11,6 +11,7 @@ function [playerCollection ] = updateStats( playerCollection )
             distance=distance+d;
         end
         onePlayer.distance=distance;
+        playerCollection.list(i)=onePlayer;
     end
 
 end
