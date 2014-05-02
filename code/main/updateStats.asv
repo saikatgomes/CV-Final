@@ -14,7 +14,7 @@ for i=1:playerCollection.count
         d=pdist([onePlayer.smoothTrackY_net(t) onePlayer.smoothTrackX_net(t); ...
             onePlayer.smoothTrackY_net(t+1) onePlayer.smoothTrackX_net(t+1)]);
         smoothDistance=smoothDistance+d;
-        if(t<steps-1)
+        if(t<step-1)
             d2= pdist([onePlayer.smoothTrackY_net(t+1) onePlayer.smoothTrackX_net(t+1); ...
                 onePlayer.smoothTrackY_net(t+2) onePlayer.smoothTrackX_net(t+2)]);
             d_tot=d+d2;

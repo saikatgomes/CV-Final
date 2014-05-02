@@ -96,13 +96,12 @@ for trackN=1:size(Q_loc_estimateY,2)
     onePlayer.smoothTrackY_net =smooth(onePlayer.trackY_net,'moving');
     onePlayer.smoothTrackX_net =smooth(onePlayer.trackX_net,'moving');
     
-    %srg test
-    
-    
+    %srg test #####################################   
     onePlayer.smoothTrackY_net =smooth(onePlayer.smoothTrackY_net,'moving');
     onePlayer.smoothTrackX_net =smooth(onePlayer.smoothTrackX_net,'moving');
     onePlayer.smoothTrackY_net =smooth(onePlayer.smoothTrackY_net,'moving');
     onePlayer.smoothTrackX_net =smooth(onePlayer.smoothTrackX_net,'moving');
+    %srg test #####################################
     
     onePlayer.steps=last-st+1;
     onePlayer.isOutOfBounds=1;
