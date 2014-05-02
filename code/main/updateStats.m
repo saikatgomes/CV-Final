@@ -1,5 +1,6 @@
 function [playerCollection ] = updateStats( playerCollection )
 
+    totNumOfFrame=playerCollection.totNumOfFrame;
     count=playerCollection.count ;
     allStartsX=NaN(count,1);
     allStartsY=NaN(count,1);
@@ -20,6 +21,14 @@ function [playerCollection ] = updateStats( playerCollection )
         onePlayer.smoothTrackY_net =smooth(onePlayer.smoothTrackY_net,'moving');
         onePlayer.smoothTrackX_net =smooth(onePlayer.smoothTrackX_net,'moving');
         %srg test #####################################       
+        
+        onePlayer.smoothTrackY=NaN(totNumOfFrame,1);
+        onePlayer.smoothTrackX=NaN(totNumOfFrame,1);
+        
+        st=onePlayer.startFrame;
+        last=onePlayer.lastFrame;
+        onePlayer.smoothTrackY(st:last,1)=onePlayer.smoothTrackY_net;
+        onePlayer.smoothTrackX(st:last,1)=onePlayer.smoothTrackX_net;
         
         distance=0;
         smoothDistance=0;

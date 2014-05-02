@@ -1,4 +1,4 @@
-function [ output_args ] = displayTracksContinuous( playerCollection )
+function [  ] = displayTracksContinuous( playerCollection )
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
