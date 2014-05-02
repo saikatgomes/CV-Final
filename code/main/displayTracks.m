@@ -5,6 +5,13 @@ function [  ] = displayTracks( playerCollection, frame , dir, fName , isPrint, i
     imshow(frame);
     hold on;
     c_list = ['r' 'b' 'g' 'c' 'm' 'y'];
+   
+    height=size(frame,1)
+    width=size(frame,2)
+    
+    
+% 	plot(onePlayer.smoothTrackY_net(1:end,1),onePlayer.smoothTrackX_net(1:end,1),'w.-','markersize',1,'linewidth',1)
+    
     for i=1:playerCollection.count
         onePlayer=playerCollection.list(i);
         st=onePlayer.startFrame;
@@ -32,10 +39,10 @@ function [  ] = displayTracks( playerCollection, frame , dir, fName , isPrint, i
                 'Color',c_list(Cz))
         end
     end
-    if(isPrint==1)       
-        saveas(f,strcat(dir,'/',fName,'_',datestr(now,'HH-MM-SS'),'.jpg')); 
-    end
     hold off;
+    if(isPrint==1)       
+        saveas(f,strcat(dir,'/',fName,'_',datestr(now,'HH-MM-SS'),'.jpg'),'bmp'); 
+    end
     %close(f2);
 
 
