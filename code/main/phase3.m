@@ -77,7 +77,7 @@ for trackN=1:size(Q_loc_estimateY,2)
         'steps','',...
         'isOutOfBounds','',...
         'distance','',...
-        'smoothDistance','',...
+        'smoothDistance','',...        
         'aveVel',''...
     );
     onePlayer.id=p_count;
@@ -96,7 +96,8 @@ for trackN=1:size(Q_loc_estimateY,2)
     onePlayer.smoothTrackY_net =smooth(onePlayer.trackY_net,'moving');
     onePlayer.smoothTrackX_net =smooth(onePlayer.trackX_net,'moving');
     
-    %srg test #####################################   
+    %srg test #####################################  
+    %super smooth!
     onePlayer.smoothTrackY_net =smooth(onePlayer.smoothTrackY_net,'moving');
     onePlayer.smoothTrackX_net =smooth(onePlayer.smoothTrackX_net,'moving');
     onePlayer.smoothTrackY_net =smooth(onePlayer.smoothTrackY_net,'moving');
@@ -117,15 +118,10 @@ rmpath('sort/');
 
 playerCollection= updateStats( playerCollection );
 
-displayTracks( playerCollection, frame , base_dir , 'phase3_1b' , 1, 0 );
-displayTracks( playerCollection, frame , base_dir , 'phase3_1a' , 1, 1 );
+displayTracks( playerCollection, frame , base_dir , 'phase3_1' , 1, 0 );
+displayTracks( playerCollection, frame , base_dir , 'phase3_1_with_ends' , 1, 1 );
 
-f3=figure();
-imshow(frame);
 isTrackDone=zeros(nF,1);
-hold on;
-Ms = [3 5]; %marker sizes
-c_list = ['r' 'b' 'g' 'c' 'm' 'y'];
 trackNumer=0;
 
 newTracksY=NaN(totNumOfFrame,100);
@@ -185,26 +181,25 @@ for i=1:nF
         end
         
     end
-    %plot(newTracksY(:,trackNumer),newTracksX(:,trackNumer),'.-','markersize',Ms(Sz),'color',c_list(Cz),'linewidth',3)
-    %plot(newTracksY(:,trackNumer),newTracksX(:,trackNumer),'w.-','markersize',3,'linewidth',1);
-    
-    smoothY=smooth(newTracksY(find(~isnan(newTracksY(:,trackNumer))),trackNumer),'rlowess');
-    smoothX=smooth(newTracksX(find(~isnan(newTracksX(:,trackNumer))),trackNumer),'rlowess');
-    smoothLnt=length(smoothX);
-    if(smoothX(smoothLnt)<1 && smoothY(smoothLnt)<1)
-        smoothX(smoothLnt)=[];
-        smoothY(smoothLnt)=[];
-    end
-    
-    plot(smoothY,smoothX,'.-','markersize',3,'linewidth',2,'color',c_list(Cz))
-    
-    % text(smoothY(1), smoothX(1), strcat('......',num2str(i),'(',num2str(smoothY(1)),',',num2str(smoothX(1)),')'),  'BackgroundColor', 'none', 'FontSize', 12,'FontWeight','normal','Color',c_list(Cz))
-    text(smoothY(1), smoothX(1), strcat('......',num2str(i)),  'BackgroundColor', 'none', 'FontSize', 12,'FontWeight','normal','Color',c_list(Cz))
-    
+% % % % %     %plot(newTracksY(:,trackNumer),newTracksX(:,trackNumer),'.-','markersize',Ms(Sz),'color',c_list(Cz),'linewidth',3)
+% % % % %     %plot(newTracksY(:,trackNumer),newTracksX(:,trackNumer),'w.-','markersize',3,'linewidth',1);
+% % % % %     
+% % % % %     smoothY=smooth(newTracksY(find(~isnan(newTracksY(:,trackNumer))),trackNumer),'rlowess');
+% % % % %     smoothX=smooth(newTracksX(find(~isnan(newTracksX(:,trackNumer))),trackNumer),'rlowess');
+% % % % %     smoothLnt=length(smoothX);
+% % % % %     if(smoothX(smoothLnt)<1 && smoothY(smoothLnt)<1)
+% % % % %         smoothX(smoothLnt)=[];
+% % % % %         smoothY(smoothLnt)=[];
+% % % % %     end
+% % % % %     
+% % % % %     plot(smoothY,smoothX,'.-','markersize',3,'linewidth',2,'color',c_list(Cz))
+% % % % %     
+% % % % %     % text(smoothY(1), smoothX(1), strcat('......',num2str(i),'(',num2str(smoothY(1)),',',num2str(smoothX(1)),')'),  'BackgroundColor', 'none', 'FontSize', 12,'FontWeight','normal','Color',c_list(Cz))
+% % % % %     text(smoothY(1), smoothX(1), strcat('......',num2str(i)),  'BackgroundColor', 'none', 'FontSize', 12,'FontWeight','normal','Color',c_list(Cz))
+% % % % %     
 end
 
 
-hold off
 
 
 

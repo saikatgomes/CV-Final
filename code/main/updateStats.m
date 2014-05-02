@@ -1,6 +1,12 @@
 function [playerCollection ] = updateStats( playerCollection )
-
-    for i=1:playerCollection.count    
+    
+    count=playerCollection.count ;
+    allStartsX=NaN(count,1);
+    allStartsY=NaN(count,1);
+    allEndsX=NaN(count,1);
+    allEndsY=NaN(count,1);
+    
+    for i=1:count  
         onePlayer=playerCollection.list(i);
         steps = onePlayer.steps;
         distance=0;
@@ -27,7 +33,18 @@ function [playerCollection ] = updateStats( playerCollection )
         onePlayer.smoothDistance=smoothDistance;
         onePlayer.aveVel=velocitySum/steps;
         playerCollection.list(i)=onePlayer;
+        
+        allStartsX(i)=onePlayer.startingX;
+        allStartsY(i)=onePlayer.startingY;
+        allEndsX(i)=onePlayer.lastKnownX;
+        allEndsY(i)=onePlayer.lastKnownY;
+        
     end
+    
+    playerCollection.allStartsX=allStartsX;
+    playerCollection.allStartsY=allStartsY;
+    playerCollection.allEndsX=allEndsX;
+    playerCollection.allEndsY=allEndsY;
 
 end
 

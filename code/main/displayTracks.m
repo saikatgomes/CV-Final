@@ -6,9 +6,8 @@ function [  ] = displayTracks( playerCollection, frame , dir, fName , isPrint, i
     hold on;
     c_list = ['r' 'b' 'g' 'c' 'm' 'y'];
 %    
-     h=size(frame,1)
-     w=size(frame,2)
-    
+     h=size(frame,1);
+     w=size(frame,2);   
     
 plot([w*.33 w*.33]',[1 h]','y.:','markersize',1,'linewidth',1)
 plot([w*.66 w*.66]',[1 h]','y.:','markersize',1,'linewidth',1)    
@@ -50,7 +49,5 @@ plot([1 w]',[h*.66 h*.66]','y.:','markersize',1,'linewidth',1)
         saveas(f,strcat(dir,'/',fName,'_',datestr(now,'HH-MM-SS'),'.jpg'),'bmp'); 
     end
     %close(f2);
-
-
 end
 
