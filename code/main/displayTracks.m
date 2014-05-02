@@ -1,5 +1,6 @@
 function [  ] = displayTracks( playerCollection, frame , dir, fName , isPrint, isShowEnds )
 
+    warning('off','all');
     f=figure();
     imshow(frame);
     hold on;
@@ -15,7 +16,7 @@ function [  ] = displayTracks( playerCollection, frame , dir, fName , isPrint, i
         plot(onePlayer.smoothTrackY_net(1:end,1),onePlayer.smoothTrackX_net(1:end,1),'w.-','markersize',1,'linewidth',1)
         
         text(onePlayer.startingY, onePlayer.startingX, ...
-                strcat('............',num2str(i),'[',num2str(onePlayer.distance),']'),...
+                strcat('............',num2str(i),'[',num2str(onePlayer.smoothDistance),']'),...
                 'BackgroundColor', 'none', 'FontSize', 9,'FontWeight','normal',...
                 'Color','w')
         
