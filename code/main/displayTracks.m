@@ -5,13 +5,19 @@ function [  ] = displayTracks( playerCollection, frame , dir, fName , isPrint, i
     imshow(frame);
     hold on;
     c_list = ['r' 'b' 'g' 'c' 'm' 'y'];
-   
-    height=size(frame,1)
-    width=size(frame,2)
+%    
+     h=size(frame,1)
+     w=size(frame,2)
     
     
-% 	plot(onePlayer.smoothTrackY_net(1:end,1),onePlayer.smoothTrackX_net(1:end,1),'w.-','markersize',1,'linewidth',1)
-    
+plot([w*.33 w*.33]',[1 h]','y.:','markersize',1,'linewidth',1)
+plot([w*.66 w*.66]',[1 h]','y.:','markersize',1,'linewidth',1)    
+
+plot([w*.4 w*.4]',[1 h]','r.:','markersize',1,'linewidth',1)
+plot([w*.6 w*.6]',[1 h]','r.:','markersize',1,'linewidth',1)
+
+plot([1 w]',[h*.66 h*.66]','y.:','markersize',1,'linewidth',1)
+
     for i=1:playerCollection.count
         onePlayer=playerCollection.list(i);
         st=onePlayer.startFrame;

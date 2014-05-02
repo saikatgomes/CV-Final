@@ -5,8 +5,18 @@ function [  ] = displayTracks( playerCollection, frame , dir, fName , isPrint, i
     imshow(frame);
     hold on;
     c_list = ['r' 'b' 'g' 'c' 'm' 'y'];
+%    
+     h=size(frame,1)
+     w=size(frame,2)
     
     
+plot([w*.33 w*.33]',[1 h]','y.:','markersize',1,'linewidth',1)
+plot([w*.66 w*.66]',[1 h]','y.:','markersize',1,'linewidth',1)
+    
+
+plot([w*.44 w*.44]',[1 h]','r.:','markersize',1,'linewidth',1)
+plot([w*.56 w*.56]',[1 h]','r.:','markersize',1,'linewidth',1)
+
     for i=1:playerCollection.count
         onePlayer=playerCollection.list(i);
         st=onePlayer.startFrame;
