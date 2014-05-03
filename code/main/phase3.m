@@ -125,9 +125,10 @@ end
 
 playerCollection.list = nestedSortStruct(playerCollection.list, 'steps');
 displayTracks( playerCollection, frame , base_dir , 'phase3_1_after' , 1, 1 ,0);
-
+playerCollection = pruneTracks( playerCollection, 20 ); %prune all tracks that are less that 20
 
 displayTracksContinuous( playerCollection, frame , base_dir,0,0);
+displayTracks( playerCollection, frame , base_dir , 'phase3_1_afterPruning' , 1, 1 ,0);
 rmpath('sort/');
 
 end
