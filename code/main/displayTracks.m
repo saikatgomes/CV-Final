@@ -29,7 +29,8 @@ for i=1:playerCollection.count
     last=onePlayer.lastFrame;
     Cz = mod(i,6)+1; %pick color
     
-    plot(onePlayer.smoothTrackY_net(1:end,1),onePlayer.smoothTrackX_net(1:end,1),'.-','markersize',1,'linewidth',1,'Color',c_list(Cz))
+    plot(onePlayer.smoothTrackY_net(1:end,1),onePlayer.smoothTrackX_net(1:end,1),...
+        '.-','markersize',1,'linewidth',1,'Color',c_list(Cz))
        
     if(showActual==1)
         tmX = onePlayer.trackX(st:last);
