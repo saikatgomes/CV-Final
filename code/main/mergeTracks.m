@@ -1,6 +1,5 @@
 function [ playerCollection ] = mergeTracks( playerCollection, parent, child )
    
-
     parentPlayer=playerCollection.list(parent);
     childPlayer=playerCollection.list(child);
     c_start=childPlayer.startFrame;
@@ -19,6 +18,7 @@ function [ playerCollection ] = mergeTracks( playerCollection, parent, child )
             parentPlayer.trackY(i)=childPlayer.trackY(i);
         end
         if(c_start>p_last+1)
+            temp=0;
             %need to interpolate!
         end
     else

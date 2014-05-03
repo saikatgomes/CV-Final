@@ -100,10 +100,7 @@ for trackN=1:size(Q_loc_estimateY,2)
     for n=last+1:totNumOfFrame
         onePlayer.trackX(n)=nan;
         onePlayer.trackY(n)=nan;
-    end
-    
-%     onePlayer.trackX_net=Q_loc_estimateX(st:last,trackN);
-%     onePlayer.trackY_net=Q_loc_estimateY(st:last,trackN);       
+    end      
     onePlayer.steps=last-st+1;
     onePlayer.isOutOfBounds=1;
     playerCollection.list(p_count)=onePlayer;
@@ -119,24 +116,19 @@ rmpath('sort/');
 playerCollection= updateStats( playerCollection );
 
 % displayTracks( playerCollection, frame , base_dir , 'phase3_1' , 1, 0 );
-%displayTracks( playerCollection, frame , base_dir , 'phase3_1_with_ends' , 0, 1 );
+displayTracks( playerCollection, frame , base_dir , 'phase3_1_before' , 1, 0 );
 
 %  displayTracksContinuous( playerCollection, frame , base_dir,0,0);
 
 try
     isFound=1;
     while(isFound==1)
-        if(playerCollection.count<42)
-            temp=1;
-        end
         [isFound,playerCollection]=optimzeTracks( playerCollection);    
-        %displayTracks( playerCollection, frame , base_dir , 'phase3_1_with_ends' , 0, 1 );
-    %     isFound=0;
     end
 catch ME
     temp=0;
 end
-displayTracks( playerCollection, frame , base_dir , 'phase3_1_with_ends' , 0, 1 );
+displayTracks( playerCollection, frame , base_dir , 'phase3_1_after' , 1, 1 );
 displayTracksContinuous( playerCollection, frame , base_dir,0,0);
 
 end

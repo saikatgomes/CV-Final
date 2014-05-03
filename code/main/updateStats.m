@@ -47,7 +47,6 @@ function [playerCollection ] = updateStats( playerCollection )
         onePlayer.cumDistance(st)=0;
         
         for t=1:steps-1
-            display(strcat(num2str(i),'-',num2str(t)));
             d=pdist([onePlayer.trackY_net(t) onePlayer.trackX_net(t); ...
                 onePlayer.trackY_net(t+1) onePlayer.trackX_net(t+1)]);
             distance=distance+d;
