@@ -48,7 +48,8 @@ for i=1:playerCollection.count
 end
 hold off;
 if(isPrint==1)
-    saveas(f,strcat(dir,'/',fName,'_',datestr(now,'HH-MM-SS'),'.jpg'),'bmp');
+    saveas(f,strcat(dir,'/',fName,'_',datestr(now,'HH-MM-SS'),'.jpg'));
+    saveas(f,strcat(dir,'/',fName,'_',datestr(now,'HH-MM-SS'),'.bmp'),'bmp');
 end
 %close(f2);
 end

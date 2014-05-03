@@ -1,14 +1,9 @@
 function [  ] = displayTracksContinuous( playerCollection, frame, base_dir, isPrint, isShowEnds  )
 
 warning('off','all');
-SHOW_PLOTS=1;
 
 hostName=getHostName();
 f1=figure();
-
-if(SHOW_PLOTS==0)
-    set(f1,'visible','off');
-end
 imshow(frame);
 hold on;
 c_list = ['r' 'b' 'g' 'c' 'm' 'y'];
@@ -27,8 +22,8 @@ plot([1 w]',[h*.64 h*.64]','y.:','markersize',1,'linewidth',1)
 if(isPrint==1)    
     inputVid=VideoReader(strcat(base_dir,'/new.mp4'));
     FrameRate=inputVid.FrameRate;
-    est_tracks=VideoWriter(strcat(base_dir,'/est_tracks_',datestr(now,'HH-MM-SS'),'.mp4'),'MPEG-4');
-    est_tracks.FrameRate=FrameRate/2;
+    est_tracks=VideoWriter(strcat(base_dir,'/est_tracks','_',datestr(now,'HH-MM-SS').mp4'),'MPEG-4');
+    est_tracks.FrameRate=FrameRate;
     open(est_tracks);
 end
 
@@ -100,10 +95,10 @@ for j=1:totNumOfFrame-1
     %pause(.01);
     
     if(isPrint==1)
-        %saveas(f1,strcat(hostName,'_temp.jpg'));
-        %tempI=imread(strcat(hostName,'_temp.jpg'));
-        writeVideo(est_tracks,getframe(f1));
-        %delete(strcat(hostName,'_temp.jpg'));
+        saveas(f1,strcat(hostName,'_temp.jpg'));
+        tempI=imread(strcat(hostName,'_temp.jpg'));
+        writeVideo(est_tracks,tempI);
+        delete(strcat(hostName,'_temp.jpg'));
     end
     hold off;
 end
