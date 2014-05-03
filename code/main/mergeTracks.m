@@ -1,4 +1,5 @@
 function [ playerCollection ] = mergeTracks( playerCollection, parent, child )
+   
 
     parentPlayer=playerCollection.list(parent);
     childPlayer=playerCollection.list(child);
@@ -9,7 +10,7 @@ function [ playerCollection ] = mergeTracks( playerCollection, parent, child )
     parentPlayer.lastKnownX=childPlayer.lastKnownX;
     parentPlayer.lastKnownY=childPlayer.lastKnownY;
     parentPlayer.lastFrame=childPlayer.lastFrame;
-    parentPlayer.steps=parentPlayer.steps+childPlayer.steps;
+    parentPlayer.steps=parentPlayer.lastFrame-parentPlayer.startFrame+1;
     parentPlayer.isOutOfBounds=childPlayer.isOutOfBounds;       
 
     if(c_start>p_last)
@@ -32,6 +33,8 @@ function [ playerCollection ] = mergeTracks( playerCollection, parent, child )
             end            
         end
     end
+    
+    playerCollection.list(parent)=parentPlayer;
     
     if(child==1)        
         playerCollection.list=playerCollection.list(2:end);        

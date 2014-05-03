@@ -11,16 +11,17 @@ function [playerCollection ] = updateStats( playerCollection )
 
     for i=1:count
         onePlayer=playerCollection.list(i);
+            if(i==6)
+                temp=0;
+            end
         steps = onePlayer.steps;        
         st=onePlayer.startFrame;
         last=onePlayer.lastFrame;
         %size of trackX remains constant
         %but size of trackX_net is steps
-        %similarly smoothtrackX_net
         onePlayer.trackX_net=NaN(steps,1);
         onePlayer.trackY_net=NaN(steps,1);
-        onePlayer.smoothTrackY_net=NaN(steps,1);
-        onePlayer.smoothTrackX_net=NaN(steps,1);
+        onePlayer.smoothTrackY_net
         
         onePlayer.trackX_net=onePlayer.trackX(st:last);
         onePlayer.trackY_net=onePlayer.trackY(st:last);   
@@ -47,6 +48,9 @@ function [playerCollection ] = updateStats( playerCollection )
         onePlayer.cumDistance(st)=0;
         
         for t=1:steps-1
+            if(i==6 && t==54)
+                temp=0;
+            end
             display(strcat(num2str(i),'-',num2str(t)));
             d=pdist([onePlayer.trackY_net(t) onePlayer.trackX_net(t); ...
                 onePlayer.trackY_net(t+1) onePlayer.trackX_net(t+1)]);

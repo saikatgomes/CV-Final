@@ -8,6 +8,7 @@ function [ isFound, playerCollection ] = optimzeTracks( playerCollection )
         %for d=minDist
             for p=1:pCount
                 clear foundList;
+                clear foundDist;
                 foundCount=0;
                 for q=1:pCount
                     if(p==q)
@@ -41,10 +42,13 @@ function [ isFound, playerCollection ] = optimzeTracks( playerCollection )
                     isFound=1;
                     foundCount=foundCount+1;
                     foundList(foundCount)=q;
+                    foundDist(foundCount)=distance;
                     %return;
                 end
                 if(foundCount>0)
-                    m=min(foundList);
+                    minD=min(foundDist);
+                    idx=find(foundDist==minD);
+                    m=foundList(idx);
                     display(strcat('main:',num2str(p),10,'possible:',num2str(foundList),'...candicate:',num2str(m)));
                     playerCollection= mergeTracks( playerCollection, p, m );   
                     isFound=1;
