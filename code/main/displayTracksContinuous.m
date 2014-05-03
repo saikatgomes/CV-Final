@@ -1,7 +1,7 @@
 function [  ] = displayTracksContinuous( playerCollection, frame, base_dir, isPrint, isShowEnds  )
 
 warning('off','all');
-SHOW_PLOTS=1;
+SHOW_PLOTS=0;
 
 hostName=getHostName();
 f1=figure();

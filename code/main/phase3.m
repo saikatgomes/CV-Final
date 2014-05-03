@@ -132,5 +132,6 @@ displayTracks( playerCollection, frame , base_dir , 'phase3_pass2_withEnds' , 1,
 displayTracksContinuous( playerCollection, frame , base_dir,1,0);
 rmpath('sort/');
 
+save(strcat(dataDir,'/phase3_data.mat'),'playerCollection');
 end
 

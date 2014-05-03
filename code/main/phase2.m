@@ -41,7 +41,7 @@ C = [1 0 0 0; 0 1 0 0];  %this is our measurement function C, that we apply to t
 % initize result variables
 Q_loc_meas = []; % the fly detecions  extracted by the detection algo
 % initize estimation variables for two dimensions
-Q= [X{S_frame} Y{S_frame} zeros(length(X{S_frame}),1) zeros(length(X{S_frame}),1)]'
+Q= [X{S_frame} Y{S_frame} zeros(length(X{S_frame}),1) zeros(length(X{S_frame}),1)]';
 Q_estimate = nan(4,2000);
 Q_estimate(:,1:size(Q,2)) = Q;  %estimate of initial location estimation of where the players are(what we are updating)
 Q_loc_estimateY = nan(2000); %  position estimate
