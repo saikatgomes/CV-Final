@@ -12,15 +12,13 @@ function [playerCollection ] = updateStats( playerCollection )
     for i=1:count
         onePlayer=playerCollection.list(i);
         steps = onePlayer.steps;        
-
         st=onePlayer.startFrame;
         last=onePlayer.lastFrame;
         onePlayer.trackX_net=onePlayer.trackX(st:last);
         onePlayer.trackY_net=onePlayer.trackY(st:last);   
         
         onePlayer.smoothTrackY_net =smooth(onePlayer.trackY_net,'moving');
-        onePlayer.smoothTrackX_net =smooth(onePlayer.trackX_net,'moving');
-        
+        onePlayer.smoothTrackX_net =smooth(onePlayer.trackX_net,'moving');        
         %srg test #####################################
         %super smooth!
         onePlayer.smoothTrackY_net =smooth(onePlayer.smoothTrackY_net,'moving');
@@ -30,19 +28,14 @@ function [playerCollection ] = updateStats( playerCollection )
         %srg test #####################################       
         
         onePlayer.smoothTrackY=NaN(totNumOfFrame,1);
-        onePlayer.smoothTrackX=NaN(totNumOfFrame,1);
-        
-        st=onePlayer.startFrame;
-        last=onePlayer.lastFrame;
+        onePlayer.smoothTrackX=NaN(totNumOfFrame,1);        
         onePlayer.smoothTrackY(st:last,1)=onePlayer.smoothTrackY_net;
         onePlayer.smoothTrackX(st:last,1)=onePlayer.smoothTrackX_net;
         
         distance=0;
         smoothDistance=0;
-        velocitySum=0;
-        
-        onePlayer.cumDistance=NaN(totNumOfFrame,1);
-        
+        velocitySum=0;        
+        onePlayer.cumDistance=NaN(totNumOfFrame,1);        
         onePlayer.cumDistance(st)=0;
         
         for t=1:steps-1

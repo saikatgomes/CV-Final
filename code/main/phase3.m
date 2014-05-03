@@ -119,8 +119,9 @@ displayTracks( playerCollection, frame , base_dir , 'phase3_1_with_ends' , 0, 1 
 
 isFound=1;
 while(isFound==1)
-    optimzeTracks( playerCollection);
-    isFound=0;
+    [isFound,playerCollection]=optimzeTracks( playerCollection);    
+    displayTracks( playerCollection, frame , base_dir , 'phase3_1_with_ends' , 0, 1 );
+%     isFound=0;
 end
 
 

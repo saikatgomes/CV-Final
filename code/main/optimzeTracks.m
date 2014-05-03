@@ -1,4 +1,4 @@
-function [ isFound ] = optimzeTracks( playerCollection )
+function [ isFound, playerCollection ] = optimzeTracks( playerCollection )
 
     isFound=0;
     minDist=[25 50 60 70 75];
@@ -23,14 +23,14 @@ function [ isFound ] = optimzeTracks( playerCollection )
                     y1=mainPlayer.lastKnownY;
                     x2=otherPlayer.startingX;
                     y2=otherPlayer.startingY;
-                    
-                    if(p==3 &&q==13)
-                        temp=0;
-                    end
-                    
-                    if(p==61 &&q==3)
-                        temp=0;
-                    end
+%                     
+%                     if(p==3 &&q==13)
+%                         temp=0;
+%                     end
+%                     
+%                     if(p==61 &&q==3)
+%                         temp=0;
+%                     end
                     
                     distance = pdist([ x1 y1  ;...
                                        x2 y2 ]);
@@ -45,8 +45,10 @@ function [ isFound ] = optimzeTracks( playerCollection )
                 end
                 if(foundCount>0)
                     m=min(foundList);
-                    %playerCollection= mergeTracks( playerCollection, p, m );
                     display(strcat('main:',num2str(p),10,'possible:',num2str(foundList),'...candicate:',num2str(m)));
+                    playerCollection= mergeTracks( playerCollection, p, m );   
+                    isFound=1;
+                    return;
                     %display(strcat('t=',num2str(t),',d=',num2str(d),10,'main:',num2str(p),10,'possible:',num2str(foundList)));
                 end
             end
