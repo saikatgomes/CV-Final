@@ -13,7 +13,7 @@ props.setProperty('mail.smtp.socketFactory.class', ...
     'javax.net.ssl.SSLSocketFactory');
 props.setProperty('mail.smtp.socketFactory.port','465');
 
-mainDir='../../sandbox/data99/';
+mainDir='../../sandbox/data97/';
 hostName=getHostName();
 k=33;
 
@@ -40,7 +40,7 @@ for i=1:length(folderName)
         fName=fullFileName(1:length(fullFileName)-4);
         try
             startTime=datestr(now,'HH:MM:SS');
-            process(fName,'mp4',0,k);
+            process(fName,'mp4',0,k,0);
             %delete(lockFileName);
             endTime=datestr(now,'HH:MM:SS');
             sendmail('saikatgomes@gmail.com', 'TESTBOT: Success', ...

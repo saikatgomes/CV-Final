@@ -112,5 +112,7 @@ if(isPrint==1)
     close(est_tracks);
 end
 
+close(f1);
+
 end
 

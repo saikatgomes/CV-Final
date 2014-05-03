@@ -20,7 +20,7 @@ h = fspecial('log', hsizeh, sigmah);
 while ~isDone(playerDetector.reader)
     
     frameCount=frameCount+1;
-%     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] processing frame -> ',num2str(frameCount)));
+    display(strcat(datestr(now,'HH:MM:SS'),' [INFO] processing frame -> ',num2str(frameCount)));
     frame = playerDetector.reader.step();
     
     % Detect foreground.
@@ -32,7 +32,7 @@ while ~isDone(playerDetector.reader)
     
     M=max(max(mask));
     if(M==0)
-%         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] skipping frame -> ',num2str(frameCount)));
+        display(strcat(datestr(now,'HH:MM:SS'),' [INFO] skipping frame -> ',num2str(frameCount)));
         continue;
     end
     
@@ -71,10 +71,10 @@ while ~isDone(playerDetector.reader)
         imagesc(normalHM)
         colormap(jet)
         colorbar
-%         saveas(f1,strcat(hostName,'_temp.jpg'));
-%         tempI=imread(strcat(hostName,'_temp.jpg'));        
-%         writeVideo(myVid.gdVid,tempI);
-%         delete(strcat(hostName,'_temp.jpg'));
+        saveas(f1,strcat(hostName,'_temp.jpg'));
+        tempI=imread(strcat(hostName,'_temp.jpg'));        
+        writeVideo(myVid.gdVid,tempI);
+        delete(strcat(hostName,'_temp.jpg'));
         writeVideo(myVid.gdVid,getframe(f1));
         close(f1);
     end
@@ -100,11 +100,10 @@ while ~isDone(playerDetector.reader)
         imagesc(normalHM)
         colormap(jet)
         colorbar
-%         saveas(f15,strcat(hostName,'_temp.jpg'));
-%         tempI=imread(strcat(hostName,'_temp.jpg'));
-%         writeVideo(myVid.hmVid,tempI);
-%         delete(strcat(hostName,'_temp.jpg'));
-        writeVideo(myVid.hmVid,getframe(f15));
+        saveas(f15,strcat(hostName,'_temp.jpg'));
+        tempI=imread(strcat(hostName,'_temp.jpg'));
+        writeVideo(myVid.hmVid,tempI);
+        delete(strcat(hostName,'_temp.jpg'));
         close(f15);
     end
     
@@ -123,11 +122,10 @@ while ~isDone(playerDetector.reader)
         end
         imagesc(blob_img)
         colorbar
-%         saveas(f2,strcat(hostName,'_temp.jpg'));
-%         tempI=imread(strcat(hostName,'_temp.jpg'));
-%         writeVideo(myVid.lmVid,tempI);
-%         delete(strcat(hostName,'_temp.jpg'));
-        writeVideo(myVid.lmVid,getframe(f2));
+        saveas(f2,strcat(hostName,'_temp.jpg'));
+        tempI=imread(strcat(hostName,'_temp.jpg'));
+        writeVideo(myVid.lmVid,tempI);
+        delete(strcat(hostName,'_temp.jpg'));
         close(f2);
     end
     
@@ -138,9 +136,11 @@ while ~isDone(playerDetector.reader)
     %it find the blob peak indices for this video, there should be ~11
     
     goodFrame=goodFrame+1;
-%     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... finding extemas.'));
+    display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... finding extemas.'));
+    %addpath(LIB_PATH);
     [zmax,imax,zmin,imin] = extrema2(blob_img);
     [X{goodFrame},Y{goodFrame}] = ind2sub(size(blob_img),imax);
+    %rmpath(LIB_PATH);
     %for plotting
     %%{
     clf
@@ -149,7 +149,7 @@ while ~isDone(playerDetector.reader)
     % % %         axis off
     % % %     subplot(212)
     
-%     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... finding clusters.'));
+    display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... finding clusters.'));
     [ idx,ctrs  ,SUMD, DistMat ] = getCentroids( Y{goodFrame}, X{goodFrame},numOfClusters );
     new_ctrs = verifyClusters(ctrs,35);
     centerAll=[centerAll;ctrs];
@@ -173,11 +173,10 @@ while ~isDone(playerDetector.reader)
             plot(Y{goodFrame}(j),X{goodFrame}(j),'or')
         end
         axis off
-%         saveas(f3,strcat(hostName,'_temp.jpg'));
-%         tempI=imread(strcat(hostName,'_temp.jpg'));
-%         writeVideo(myVid.clusterVid,tempI);
-%         delete(strcat(hostName,'_temp.jpg'));
-        writeVideo(myVid.clusterVid,getframe(f3));
+        saveas(f3,strcat(hostName,'_temp.jpg'));
+        tempI=imread(strcat(hostName,'_temp.jpg'));
+        writeVideo(myVid.clusterVid,tempI);
+        delete(strcat(hostName,'_temp.jpg'));
         
         plot(ctrs(:,1),ctrs(:,2),'yx',...
             'MarkerSize',12,'LineWidth',2)
@@ -190,11 +189,10 @@ while ~isDone(playerDetector.reader)
             'MarkerSize',12,'LineWidth',2)
         
         if(myVid.MAKE_CENTROID_VID==1)
-%             saveas(f3,strcat(hostName,'_temp.jpg'));
-%             tempI=imread(strcat(hostName,'_temp.jpg'));
-%             writeVideo(myVid.cenVid1,tempI);
-%             delete(strcat(hostName,'_temp.jpg'));
-            writeVideo(myVid.cenVid1,getframe(f3));
+            saveas(f3,strcat(hostName,'_temp.jpg'));
+            tempI=imread(strcat(hostName,'_temp.jpg'));
+            writeVideo(myVid.cenVid1,tempI);
+            delete(strcat(hostName,'_temp.jpg'));
         end
         close(f3);
     end
@@ -213,11 +211,10 @@ while ~isDone(playerDetector.reader)
             'MarkerSize',12,'LineWidth',2)
         
         hold off;
-%         saveas(f4,strcat(hostName,'_temp.jpg'));
-%         tempI=imread(strcat(hostName,'_temp.jpg'));
-%         writeVideo(myVid.cenVid2,tempI);
-%         delete(strcat(hostName,'_temp.jpg'));
-        writeVideo(myVid.cenVid2,getframe(f4));
+        saveas(f4,strcat(hostName,'_temp.jpg'));
+        tempI=imread(strcat(hostName,'_temp.jpg'));
+        writeVideo(myVid.cenVid2,tempI);
+        delete(strcat(hostName,'_temp.jpg'));
         close(f4);
     end
     
@@ -250,16 +247,14 @@ while ~isDone(playerDetector.reader)
                 'MarkerFaceColor', theColor,'MarkerEdgeColor','none',...
                 'MarkerSize',2)
         end
-%         saveas(f5,strcat(hostName,'_temp.jpg'));
-%         tempI=imread(strcat(hostName,'_temp.jpg'));
-%         writeVideo(myVid.tracksVid1,tempI);
-        writeVideo(myVid.tracksVid1,getframe(f5));
+        saveas(f5,strcat(hostName,'_temp.jpg'));
+        tempI=imread(strcat(hostName,'_temp.jpg'));
+        writeVideo(myVid.tracksVid1,tempI);
         if(frameCount==myVid.totNumOfFrame)
-            saveas(f5,strcat(base_dir,'/tracksTotal.jpg'));
-%             copyfile(strcat(hostName,'_temp.jpg'),strcat(base_dir,...
-%                 '/tracksTotal.jpg'));
+            copyfile(strcat(hostName,'_temp.jpg'),strcat(base_dir,...
+                '/tracksTotal.jpg'));
         end
-%         delete(strcat(hostName,'_temp.jpg'));
+        delete(strcat(hostName,'_temp.jpg'));
         
         close(f5);
         f55=figure();
@@ -290,16 +285,14 @@ while ~isDone(playerDetector.reader)
                 'MarkerFaceColor', theColor,'MarkerEdgeColor','none',...
                 'MarkerSize',2)
         end
-%         saveas(f55,strcat(hostName,'_temp.jpg'));
-%         tempI=imread(strcat(hostName,'_temp.jpg'));
-%         writeVideo(myVid.tracksVid2,tempI);
-        writeVideo(myVid.tracksVid2,getframe(f55));
+        saveas(f55,strcat(hostName,'_temp.jpg'));
+        tempI=imread(strcat(hostName,'_temp.jpg'));
+        writeVideo(myVid.tracksVid2,tempI);
         if(frameCount==myVid.totNumOfFrame)
-            saveas(f55,strcat(base_dir,'/tracksTotal.jpg'));
-%             copyfile(strcat(hostName,'_temp.jpg'),strcat(base_dir, ...
-%                 '/tracksTotal2.jpg'));
+            copyfile(strcat(hostName,'_temp.jpg'),strcat(base_dir, ...
+                '/tracksTotal2.jpg'));
         end
-%         delete(strcat(hostName,'_temp.jpg'));
+        delete(strcat(hostName,'_temp.jpg'));
         close(f55);
     end
 end

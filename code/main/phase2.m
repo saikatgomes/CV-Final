@@ -51,14 +51,9 @@ strk_trks = zeros(1,2000);  %counter of how many strikes a track has gotten
 nD = size(X{S_frame},1); %initize number of detections
 nF =  find(isnan(Q_estimate(1,:))==1,1)-1 ; %initize number of track estimates
 %
-% playerDetector.reader = vision.VideoFileReader('../../sandbox/data99/data_test/noBGVid.mp4');
-% inputVid=VideoReader('../../sandbox/data99/data_test/noBGVid.mp4');
 oneReader.reader = vision.VideoFileReader(strcat(base_dir,'/new.mp4'));
 inputVid=VideoReader(strcat(base_dir,'/new.mp4'));
 %
-% % % % % % outVid=VideoWriter(strcat(base_dir,'/tracked_paths.mp4'),'MPEG-4');
-% % % % % % outVid.FrameRate=inputVid.FrameRate;
-% % % % % % open(outVid);
 
 totNumOfFrame = inputVid.NumberOfFrames;
 frameCount=S_frame-1;
@@ -67,12 +62,10 @@ frameCount=S_frame-1;
 for t = S_frame:totNumOfFrame-1
     
     frameCount=frameCount+1;
-    display(strcat(datestr(now,'HH:MM:SS'),' [INFO] processing frame -> ',num2str(frameCount)));
+%     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] processing frame -> ',num2str(frameCount)));
     frame = oneReader.reader.step();
     img = frame(:,:,1);
     
-% % % %     clf
-% % % %     imshow(frame);
     % make the given detections matrix
     Q_loc_meas = [X{t} Y{t}];
     
@@ -84,25 +77,6 @@ for t = S_frame:totNumOfFrame-1
     for F = 1:nF
         Q_estimate(:,F) = A * Q_estimate(:,F) + B * u;
     end
-    
-% % % % %         
-% % % % %     count=size(X{t},1);
-% % % % %     c_list = ['r' 'b' 'g' 'c' 'm' 'y']
-% % % % %     for i=1:count
-% % % % %         Cz = mod(i,6)+1; %pick color
-% % % % %         
-% % % % %         plot(Q_loc_meas(i,2),Q_loc_meas(i,1),'o',...
-% % % % %             'MarkerSize',12,'LineWidth',2,'color',c_list(Cz))
-% % % % %         
-% % % % %         plot(Q_estimate(2,i),Q_estimate(1,i),'x',...
-% % % % %             'MarkerSize',12,'LineWidth',2,'color',c_list(Cz))
-% % % % %         
-% % % % %     end
-% % % % %     
-    
-    
-    % % % % % %     plot(Q_estimate(2,1:nF),Q_estimate(1,1:nF),'bx',...
-    % % % % % %         'MarkerSize',12,'LineWidth',2)
     
     %predict next covariance
     P = A * P* A' + Ex;
@@ -118,9 +92,7 @@ for t = S_frame:totNumOfFrame-1
     est_dist = est_dist(1:nF,nF+1:end) ; %limit to just the tracks to detection distances
     
     [asgn, cost] = assignmentoptimal(est_dist); %do the assignment with hungarian algo
-    asgn = asgn';
-    
-    
+    asgn = asgn';   
     
     % ok, now we check for tough situations and if it's tough, just go with estimate and ignore the data
     %make asgn = 0 for that tracking element
@@ -135,33 +107,7 @@ for t = S_frame:totNumOfFrame-1
         end
     end
     asgn = asgn.*rej;
-    
-% % % %     
-% % % %     
-% % % %     clf
-% % % %     imshow(frame);
-% % % %     hold on
-% % % %     
-% % % %     %     count=size(X{t},1);
-% % % %     count=length(asgn);
-% % % %     c_list = ['r' 'b' 'g' 'c' 'm' 'y']
-% % % %     for i=1:count
-% % % %         Cz = mod(i,6)+1; %pick color
-% % % %         
-% % % %         if (asgn(i)<1)
-% % % %             count=count+1;
-% % % %             continue;
-% % % %         end
-% % % %         
-% % % %         plot(Q_loc_meas(asgn(i),2),Q_loc_meas(asgn(i),1),'o',...
-% % % %             'MarkerSize',12,'LineWidth',2,'color',c_list(Cz))
-% % % %         
-% % % %         plot(Q_estimate(2,i),Q_estimate(1,i),'x',...
-% % % %             'MarkerSize',12,'LineWidth',2,'color',c_list(Cz))
-% % % %         
-% % % %     end
-% % % %     
-    
+       
     
     %apply the assingment to the update
     k = 1;
@@ -197,115 +143,13 @@ for t = S_frame:totNumOfFrame-1
     %make it nan first vid = 3
     %bad_trks = find(strk_trks > 10);
     bad_trks = find(strk_trks > 3);
-    Q_estimate(:,bad_trks) = NaN;
-    
-    
-% % % % %     
-% % % % %     clf
-% % % % %     imshow(frame);
-% % % % %     
-% % % % %     hold on;
-% % % % %     plot(Y{t}(:),X{t}(:),'ow','MarkerSize',30,'LineWidth',2); % the actual tracking
-% % % % %     
-% % % % %     T = size(Q_loc_estimateX,2);
-% % % % %     Ms = [3 5]; %marker sizes
-% % % % %     c_list = ['r' 'b' 'g' 'c' 'm' 'y']
-% % % % %     for Dc = 1:nF
-% % % % %         if ~isnan(Q_loc_estimateX(t,Dc))
-% % % % %             Sz = mod(Dc,2)+1; %pick marker size
-% % % % %             Cz = mod(Dc,6)+1; %pick color
-% % % % %             if t < 21
-% % % % %                 st = t-1;
-% % % % %             else
-% % % % %                 st = 19;
-% % % % %             end
-% % % % %             tmX = Q_loc_estimateX(1:t,Dc);
-% % % % %             tmY = Q_loc_estimateY(1:t,Dc);
-% % % % %             %             tmX = Q_loc_estimateX(t-st:t,Dc);
-% % % % %             %             tmY = Q_loc_estimateY(t-st:t,Dc);
-% % % % %             %             text(Q_loc_estimateY(t,Dc), Q_loc_estimateX(t,Dc), strcat('$\textcircled{',num2str(Dc),'}$'), 'Interpreter', 'latex', 'BackgroundColor', [1 1 1])
-% % % % %             text(Q_loc_estimateY(t,Dc), Q_loc_estimateX(t,Dc), strcat(num2str(Dc),'[',num2str(strk_trks(Dc)),']'),  'BackgroundColor', 'none', 'FontSize', 12,'FontWeight','bold','Color',c_list(Cz))
-% % % % %             
-% % % % %             %             annotation('textarrow', [Q_loc_estimateY(t,Dc)-100, Q_loc_estimateX(t,Dc)-100], [Q_loc_estimateY(t,Dc), Q_loc_estimateX(t,Dc)],...
-% % % % %             %            'String' , 'Straight Line');
-% % % % %             
-% % % % %             plot(tmY,tmX,'.-','markersize',Ms(Sz),'color',c_list(Cz),'linewidth',3)
-% % % % %             axis off
-% % % % %         end
-% % % % %     end
-% % % % %     
-% % % % %     voronoi(Q_loc_meas(:,2),Q_loc_meas(:,1))
-    % % % % % %
-    % % % % % %     F=getframe(f);
-    % % % % % %
-    % % % % % %     writeVideo(outVid,F);
-    % % % % % %     pause(.01);
-    
+    Q_estimate(:,bad_trks) = NaN;        
     
 end
 
 dataDir=strcat(base_dir,'/data');
 mkdir(dataDir);
 save(strcat(dataDir,'/phase2_data.mat'),'totNumOfFrame','Q_loc_estimateY','Q_loc_estimateX','nF','frame');
-
-% % % % hold off
-% % % % 
-% % % % f2=figure()
-% % % % imshow(frame);
-% % % % hold on;
-% % % % Ms = [3 5]; %marker sizes
-% % % % c_list = ['r' 'b' 'g' 'c' 'm' 'y']
-% % % % for i=1:nF
-% % % %     st=NaN;
-% % % %     last=NaN;
-% % % %     Sz = mod(i,2)+1; %pick marker size
-% % % %     Cz = mod(i,6)+1; %pick color
-% % % %     for j=1:totNumOfFrame
-% % % %         if(isnan(st))
-% % % %             if(~isnan(Q_loc_estimateY(j,i)))
-% % % %                 st=j;
-% % % %             end
-% % % %         else
-% % % %             if(isnan(Q_loc_estimateY(j,i)))
-% % % %                 last=j-1;
-% % % %                 break;
-% % % %             end
-% % % %         end
-% % % %     end
-% % % %     if(last==NaN)
-% % % %         last= totNumOfFrame;
-% % % %     end
-% % % %     if(~isnan(st) && ~isnan(last))
-% % % %         if(last==totNumOfFrame-1)
-% % % %             tmX = Q_loc_estimateX(st:last,i);
-% % % %             tmY = Q_loc_estimateY(st:last,i);
-% % % %         else
-% % % %             tmX = Q_loc_estimateX(st:last-3,i);
-% % % %             tmY = Q_loc_estimateY(st:last-3,i);
-% % % %         end
-% % % %         plot(tmY,tmX,'.-','markersize',Ms(Sz),'color',c_list(Cz),'linewidth',3)
-% % % %         % % % %             if(last~=totNumOfFrame)
-% % % %         % % % %                 tmX = Q_loc_estimateX(last-3:last,i);
-% % % %         % % % %                 tmY = Q_loc_estimateY(last-3:last,i);
-% % % %         % % % %                 plot(tmY,tmX,'.:','markersize',Ms(Sz),'color',c_list(Cz),'linewidth',3)
-% % % %         % % % %             end
-% % % %         continue;
-% % % %     end
-% % % %     
-% % % % end
-% % % % 
-% % % % hold off
-% % % % 
-% % % % 
-% % % % close(f2)
-% % % % 
-% % % % close(f);
-
-
-
-% close(outVid);
-
-
 
 end
 

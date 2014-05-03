@@ -1,8 +1,14 @@
 function [  ] = displayTracks( playerCollection, frame , dir, fName , isPrint, isShowEnds, showActual )
 
 warning('off','all');
+SHOW_PLOTS=1;
 f=figure();
 imshow(frame);
+
+if(SHOW_PLOTS==0)
+    set(f1,'visible','off');
+end
+
 hold on;
 c_list = ['r' 'b' 'g' 'c' 'm' 'y'];
 
@@ -51,6 +57,6 @@ if(isPrint==1)
     saveas(f,strcat(dir,'/',fName,'_',datestr(now,'HH-MM-SS'),'.jpg'));
     saveas(f,strcat(dir,'/',fName,'_',datestr(now,'HH-MM-SS'),'.bmp'),'bmp');
 end
-%close(f2);
+close(f2);
 end
 
