@@ -30,12 +30,7 @@ for i=1:playerCollection.count
     Cz = mod(i,6)+1; %pick color
     
     plot(onePlayer.smoothTrackY_net(1:end,1),onePlayer.smoothTrackX_net(1:end,1),'.-','markersize',1,'linewidth',1,'Color',c_list(Cz))
-    
-    %         text(onePlayer.startingY, onePlayer.startingX, ...
-    %                 strcat('............',num2str(i),'[',num2str(onePlayer.smoothDistance),']'),...
-    %                 'BackgroundColor', 'none', 'FontSize', 9,'FontWeight','normal',...
-    %                 'Color','w')
-    
+       
     if(showActual==1)
         tmX = onePlayer.trackX(st:last);
         tmY = onePlayer.trackY(st:last);
@@ -54,8 +49,8 @@ for i=1:playerCollection.count
 end
 hold off;
 if(isPrint==1)
-    saveas(f,strcat(dir,'/',fName,'_',datestr(now,'HH-MM-SS'),'.jpg'));
-    saveas(f,strcat(dir,'/',fName,'_',datestr(now,'HH-MM-SS'),'.bmp'),'bmp');
+    img=getframe(f);
+    imwrite(img.cdata,strcat(dir,'/',fName,'.jpg'));
 end
 close(f);
 end

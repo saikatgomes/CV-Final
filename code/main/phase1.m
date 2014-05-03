@@ -303,6 +303,10 @@ while ~isDone(playerDetector.reader)
         close(f55);
     end
 end
+
+
+close(myVid.new);
+    
 M=max(max(hMap));
 m=min(min(hMap));
 normalHM = (hMap-m)/(M-m);

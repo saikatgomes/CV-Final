@@ -13,7 +13,7 @@ Y=X_new;
 % define main variables for KALMAN FILTER! :P
 dt = 1;  %our sampling rate
 % S_frame = 5 % find(cellfun(@length, X)>11,1); %starting frame
-S_frame = 1 % find(cellfun(@length, X)>11,1); %starting frame
+S_frame = 1; % find(cellfun(@length, X)>11,1); %starting frame
 
 %now, since we have multiple players, we need a way to deal with a changing
 %number of estimates! this way seems more clear for a tutorial I think, but

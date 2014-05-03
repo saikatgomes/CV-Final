@@ -27,7 +27,7 @@ plot([1 w]',[h*.64 h*.64]','y.:','markersize',1,'linewidth',1)
 if(isPrint==1)    
     inputVid=VideoReader(strcat(base_dir,'/new.mp4'));
     FrameRate=inputVid.FrameRate;
-    est_tracks=VideoWriter(strcat(base_dir,'/est_tracks_',datestr(now,'HH-MM-SS'),'.mp4'),'MPEG-4');
+    est_tracks=VideoWriter(strcat(base_dir,'/est_tracks.mp4'),'MPEG-4');
     est_tracks.FrameRate=FrameRate/2;
     open(est_tracks);
 end
