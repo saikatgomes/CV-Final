@@ -31,7 +31,7 @@ oneReader = vision.VideoFileReader(strcat(base_dir,'/new.mp4'));
 totNumOfFrame=playerCollection.totNumOfFrame;
 count=playerCollection.count ;
 
-for j=1:totNumOfFrame
+for j=1:totNumOfFrame-1
     frame = oneReader.step();
     imshow(frame);
     
