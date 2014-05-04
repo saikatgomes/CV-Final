@@ -27,6 +27,7 @@ function [] = process( fileName, ext ,PRINT_VID, numOfClusters, overwriteData)
     phase3(base_dir,myVid);
     
     closeVids(myVid);
+    copyfile('index.html',base_dir);
     
     movefile(strcat(base_dir,'.',ext),strcat(base_dir,'/original.',ext));   
     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Proccessing done on :',fileName));      

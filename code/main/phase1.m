@@ -327,7 +327,6 @@ end
 
 dataDir=strcat(base_dir,'/data');
 mkdir(dataDir);
-copyfile('index.html',base_dir);
 save(strcat(dataDir,'/phase1_data_others.mat'),'centerAll','newCenterAll','normalHM','X','Y','X_new','Y_new');
 save(strcat(dataDir,'/phase1_data.mat'),'Y_new','X_new');
 end
