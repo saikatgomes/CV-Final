@@ -1,4 +1,4 @@
-function [] = process( fileName, ext ,PRINT_VID, numOfClusters, overwriteData)
+function [] = process( fileName, ext ,PRINT_VID, numOfClusters, overwriteP1, overwriteP2, overwriteP3)
     warning('off','all');
 
     
@@ -8,23 +8,29 @@ function [] = process( fileName, ext ,PRINT_VID, numOfClusters, overwriteData)
     base_dir=myVid.base_dir;    
     dataDir=strcat(base_dir,'/data');
     
-    if(overwriteData~=1 && ~exist(strcat(dataDir,'/phase1_data.mat'),'file'))
+    if(overwriteP1~=1 && ~exist(strcat(dataDir,'/phase1_data.mat'),'file'))
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Starting Phase 1 :',fileName)); 
         phase1(fileName, ext , numOfClusters, myVid, playerDetector);
     else        
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Skipping Phase 1 :',fileName)); 
     end
     
-    if(overwriteData~=1 && ~exist(strcat(dataDir,'/phase2_data.mat'),'file'))
+    if(overwriteP2~=1 && ~exist(strcat(dataDir,'/phase2_data.mat'),'file'))
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Starting Phase 2 :',fileName)); 
         phase2(base_dir);
     else        
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Skipping Phase 2 :',fileName)); 
     end
     
-    %fow now always fo Phase 3
-    display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Starting Phase 3 :',fileName)); 
-    phase3(base_dir,myVid);
+    if(overwriteP3~=1 && ~exist(strcat(dataDir,'/phase2_data.mat'),'file'))
+        display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Starting Phase 3 :',fileName)); 
+        phase3(base_dir,myVid);
+    else        
+        display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Skipping Phase 3 :',fileName)); 
+    end
+% % %     %fow now always fo Phase 3
+% % %     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Starting Phase 3 :',fileName)); 
+% % %     phase3(base_dir,myVid);
     
     closeVids(myVid);
     copyfile('index.html',base_dir);

@@ -3,7 +3,11 @@ function [  ] = displayTracks( playerCollection, frame , dir, fName , isPrint, i
 warning('off','all');
 SHOW_PLOTS=0;
 f=figure();
+
+backImg=zeros(size(frame,1),size(frame,2),3);
+
 imshow(frame);
+% imshow(backImg);
 
 if(SHOW_PLOTS==0)
     set(f,'visible','off');

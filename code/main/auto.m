@@ -17,7 +17,9 @@ mainDir='../../sandbox/data97/';
 hostName=getHostName();
 k=22;
 createVid=0; %1=yes,0=no
-overWriteData=0; %1=yes,0=no
+overwriteP1=0; %1=yes,0=no
+overwriteP2=0; %1=yes,0=no
+overwriteP3=1; %1=yes,0=no
 
 d = dir(mainDir);
 isub = [d(:).isdir];
@@ -35,7 +37,7 @@ for i=1:length(folderName)
         fName=fullFileName(1:length(fullFileName)-4);
         try
             startTime=datestr(now,'HH:MM:SS');
-            process(fName,'mp4',createVid,k,overWriteData);
+            process(fName,'mp4',createVid,k,overwriteP1,overwriteP2,overwriteP3);
             endTime=datestr(now,'HH:MM:SS');
             sendmail('saikatgomes@gmail.com', 'TESTBOT: Success', ...
                 strcat('Success: ',fullFileName,' @ ',hostName,' ____ START:',startTime,' _____ END:',endTime));
