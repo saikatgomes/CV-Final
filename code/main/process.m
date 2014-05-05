@@ -8,21 +8,21 @@ function [] = process( fileName, ext ,PRINT_VID, numOfClusters, overwriteP1, ove
     base_dir=myVid.base_dir;    
     dataDir=strcat(base_dir,'/data');
     
-    if(overwriteP1~=1 && ~exist(strcat(dataDir,'/phase1_data.mat'),'file'))
+    if(overwriteP1==1 || ~exist(strcat(dataDir,'/phase1_data.mat'),'file'))
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Starting Phase 1 :',fileName)); 
         phase1(fileName, ext , numOfClusters, myVid, playerDetector);
     else        
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Skipping Phase 1 :',fileName)); 
     end
     
-    if(overwriteP2~=1 && ~exist(strcat(dataDir,'/phase2_data.mat'),'file'))
+    if(overwriteP2==1 || ~exist(strcat(dataDir,'/phase2_data.mat'),'file'))
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Starting Phase 2 :',fileName)); 
         phase2(base_dir);
     else        
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Skipping Phase 2 :',fileName)); 
     end
     
-    if(overwriteP3~=1 && ~exist(strcat(dataDir,'/phase2_data.mat'),'file'))
+    if(overwriteP3==1 || ~exist(strcat(dataDir,'/phase2_data.mat'),'file'))
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Starting Phase 3 :',fileName)); 
         phase3(base_dir,myVid);
     else        

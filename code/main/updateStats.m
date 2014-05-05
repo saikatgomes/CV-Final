@@ -2,10 +2,10 @@ function [playerCollection ] = updateStats( playerCollection )
 
     totNumOfFrame=playerCollection.totNumOfFrame;
     count=playerCollection.count ;
-    allStartsX=NaN(count,1);
-    allStartsY=NaN(count,1);
-    allEndsX=NaN(count,1);
-    allEndsY=NaN(count,1);
+%     allStartsX=NaN(count,1);
+%     allStartsY=NaN(count,1);
+%     allEndsX=NaN(count,1);
+%     allEndsY=NaN(count,1);
     h=playerCollection.screenH;
     w=playerCollection.screenW;
 
@@ -68,32 +68,40 @@ function [playerCollection ] = updateStats( playerCollection )
         onePlayer.smoothDistance=smoothDistance;
         onePlayer.aveVel=velocitySum/steps;
         if(onePlayer.startingY<(w*.33)||onePlayer.startingY>(w*.66))
-            onePlayer.position='WR';
+            onePlayer.position='wr*';
+            if(onePlayer.startingX>h*.64)
+                onePlayer.position='WR';
+            end
+        elseif(onePlayer.startingY<(w*.4)||onePlayer.startingY>(w*.59))
+            onePlayer.position='te*';
+            if(onePlayer.startingX>h*.64)
+                onePlayer.position='TE';
+            end
         end
         playerCollection.list(i)=onePlayer;
-
-        allStartsX(i)=onePlayer.startingX;
-        allStartsY(i)=onePlayer.startingY;
-        allEndsX(i)=onePlayer.lastKnownX;
-        allEndsY(i)=onePlayer.lastKnownY;
+% 
+%         allStartsX(i)=onePlayer.startingX;
+%         allStartsY(i)=onePlayer.startingY;
+%         allEndsX(i)=onePlayer.lastKnownX;
+%         allEndsY(i)=onePlayer.lastKnownY;
                 
     end
-
-    playerCollection.allStartsX=allStartsX;
-    playerCollection.allStartsY=allStartsY;
-    playerCollection.allEndsX=allEndsX;
-    playerCollection.allEndsY=allEndsY;
-
-    est_dist = pdist([ allStartsX allStartsY  ; ...
-        allEndsX allEndsY]);
-    est_dist = squareform(est_dist); %make square
-    est_dist=est_dist(1:count,count+1:end);
-
-    th=playerCollection.threshold;
-
-    [candidateStart candidateEnd]=find(est_dist<th);
-    playerCollection.candidateStart=candidateStart;
-    playerCollection.candidateEnd=candidateEnd;
+% 
+%     playerCollection.allStartsX=allStartsX;
+%     playerCollection.allStartsY=allStartsY;
+%     playerCollection.allEndsX=allEndsX;
+%     playerCollection.allEndsY=allEndsY;
+% 
+%     est_dist = pdist([ allStartsX allStartsY  ; ...
+%         allEndsX allEndsY]);
+%     est_dist = squareform(est_dist); %make square
+%     est_dist=est_dist(1:count,count+1:end);
+% 
+%     th=playerCollection.threshold;
+% 
+%     [candidateStart candidateEnd]=find(est_dist<th);
+%     playerCollection.candidateStart=candidateStart;
+%     playerCollection.candidateEnd=candidateEnd;
 
 
 end

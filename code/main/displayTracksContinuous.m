@@ -11,7 +11,9 @@ if(SHOW_PLOTS==0)
 end
 imshow(frame);
 hold on;
-c_list = ['r' 'b' 'g' 'c' 'm' 'y'];
+% c_list = ['r' 'b' 'g' 'c' 'm' 'y'];
+% c_list = ['r' 'b' 'g' 'm' 'y'];
+c_list = ['r' 'b' 'g'  'y'];
 
 h=size(frame,1);
 w=size(frame,2);
@@ -45,7 +47,6 @@ for j=1:totNumOfFrame-1
         onePlayer=playerCollection.list(i);
         st=onePlayer.startFrame;
         last=onePlayer.lastFrame;
-        Cz = mod(i,6)+1; %pick color
         if(st>j || last<j)
             continue;
         end
@@ -69,12 +70,23 @@ for j=1:totNumOfFrame-1
         cdist=onePlayer.cumDistance(j);
         cdist = sprintf('%.2f',cdist);        
         
+        
+        %     Cz = mod(i,6)+1; %pick color
+        %     Cz = mod(i,5)+1; %pick color
+        Cz = mod(i,4)+1; %pick color        
+        if(strcmp(onePlayer.position,'WR'))
+            cr='c';
+        elseif(strcmp(onePlayer.position,'TE'))
+            cr='m';
+        else
+            cr=c_list(Cz);
+        end
         plot(onePlayer.smoothTrackY(j,1),...
             onePlayer.smoothTrackX(j,1),...
             'wo','markersize',9,'linewidth',8);
         plot(onePlayer.smoothTrackY(j,1),...
             onePlayer.smoothTrackX(j,1),...
-            'o','markersize',8,'linewidth',8,'Color',c_list(Cz));
+            'o','markersize',8,'linewidth',8,'Color',cr);
         
         disStr=[strcat('............',num2str(i),' (',onePlayer.position,')', ...
                     10,...
@@ -84,7 +96,7 @@ for j=1:totNumOfFrame-1
         
         plot(onePlayer.smoothTrackY(st:j,1),...
             onePlayer.smoothTrackX(st:j,1),...
-            '.-','markersize',1,'linewidth',1,'Color',c_list(Cz));
+            '.-','markersize',1,'linewidth',1,'Color',cr);
         text(onePlayer.smoothTrackY(j,1), onePlayer.smoothTrackX(j,1), ...
         disStr,...
         'BackgroundColor', 'none', 'FontSize', 7,'FontWeight','normal',...

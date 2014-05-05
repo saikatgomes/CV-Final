@@ -310,6 +310,7 @@ close(myVid.new);
 M=max(max(hMap));
 m=min(min(hMap));
 normalHM = (hMap-m)/(M-m);
+
 if(myVid.MAKE_HM_PIC==1)
     f6=figure();
     if(myVid.SHOW_PLOTS==0)

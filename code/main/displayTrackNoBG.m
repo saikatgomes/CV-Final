@@ -30,7 +30,7 @@ close(f);
 if(isPrint==1)
     
     f2=figure();    
-    for s=[8 16 32 64]
+    for s=[8 16 32 64 128]
         [featureVector, hogVisualization] = extractHOGFeatures(img.cdata,'CellSize', [s s]);
         plot(hogVisualization);
         img2=getframe(f2);
