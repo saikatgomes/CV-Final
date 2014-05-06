@@ -1,8 +1,8 @@
-function [  ] = analyze(  )
+function [  ] = analyzeOne( base_dir )
     
-    base_dir='../../sandbox/data98/testSrg/play_2_144919_7007';
+    %base_dir='../../sandbox/data98/testSrg/play_2_144919_7007';
     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Start analysis ... ',base_dir));
-    dataDir=strcat(base_dir,'/data');
+    dataDir=strcat(base_dir,'data');
     set(0,'DefaultFigureWindowStyle','docked')
 
     if(~exist(strcat(dataDir,'/phase3_data.mat'),'file'))
@@ -63,7 +63,7 @@ function [  ] = analyze(  )
     set(f2,'visible','off');
     axes('position', [0 0 1 1])
     backImg=zeros(size(normalHM,1),size(normalHM,2),3);
-    imshow(backImg);
+    imagesc(backImg);
     axis off
     hold on;
     for i=1:playerCollection.count

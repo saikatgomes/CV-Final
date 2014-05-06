@@ -1,8 +1,8 @@
-function [  ] = analyze(  )
+function [  ] = analyzeOne( base_dir )
     
-    base_dir='../../sandbox/data98/testSrg/play_2_144919_7007';
+    %base_dir='../../sandbox/data98/testSrg/play_2_144919_7007';
     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Start analysis ... ',base_dir));
-    dataDir=strcat(base_dir,'/data');
+    dataDir=strcat(base_dir,'data');
     set(0,'DefaultFigureWindowStyle','docked')
 
     if(~exist(strcat(dataDir,'/phase3_data.mat'),'file'))
@@ -14,25 +14,25 @@ function [  ] = analyze(  )
     end
     
     f=figure();
-    set(f,'visible','off');
+%     set(f,'visible','off');
     axes('position', [0 0 1 1])
     imagesc(normalHM)
     axis off
     img=getframe(f);
     [hog_hm_8, hogVisualization] = getHOGFeatures( img.cdata, 8 );
-%     plot(hogVisualization);
+    plot(hogVisualization);
     [hog_hm_16, hogVisualization] = getHOGFeatures( img.cdata, 16 );
-%     plot(hogVisualization);
+    plot(hogVisualization);
     [hog_hm_32, hogVisualization] = getHOGFeatures( img.cdata, 32 );
-%     plot(hogVisualization);
+    plot(hogVisualization);
     [hog_hm_64, hogVisualization] = getHOGFeatures( img.cdata, 64 );
-%     plot(hogVisualization);
+    plot(hogVisualization);
     [hog_hm_128, hogVisualization] = getHOGFeatures( img.cdata, 128 );
-%     plot(hogVisualization);
+    plot(hogVisualization);
     close(f);
 
     f1=figure();
-    set(f1,'visible','off');
+%     set(f1,'visible','off');
     axes('position', [0 0 1 1])
     imagesc(normalHM)
     axis off
@@ -75,7 +75,7 @@ function [  ] = analyze(  )
             'w.-','markersize',1,'linewidth',5)
     end
     hold off;
-    img=getframe(f2);
+%     img=getframe(f2);
     [hog_overlay_8, hogVisualization] = getHOGFeatures( img.cdata, 8 );
 %     plot(hogVisualization);
     [hog_overlay_16, hogVisualization] = getHOGFeatures( img.cdata, 16 );

@@ -22,7 +22,7 @@ function [] = process( fileName, ext ,PRINT_VID, numOfClusters, overwriteP1, ove
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Skipping Phase 2 :',fileName)); 
     end
     
-    if(overwriteP3==1 || ~exist(strcat(dataDir,'/phase2_data.mat'),'file'))
+    if(overwriteP3==1 || ~exist(strcat(dataDir,'/phase3_data.mat'),'file'))
         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Starting Phase 3 :',fileName)); 
         phase3(base_dir,myVid);
     else        
