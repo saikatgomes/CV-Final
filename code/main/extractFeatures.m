@@ -5,22 +5,22 @@ isub = [d(:).isdir];
 labelDir = {d(isub).name}';
 labelDir(ismember(labelDir,{'.','..'})) = [];
 
-labelMaps=NaN(length(labelDir));
-
 for i=1:length(labelDir)
     sampleDir=strcat(mainDir,labelDir{i},'/');
     d_sub=dir(sampleDir);
     isub = [d_sub(:).isdir];
     instanceDir = {d_sub(isub).name}';
     instanceDir(ismember(instanceDir,{'.','..'})) = [];
-    display(strcat('label:',labelDir{i},'...[',num2str(length(instanceDir)),']'));
+    display(strcat('......................label:',labelDir{i},'...[',num2str(length(instanceDir)),']'));
     for j=1:length(instanceDir)
         base_dir=strcat(mainDir,labelDir{i},'/',instanceDir{j},'/');
         if(exist(strcat(base_dir,'/data/phase3_data.mat'),'file'))
-            display(strcat('........Instance [yes]:',base_dir));
+            %display(strcat('deleting ...',base_dir));
+            %delete(strcat(base_dir,'/data/feature_data.mat')); %done one!
+            display(strcat('Processing...',base_dir));
             analyzeOne( base_dir );
         else
-            display(strcat('........Instance [NOOOOOO]:',base_dir));
+            display(strcat('###################### NO FEATURES.MAT in DATA DIR :',base_dir));
         end
     end
 end

@@ -116,7 +116,7 @@ playerCollection.list = nestedSortStruct(playerCollection.list, 'steps');
 %C = nestedSortStruct(A, {'year', 'name'});
 
 playerCollection= updateStats( playerCollection );
-%displayTracks( playerCollection, frame , base_dir , 'phase3_initial' , 1, 0 ,0);
+displayTracks( playerCollection, frame , base_dir , 'phase3_initial' , 1, 0 ,0);
 
 isFound=1;
 while(isFound==1)
@@ -124,12 +124,12 @@ while(isFound==1)
 end
 
 playerCollection.list = nestedSortStruct(playerCollection.list, 'steps');
-%displayTracks( playerCollection, frame , base_dir , 'phase3_pass1' , 1, 0 ,0);
+displayTracks( playerCollection, frame , base_dir , 'phase3_pass1' , 1, 0 ,0);
 playerCollection = pruneTracks( playerCollection, 20 ); %prune all tracks that are less that 20
-%displayTracks( playerCollection, frame , base_dir , 'phase3_pass2' , 1, 0 ,0);
-%displayTracks( playerCollection, frame , base_dir , 'phase3_pass2_withEnds' , 1, 1 ,0);
+displayTracks( playerCollection, frame , base_dir , 'phase3_pass2' , 1, 0 ,0);
+displayTracks( playerCollection, frame , base_dir , 'phase3_pass2_withEnds' , 1, 1 ,0);
 displayTrackNoBG( playerCollection, frame , base_dir, 'phase3_justTracks' , 1 )
-%displayTracksContinuous( playerCollection, frame , base_dir,1,0);
+displayTracksContinuous( playerCollection, frame , base_dir,1,0);
 
 rmpath('sort/');
 

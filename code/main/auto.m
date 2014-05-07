@@ -13,7 +13,7 @@ props.setProperty('mail.smtp.socketFactory.class', ...
     'javax.net.ssl.SSLSocketFactory');
 props.setProperty('mail.smtp.socketFactory.port','465');
 
-mainDir='../../sandbox/data97/';
+mainDir='../../sandbox/data98/';
 hostName=getHostName();
 k=22;
 createVid=0; %1=yes,0=no

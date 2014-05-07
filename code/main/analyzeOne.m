@@ -6,8 +6,9 @@ function [  ] = analyzeOne( base_dir )
     set(0,'DefaultFigureWindowStyle','docked')
 
     if(~exist(strcat(dataDir,'/phase3_data.mat'),'file'))
-        display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Phase 3 data nor present ... Starting Phase 3'));
-        phase3(base_dir,'');
+%         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Phase 3 data nor present ... Starting Phase 3'));
+        display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Phase 3 data nor present ... ERROR!!!'));
+%         phase3(base_dir,'');
     else
         load(strcat(base_dir,'/data/phase3_data.mat'));
         load(strcat(base_dir,'/data/phase1_data_others.mat'));

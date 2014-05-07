@@ -1,6 +1,6 @@
 function [  ] = analyze(  )
     
-    base_dir='../../sandbox/data98/testSrg/play_2_144919_7007';
+    base_dir='../../sandbox/data98/testSrg/both_5_111111';
     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Start analysis ... ',base_dir));
     dataDir=strcat(base_dir,'/data');
     set(0,'DefaultFigureWindowStyle','docked')
@@ -20,15 +20,15 @@ function [  ] = analyze(  )
     axis off
     img=getframe(f);
     [hog_hm_8, hogVisualization] = getHOGFeatures( img.cdata, 8 );
-%     plot(hogVisualization);
+     plot(hogVisualization);
     [hog_hm_16, hogVisualization] = getHOGFeatures( img.cdata, 16 );
-%     plot(hogVisualization);
+     plot(hogVisualization);
     [hog_hm_32, hogVisualization] = getHOGFeatures( img.cdata, 32 );
-%     plot(hogVisualization);
+     plot(hogVisualization);
     [hog_hm_64, hogVisualization] = getHOGFeatures( img.cdata, 64 );
-%     plot(hogVisualization);
+     plot(hogVisualization);
     [hog_hm_128, hogVisualization] = getHOGFeatures( img.cdata, 128 );
-%     plot(hogVisualization);
+     plot(hogVisualization);
     close(f);
 
     f1=figure();
@@ -48,15 +48,15 @@ function [  ] = analyze(  )
     end
     hold off;
     [hog_hm_overlay_8, hogVisualization] = getHOGFeatures( img.cdata, 8 );
-%     plot(hogVisualization);
+     plot(hogVisualization);
     [hog_hm_overlay_16, hogVisualization] = getHOGFeatures( img.cdata, 16 );
-%     plot(hogVisualization);
+     plot(hogVisualization);
     [hog_hm_overlay_32, hogVisualization] = getHOGFeatures( img.cdata, 32 );
-%     plot(hogVisualization);
+     plot(hogVisualization);
     [hog_hm_overlay_64, hogVisualization] = getHOGFeatures( img.cdata, 64 );
-%     plot(hogVisualization);
+     plot(hogVisualization);
     [hog_hm_overlay_128, hogVisualization] = getHOGFeatures( img.cdata, 128 );
-%     plot(hogVisualization);
+     plot(hogVisualization);
     close(f1);
 
     f2=figure();
@@ -77,15 +77,15 @@ function [  ] = analyze(  )
     hold off;
     img=getframe(f2);
     [hog_overlay_8, hogVisualization] = getHOGFeatures( img.cdata, 8 );
-%     plot(hogVisualization);
+     plot(hogVisualization);
     [hog_overlay_16, hogVisualization] = getHOGFeatures( img.cdata, 16 );
-%     plot(hogVisualization);
+     plot(hogVisualization);
     [hog_overlay_32, hogVisualization] = getHOGFeatures( img.cdata, 32 );
-%     plot(hogVisualization);
+     plot(hogVisualization);
     [hog_overlay_64, hogVisualization] = getHOGFeatures( img.cdata, 64 );
-%     plot(hogVisualization);
+     plot(hogVisualization);
     [hog_overlay_128, hogVisualization] = getHOGFeatures( img.cdata, 128 );
-%     plot(hogVisualization);
+     plot(hogVisualization);
     close(f2);
     
     save(strcat(dataDir,'/feature_data.mat'), ...
