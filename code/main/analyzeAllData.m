@@ -1,4 +1,4 @@
-function [ ] = analyzeData( mainDir ,trainNum)
+function [ ] = analyzeAllData( mainDir ,trainNum)
 
     d = dir(mainDir);
     isub = [d(:).isdir];
