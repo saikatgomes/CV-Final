@@ -15,9 +15,15 @@ function [ ] = consolidateData( mainDir )
         display(strcat('label:',labelDir{i},'...[',num2str(length(instanceDir)),']'));
         instCount=length(instanceDir);
         totalCount=0;
+        
+        clear features_hog_hm_128 features_hog_hm_64 features_hog_hm_32 features_hog_hm_16 features_hog_hm_8;
+        clear features_hog_hm_overlay_128 features_hog_hm_overlay_64 features_hog_hm_overlay_32 features_hog_hm_overlay_16 features_hog_hm_overlay_8
+        clear features_hog_overlay_128 features_hog_overlay_64 features_hog_overlay_32 features_hog_overlay_16 features_hog_overlay_8;
+        clear sampleLabel;
+        
         for j=1:instCount
             base_dir=strcat(mainDir,labelDir{i},'/',instanceDir{j},'/');
-            featureFile=strcat(base_dir,'data/feature_data.mat');
+            featureFile=strcat(base_dir,'data/feature_data.mat');           
             if(exist(featureFile,'file'))
                 load(featureFile);
                 totalCount=totalCount+1;
