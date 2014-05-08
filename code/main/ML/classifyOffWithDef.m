@@ -6,15 +6,14 @@ resultsDir=strcat('../../../FEATURES/');
 
 featureSet={'features_hog_overlay_128' 'features_hog_overlay_64' ...
             'features_hog_hm_128' 'features_hog_hm_64'...
-            'features_hog_hm_overlay_128' 'features_hm_hog_overlay_64'  ...
+            'features_hog_hm_overlay_128' 'features_hog_hm_overlay_64'  ...
             };
 
 trainSetSize=[10 25 50 75];
-numOfIter=3;
+numOfIter=5;
 
 for f=1:length(featureSet)
     for t=trainSetSize
-        acc=0;
         for k=1:numOfIter
             display(strcat(featureSet{f},'-',num2str(t),'-',num2str(k)));                  
             inputFileName=strcat(resultsDir,'ML_input_',featureSet{f},'_',num2str(t),'-',num2str(k),'.mat');    
@@ -80,13 +79,8 @@ for f=1:length(featureSet)
             save(resultsFileName,'predictedLabels', 'accuracy', 'd_values', 'model', 'confMat', 'order' );
             save(inputFileName,'trainLabel', 'trainFeatures', 'testLabel', 'testFeatures' );
             display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Done!'));        
-            
-            acc=acc+accuracy;
-            
+                        
         end
-        aveAcc=acc/numOfIter;
-        inputFileName2=strcat(resultsDir,'ML_aveAcc_',featureSet{f},'_',num2str(t),'.mat'); 
-        save(inputFileName2,'aveAcc' );
         
     end
 end
