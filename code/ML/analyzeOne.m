@@ -1,13 +1,12 @@
 function [  ] = analyzeOne( base_dir )
     
-    %base_dir='../../sandbox/data98/testSrg/play_2_144919_7007';
     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Start analysis ... ',base_dir));
     dataDir=strcat(base_dir,'data');
     set(0,'DefaultFigureWindowStyle','docked')
 
     if(~exist(strcat(dataDir,'/phase3_data.mat'),'file'))
 %         display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Phase 3 data nor present ... Starting Phase 3'));
-        display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Phase 3 data nor present ... ERROR!!!'));
+        display(strcat(datestr(now,'HH:MM:SS'),' [INFO] Phase 3 data not present ... ERROR!!!'));
 %         phase3(base_dir,'');
     else
         load(strcat(base_dir,'/data/phase3_data.mat'));
