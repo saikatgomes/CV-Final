@@ -25,8 +25,5 @@ function [ new_ctrs ] = verifyClusters( ctrs ,minDist)
         ctrs = removerows(ctrs,'ind',toRemove');        
         clearvars toRemove;
     end
-    
-
-
 end
 

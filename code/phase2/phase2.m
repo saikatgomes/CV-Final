@@ -1,10 +1,6 @@
 function [ ] = phase2( base_dir, myVid )
 
-% 
-% load(strcat(base_dir,'/data/X_new.mat'));
-% load(strcat(base_dir,'/data/Y_new.mat'));
 load(strcat(base_dir,'/data/phase1_data.mat'));
-% '../../sandbox/data99/test_4_26/packers'
 
 %CHRISCROSSS :(
 X=Y_new;
@@ -23,17 +19,14 @@ u = 0; % define acceleration magnitude to start
 HexAccel_noise_mag = 2; %process noise: the variability in how fast the Hexbug is speeding up (stdv of acceleration: meters/sec^2)
 tkn_x = .2;  %measurement noise in the horizontal direction (x axis).
 tkn_y = .2;  %measurement noise in the horizontal direction (y axis).
-% % % % % HexAccel_noise_mag = 1; %process noise: the variability in how fast the Hexbug is speeding up (stdv of acceleration: meters/sec^2)
-% % % % % tkn_x = .1;  %measurement noise in the horizontal direction (x axis).
-% % % % % tkn_y = .1;  %measurement noise in the horizontal direction (y axis).
 Ez = [tkn_x 0; 0 tkn_y];
 Ex = [dt^4/4 0 dt^3/2 0; ...
     0 dt^4/4 0 dt^3/2; ...
     dt^3/2 0 dt^2 0; ...
     0 dt^3/2 0 dt^2].*HexAccel_noise_mag^2; % Ex convert the process noise (stdv) into covariance matrix
-P = Ex; % estimate of initial Hexbug position variance (covariance matrix)
+P = Ex; % estimate of initial player position variance (covariance matrix)
 
-% Define update equations in 2-D! (Coefficent matrices): A physics based model for where we expect the HEXBUG to be [state transition (state + velocity)] + [input control (acceleration)]
+% Define update equations in 2-D! (Coefficent matrices): A physics based model for where we expect the player to be [state transition (state + velocity)] + [input control (acceleration)]
 A = [1 0 dt 0; 0 1 0 dt; 0 0 1 0; 0 0 0 1]; %state update matrice
 B = [(dt^2/2); (dt^2/2); dt; dt];
 C = [1 0 0 0; 0 1 0 0];  %this is our measurement function C, that we apply to the state estimate Q to get our expect next/new measurement
@@ -50,22 +43,18 @@ P_estimate = P;  %covariance estimator
 strk_trks = zeros(1,2000);  %counter of how many strikes a track has gotten
 nD = size(X{S_frame},1); %initize number of detections
 nF =  find(isnan(Q_estimate(1,:))==1,1)-1 ; %initize number of track estimates
-%
+
 oneReader.reader = vision.VideoFileReader(strcat(base_dir,'/new.mp4'));
 inputVid=VideoReader(strcat(base_dir,'/new.mp4'));
-%
-
 totNumOfFrame = inputVid.NumberOfFrames;
 frameCount=S_frame-1;
 
-% f=figure();
 for t = S_frame:totNumOfFrame-1
     
     frameCount=frameCount+1;
 %     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] processing frame -> ',num2str(frameCount)));
     frame = oneReader.reader.step();
-    img = frame(:,:,1);
-    
+    img = frame(:,:,1);    
     % make the given detections matrix
     Q_loc_meas = [X{t} Y{t}];
     
@@ -81,8 +70,7 @@ for t = S_frame:totNumOfFrame-1
     %predict next covariance
     P = A * P* A' + Ex;
     % Kalman Gain
-    K = P*C'*inv(C*P*C'+Ez);
-    
+    K = P*C'*inv(C*P*C'+Ez);    
     
     %% now we assign the detections to estimated track positions
     %make the distance (cost) matrice between all pairs rows = tracks, coln =
@@ -95,8 +83,7 @@ for t = S_frame:totNumOfFrame-1
     asgn = asgn';   
     
     % ok, now we check for tough situations and if it's tough, just go with estimate and ignore the data
-    %make asgn = 0 for that tracking element
-    
+    %make asgn = 0 for that tracking element    
     %check 1: is the detection far from the observation? if so, reject it.
     rej = [];
     for F = 1:nF
@@ -139,7 +126,7 @@ for t = S_frame:totNumOfFrame-1
         strk_trks(no_trk_list) = strk_trks(no_trk_list) + 1;
     end
     
-    %if a track has a strike greater than 6, delete the tracking. i.e.
+    %if a track has a strike greater than 3, delete the tracking. i.e.
     %make it nan first vid = 3
     %bad_trks = find(strk_trks > 10);
     bad_trks = find(strk_trks > 3);

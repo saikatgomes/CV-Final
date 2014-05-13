@@ -113,9 +113,9 @@ playerCollection.list(playerCollection.count+1:end)=[]; %remove empty spaces
 playerCollection.list_unsorted=playerCollection.list;
 addpath('sort/');
 playerCollection.list = nestedSortStruct(playerCollection.list, 'steps');
-%C = nestedSortStruct(A, {'year', 'name'});
 
 playerCollection= updateStats( playerCollection );
+addpath('display/');
 displayTracks( playerCollection, frame , base_dir , 'phase3_initial' , 1, 0 ,0);
 
 isFound=1;
@@ -131,10 +131,11 @@ displayTracks( playerCollection, frame , base_dir , 'phase3_pass2_withEnds' , 1,
 displayTrackNoBG( playerCollection, frame , base_dir, 'phase3_justTracks' , 1 )
 displayTracksContinuous( playerCollection, frame , base_dir,1,0);
 
-rmpath('sort/');
 
 dataDir=strcat(base_dir,'/data');
 mkdir(dataDir);
 save(strcat(dataDir,'/phase3_data.mat'),'playerCollection');
+rmpath('sort/');
+rmpath('display/');
 end
 

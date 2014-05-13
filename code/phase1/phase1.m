@@ -1,8 +1,6 @@
-function [ ] = phase1( fileName, ext , numOfClusters, myVid, playerDetector  )
+function [ ] = phase1(numOfClusters, myVid, playerDetector  )
 
 warning('off','all');
-
-%myVid.SHOW_PLOTS=1; %OVERRIDE!
 
 base_dir=myVid.base_dir;
 delay=myVid.delay;
@@ -20,7 +18,6 @@ h = fspecial('log', hsizeh, sigmah);
 while ~isDone(playerDetector.reader)
     
     frameCount=frameCount+1;
-%     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] processing frame -> ',num2str(frameCount)));
     frame = playerDetector.reader.step();
     
     % Detect foreground.
@@ -44,8 +41,10 @@ while ~isDone(playerDetector.reader)
     
     imwrite(fgImg,strcat(hostName,'_temp.jpg'));
     img_real = imread(strcat(hostName,'_temp.jpg'));
-    img_tmp = double(imread(strcat(hostName,'_temp.jpg'))); %load in the image and convert to double too allow for computations on the image
-    img = img_tmp(:,:,1); %reduce to just the first dimension, we don't care about color (rgb) values here.
+    %load in the image and convert to double too allow for computations on the image
+    img_tmp = double(imread(strcat(hostName,'_temp.jpg'))); 
+    %reduce to just the first dimension, we don't care about color (rgb) values here.
+    img = img_tmp(:,:,1); 
     
     if(myVid.WRITE_NO_BG==1 && frameCount>delay)
         imwrite(fgImg,strcat(base_dir,'/noBG/',num2str(frameCount-delay),'.jpg'));
@@ -71,10 +70,6 @@ while ~isDone(playerDetector.reader)
         imagesc(normalHM)
         colormap(jet)
         colorbar
-%         saveas(f1,strcat(hostName,'_temp.jpg'));
-%         tempI=imread(strcat(hostName,'_temp.jpg'));        
-%         writeVideo(myVid.gdVid,tempI);
-%         delete(strcat(hostName,'_temp.jpg'));
         writeVideo(myVid.gdVid,getframe(f1));
         close(f1);
     end
@@ -100,18 +95,11 @@ while ~isDone(playerDetector.reader)
         imagesc(normalHM)
         colormap(jet)
         colorbar
-%         saveas(f15,strcat(hostName,'_temp.jpg'));
-%         tempI=imread(strcat(hostName,'_temp.jpg'));
-%         writeVideo(myVid.hmVid,tempI);
-%         delete(strcat(hostName,'_temp.jpg'));
         writeVideo(myVid.hmVid,getframe(f15));
         close(f15);
     end
     
-    %threshold the image to blobs only: you'll need to decide what your
-    %threshold level is..you can use your eyes or a histogram :P
-    %blob_ori=blob_img;
-    
+    %threshold the image to blobs only:    
     %idx = find(blob_img >-1.5);
     idx = find(blob_img > THRESHOLD);
     blob_img(idx) = nan ;
@@ -123,31 +111,16 @@ while ~isDone(playerDetector.reader)
         end
         imagesc(blob_img)
         colorbar
-%         saveas(f2,strcat(hostName,'_temp.jpg'));
-%         tempI=imread(strcat(hostName,'_temp.jpg'));
-%         writeVideo(myVid.lmVid,tempI);
-%         delete(strcat(hostName,'_temp.jpg'));
         writeVideo(myVid.lmVid,getframe(f2));
         close(f2);
     end
     
-    %now we have an image of hills and valleys..some are distinct, some
-    %overlap..but you can still see the peak...most of the time.
-    %use this GREAT 2-d local max/min finder
-    %http://www.mathworks.com/matlabcentral/fileexchange/12275-extrema-m-extrema2-m
-    %it find the blob peak indices for this video, there should be ~11
-    
+    %http://www.mathworks.com/matlabcentral/fileexchange/12275-extrema-m-extrema2-m    
     goodFrame=goodFrame+1;
 %     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... finding extemas.'));
     [zmax,imax,zmin,imin] = extrema2(blob_img);
     [X{goodFrame},Y{goodFrame}] = ind2sub(size(blob_img),imax);
-    %for plotting
-    %%{
     clf
-    % % %     subplot(211);
-    % % %     imagesc(blob_img)
-    % % %         axis off
-    % % %     subplot(212)
     
 %     display(strcat(datestr(now,'HH:MM:SS'),' [INFO] ... finding clusters.'));
     [ idx,ctrs  ,SUMD, DistMat ] = getCentroids( Y{goodFrame}, X{goodFrame},numOfClusters );
@@ -173,10 +146,6 @@ while ~isDone(playerDetector.reader)
             plot(Y{goodFrame}(j),X{goodFrame}(j),'or')
         end
         axis off
-%         saveas(f3,strcat(hostName,'_temp.jpg'));
-%         tempI=imread(strcat(hostName,'_temp.jpg'));
-%         writeVideo(myVid.clusterVid,tempI);
-%         delete(strcat(hostName,'_temp.jpg'));
         writeVideo(myVid.clusterVid,getframe(f3));
         
         plot(ctrs(:,1),ctrs(:,2),'yx',...
@@ -190,10 +159,6 @@ while ~isDone(playerDetector.reader)
             'MarkerSize',12,'LineWidth',2)
         
         if(myVid.MAKE_CENTROID_VID==1)
-%             saveas(f3,strcat(hostName,'_temp.jpg'));
-%             tempI=imread(strcat(hostName,'_temp.jpg'));
-%             writeVideo(myVid.cenVid1,tempI);
-%             delete(strcat(hostName,'_temp.jpg'));
             writeVideo(myVid.cenVid1,getframe(f3));
         end
         close(f3);
@@ -213,10 +178,6 @@ while ~isDone(playerDetector.reader)
             'MarkerSize',12,'LineWidth',2)
         
         hold off;
-%         saveas(f4,strcat(hostName,'_temp.jpg'));
-%         tempI=imread(strcat(hostName,'_temp.jpg'));
-%         writeVideo(myVid.cenVid2,tempI);
-%         delete(strcat(hostName,'_temp.jpg'));
         writeVideo(myVid.cenVid2,getframe(f4));
         close(f4);
     end
@@ -250,21 +211,15 @@ while ~isDone(playerDetector.reader)
                 'MarkerFaceColor', theColor,'MarkerEdgeColor','none',...
                 'MarkerSize',2)
         end
-%         saveas(f5,strcat(hostName,'_temp.jpg'));
-%         tempI=imread(strcat(hostName,'_temp.jpg'));
-%         writeVideo(myVid.tracksVid1,tempI);
         writeVideo(myVid.tracksVid1,getframe(f5));
         if(frameCount==myVid.totNumOfFrame)
             saveas(f5,strcat(base_dir,'/tracksTotal.jpg'));
-%             copyfile(strcat(hostName,'_temp.jpg'),strcat(base_dir,...
-%                 '/tracksTotal.jpg'));
         end
-%         delete(strcat(hostName,'_temp.jpg'));
         
         close(f5);
         f55=figure();
         if(myVid.SHOW_PLOTS==0)
-            set(f5,'visible','off');
+            set(f55,'visible','off');
         end
         imshow(frame)
         hold on
@@ -290,16 +245,10 @@ while ~isDone(playerDetector.reader)
                 'MarkerFaceColor', theColor,'MarkerEdgeColor','none',...
                 'MarkerSize',2)
         end
-%         saveas(f55,strcat(hostName,'_temp.jpg'));
-%         tempI=imread(strcat(hostName,'_temp.jpg'));
-%         writeVideo(myVid.tracksVid2,tempI);
         writeVideo(myVid.tracksVid2,getframe(f55));
         if(frameCount==myVid.totNumOfFrame)
             saveas(f55,strcat(base_dir,'/tracksTotal.jpg'));
-%             copyfile(strcat(hostName,'_temp.jpg'),strcat(base_dir, ...
-%                 '/tracksTotal2.jpg'));
         end
-%         delete(strcat(hostName,'_temp.jpg'));
         close(f55);
     end
 end
@@ -319,9 +268,6 @@ if(myVid.MAKE_HM_PIC==1)
     imagesc(normalHM)
     colormap(jet)
     colorbar
-    %   oneFrame=im2frame(zbuffer_cdata(f6));
-    %   oneImg=(oneFrame.cdata);
-    %     imwrite(oneImg,strcat(base_dir,'/heatMapTotal.jpg'));
     saveas(f6,strcat(base_dir,'/heatMapTotal.jpg'));
     close(f6);
 end
