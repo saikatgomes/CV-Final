@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CS 766 - Computer Vision Final Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body >
+	  
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+		
+	<div class="navbar navbar-inverse navbar-fixed-top ">
+		<div class="navbar-inner">
+			<div class="container pull-left">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<a class="brand" style="font-size:16px" href="#"><b><i>&nbsp;&nbsp;&nbsp;&nbsp;Player Tracking</i></b></a>
+				<b>
+				<div class="nav-collapse collapse navbar-responsive-collapse ">
+					<ul class="nav" style="font-size:14px">
+						<li class="divider-vertical"></li>
+						<li><a href="../">Home</a></li>
+						<li class="divider-vertical"></li>
+						<li class="active"><a href="index.html">Pipeline</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b></a>
+							<ul class="dropdown-menu">
+							  <li class="nav-header">Phase 0</li>
+							  <li><a href="../data/">Data Collection</a></li>
+							  <li class="divider"></li>
+							  <li class="nav-header">Phase 1</li>
+							  <li><a href="bg_sub.html">Background Subtraction</a></li>
+							  <li><a href="img_smooth.html">Image Smoothening</a></li>
+							  <li><a href="pos_est.html">Position Estimation</a></li>
+							  <li><a href="pos_opt.html">Position Optimization</a></li>
+							  <li class="divider"></li>
+							  <li class="nav-header">Phase 2</li>
+							  <li><a href="tk_est.html">Track Estimation</a></li>
+							  <li><a href="tk_opt.html">Track Optimzation</a></li>
+							  <li><a href="tk_data.html">Track Data Computation</a></li>
+							  <li class="divider"></li>
+							  <li class="nav-header">Phase 3</li>
+							  <li><a href="net_tk.html">Net Track Estimation</a></li>
+							  <li><a href="hm_est.html">Heatmap Estimation</a></li>
+							  <li><a href="hog_ext.html">HOG Feature Extraction</a></li>
+							  <li><a href="play_classification.html">Play Classification</a></li>
+							</ul>
+						</li>
+						<li class="divider-vertical"></li>
+						<li><a href="../tracking">Tracking</a></li>
+						<li class="divider-vertical"></li>
+						<li><a href="../analysis">Data Analysis</a></li>
+						<li class="divider-vertical"></li>
+						<li><a href="../data">Dataset</a></li>
+						<li class="divider-vertical"></li>
+						<li><a href="../code">Code</a></li>
+						<li class="divider-vertical"></li>
+						
+					</ul>
+				</div>
+				</b>
+			</div>
+		</div>
+	</div>
+    <br>
+    <br>
+    <br>
+    
+	
+    <center>
+	<table width=1000 align="center">
+		<tr>
+			<td align="center">
+				<h3>Net-Tracks Estimation</h3>
+				 <a href="tk_data.html"><button class="btn btn-inverse btn-mini" type="button"><i class="icon-arrow-left icon-white"></i>&nbsp;&nbsp;Prev</button></a>
+				 <a href="index.html"><button class="btn btn-inverse btn-mini" type="button">Back to Pipeline</button></a>
+				 <a href="hm_est.html"><button class="btn btn-inverse btn-mini" type="button">Next&nbsp;&nbsp;<i class="icon-arrow-right icon-white"></i></button></a>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<br>Bit map containing all the tracks extimated is created.
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<br>
+				<img src="../img/net_tk.jpg">
+			</td>
+		</tr>
+	</table>    
+    </center>
+	<br><br>
+    <hr>
+    
+  </body>
+</html>

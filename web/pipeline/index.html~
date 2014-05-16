@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CS 766 - Computer Vision Final Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body >
+	  
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+		
+	<div class="navbar navbar-inverse navbar-fixed-top ">
+		<div class="navbar-inner">
+			<div class="container pull-left">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<a class="brand" style="font-size:16px" href="#"><b><i>&nbsp;&nbsp;&nbsp;&nbsp;Player Tracking</i></b></a>
+				<b>
+				<div class="nav-collapse collapse navbar-responsive-collapse ">
+					<ul class="nav" style="font-size:14px">
+						<li class="divider-vertical"></li>
+						<li><a href="../index.html">Home</a></li>
+						<li class="divider-vertical"></li>
+						<li class="active"><a href="../pipeline/index.html">Pipeline</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b></a>
+							<ul class="dropdown-menu">
+							  <li class="nav-header">Phase 0</li>
+							  <li><a href="../data/index.html">Data Collection</a></li>
+							  <li class="divider"></li>
+							  <li class="nav-header">Phase 1</li>
+							  <li><a href="bg_sub.html">Background Subtraction</a></li>
+							  <li><a href="img_smooth.html">Image Smoothening</a></li>
+							  <li><a href="pos_est.html">Position Estimation</a></li>
+							  <li><a href="pos_opt.html">Position Optimization</a></li>
+							  <li class="divider"></li>
+							  <li class="nav-header">Phase 2</li>
+							  <li><a href="tk_est.html">Track Estimation</a></li>
+							  <li><a href="tk_opt.html">Track Optimzation</a></li>
+							  <li><a href="tk_data.html">Track Data Computation</a></li>
+							  <li class="divider"></li>
+							  <li class="nav-header">Phase 3</li>
+							  <li><a href="net_tk.html">Net Track Estimation</a></li>
+							  <li><a href="hm_est.html">Heatmap Estimation</a></li>
+							  <li><a href="hog_ext.html">HOG Feature Extraction</a></li>
+							  <li><a href="play_classification.html">Play Classification</a></li>
+							</ul>
+						</li>
+						<li class="divider-vertical"></li>
+						<li><a href="../tracking/index.html">Tracking</a></li>
+						<li class="divider-vertical"></li>
+						<li><a href="../analysis/index.html">Data Analysis</a></li>
+						<li class="divider-vertical"></li>
+						<li><a href="../data/index.html">Dataset</a></li>
+						<li class="divider-vertical"></li>
+						<li><a href="../code/index.html">Code</a></li>
+						<li class="divider-vertical"></li>
+						
+					</ul>
+				</div>
+				</b>
+			</div>
+		</div>
+	</div>
+    <br>
+    <br>
+    <br>
+    
+    <center>
+    <table width=800 valign="middle" align="center">
+		<tr>
+			<td colspan=100% align="center">
+				<h3>Project Pipeline</h3>
+			</td>
+		</tr>
+		<tr>
+			<td width=290 align=center>
+				<div class="alert alert-success">	
+					<br>
+					<h4>Phase 0</h4>Data Collection
+					<br>
+					<br>
+				</div>				
+			</td>
+			<td width=10>
+				&nbsp;
+			</td>
+			<td align=center>
+				<a href="../data/">
+					<div class="alert btn">				  
+					  <table width=500 align=center>
+							<tr>						
+								<td align=center>
+									Selected plays are captured from <i>NFL Madden 08 PC version</i>.
+								</td>
+							</tr>
+					  </table>				 
+					</div>	
+				</a>		
+				<br>
+				<a href="../data/">
+					<div class="alert btn">				  
+					  <table width=500 align=center>
+							<tr>						
+								<td align=center>
+									Improperly collected videos are discarded.
+								</td>
+							</tr>
+					  </table>				  
+					</div>	
+				</a>				
+			</td>
+		</tr> 
+		<tr valign="middle"	>
+			<td colspan=2>
+				&nbsp;
+			</td>
+			<td align="center">
+				<img src="../img/arrow_down.png">
+			</td>
+		</tr>    
+		
+		<tr valign="middle">
+			<td width=290 align="center">
+				<div class="alert alert-success">	
+					<br>
+					<h4>Phase 1</h4>Object Detection
+					<br>
+					<br>
+				</div>				
+			</td>
+			<td width=10>
+				&nbsp;
+			</td>
+			<td align="center">
+				<br>
+				<a href="bg_sub.html">
+					<div class="alert btn">				  
+					  <table width=500 align="center">
+							<tr>						
+								<td align=center>
+									<h4>Background Substraction</h4>
+									Background is removed using Gaussian mixture models.
+								</td>
+							</tr>
+					  </table>				  
+					</div>	
+				</a>			
+				<br>
+				<a href="img_smooth.html">
+					<div class="alert btn">				  
+					  <table width=500 align="center">
+							<tr>						
+								<td align=center>
+									<h4>Image Smoothening</h4>
+									2-D Gaussian filter is applied to to reduce noise.
+								</td>
+							</tr>
+					  </table>				  
+					</div>	
+				</a>			
+				<br>
+				<a href="pos_est.html">
+					<div class="alert btn">				  
+					  <table width=500 align="center">
+							<tr>						
+								<td align=center>
+									<h4>Player Position Estimation</h4>
+									Local extema is clustered to approximate player location.
+								</td>
+							</tr>
+					  </table>				  
+					</div>	
+				</a>		
+				<br>
+				<a href="pos_opt.html">
+					<div class="alert btn">				  
+					  <table width=500 align="center">
+							<tr>						
+								<td align=center>
+									<h4>Optimize Estimated Location</h4>
+									Use prior domain knowledge to reject false positives early.
+								</td>
+							</tr>
+					  </table>				  
+					</div>	
+				</a>	
+			</td>
+		</tr> 
+		<tr valign="middle"	>
+			<td colspan=2>
+				&nbsp;
+			</td>
+			<td align="center">
+				<img src="../img/arrow_down.png">
+			</td>
+		</tr>  
+		
+		<tr valign="middle">
+			<td width=290 align="center">
+				<div class="alert alert-success">	
+					<br>
+					<h4>Phase 2</h4>Object Tracking
+					<br>
+					<br>
+				</div>				
+			</td>
+			<td width=10>
+				&nbsp;
+			</td>
+			<td align="center">
+				<br>
+				<a href="tk_est.html">
+					<div class="alert btn">				  
+					  <table width=500 align="center">
+							<tr>						
+								<td align=center>
+									<h4>Track Estimation</h4>
+									Use Kalman Filtering to estimate tracks as a function of time.
+								</td>
+							</tr>
+					  </table>				  
+					</div>	
+				</a>	
+				<br>
+				<a href="tk_opt.html">
+					<div class="alert btn">				  
+					  <table width=500 align="center">
+							<tr>						
+								<td align=center>
+									<h4>Track Optimization</h4>
+									Use iterative Heurestic search to find best fit tracks.
+								</td>
+							</tr>
+					  </table>				  
+					</div>	
+				</a>	
+				<br>
+				<a href="tk_data.html">					
+					<div class="alert btn">				  
+					  <table width=500 align="center">
+							<tr>						
+								<td align=center>
+									<h4>Compute Track Data</h4>
+									Calcuate distance travelled, Average velocity and Instantaneous Velocity.
+								</td>
+							</tr>
+					  </table>				  
+					</div>	
+				</a>		
+			</td>
+		</tr> 
+		<tr valign="middle"	>
+			<td colspan=2>
+				&nbsp;
+			</td>
+			<td align="center">
+				<img src="../img/arrow_down.png">
+			</td>
+		</tr>  
+		
+		<tr valign="middle">
+			<td width=290 align="center">
+				<div class="alert alert-success">	
+					<br>
+					<h4>Phase 3</h4>Data Analysis
+					<br>
+					<br>
+				</div>				
+			</td>
+			<td width=10>
+				&nbsp;
+			</td>
+			<td align="center">
+				<br>
+				<a href="net_tk.html">
+					<div class="alert btn">				  
+					  <table width=500 align="center">
+							<tr>						
+								<td align=center>
+									<h4>Estimate Net-Tracks</h4>
+									A bit map is created from the detected tracks.
+								</td>
+							</tr>
+					  </table>				  
+					</div>	
+				</a>		
+				<br>
+				<a href="hm_est.html">
+					<div class="alert btn">				  
+					  <table width=500 align="center">
+							<tr>						
+								<td align=center>
+									<h4>Create Player heatmap</h4>
+									A normalized heatmap of the player locations is created.
+								</td>
+							</tr>
+					  </table>				  
+					</div>	
+				</a>	
+				<br>
+				<a href="hog_ext.html">
+					<div class="alert btn">				  
+					  <table width=500 align="center">
+							<tr>						
+								<td align=center>
+									<h4>Extract HOG features</h4>
+									HOG features are extracted from the tracks bitmap and player heatmap.
+								</td>
+							</tr>
+					  </table>				  
+					</div>	
+				</a>
+				<br>
+				<a href="play_classification.html">
+					<div class="alert btn">				  
+					  <table width=500 align="center">
+							<tr>						
+								<td align=center>
+									<h4>Classify Plays</h4>
+									Use 1-vs-All SVM to classify plays based on features extracted.
+								</td>
+							</tr>
+					  </table>				  
+					</div>	
+				</a>
+			</td>
+		</tr>   
+		
+    </table>
+    </center>
+      
+    
+    
+  </body>
+</html>

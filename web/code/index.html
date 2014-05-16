@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CS 766 - Computer Vision Final Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body >
+	  
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+		
+	<div class="navbar navbar-inverse navbar-fixed-top ">
+		<div class="navbar-inner">
+			<div class="container pull-left">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<a class="brand" style="font-size:16px" href="#"><b><i>&nbsp;&nbsp;&nbsp;&nbsp;Player Tracking</i></b></a>
+				<b>
+				<div class="nav-collapse collapse navbar-responsive-collapse ">
+					<ul class="nav" style="font-size:14px">
+						<li class="divider-vertical"></li>
+						<li><a href="../index.html">Home</a></li>
+						<li class="divider-vertical"></li>
+						<li><a href="../pipeline/index.html">Pipeline</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b></a>
+							<ul class="dropdown-menu">
+							  <li class="nav-header">Phase 0</li>
+							  <li><a href="../data/index.html">Data Collection</a></li>
+							  <li class="divider"></li>
+							  <li class="nav-header">Phase 1</li>
+							  <li><a href="../pipeline/bg_sub.html">Background Subtraction</a></li>
+							  <li><a href="../pipeline/img_smooth.html">Image Smoothening</a></li>
+							  <li><a href="../pipeline/pos_est.html">Position Estimation</a></li>
+							  <li><a href="../pipeline/pos_opt.html">Position Optimization</a></li>
+							  <li class="divider"></li>
+							  <li class="nav-header">Phase 2</li>
+							  <li><a href="../pipeline/tk_est.html">Track Estimation</a></li>
+							  <li><a href="../pipeline/tk_opt.html">Track Optimzation</a></li>
+							  <li><a href="../pipeline/tk_data.html">Track Data Computation</a></li>
+							  <li class="divider"></li>
+							  <li class="nav-header">Phase 3</li>
+							  <li><a href="../pipeline/net_tk.html">Net Track Estimation</a></li>
+							  <li><a href="../pipeline/hm_est.html">Heatmap Estimation</a></li>
+							  <li><a href="../pipeline/hog_ext.html">HOG Feature Extraction</a></li>
+							  <li><a href="../pipeline/play_classification.html">Play Classification</a></li>
+							</ul>
+						</li>
+						<li class="divider-vertical"></li>
+						<li><a href="../tracking/index.html">Tracking</a></li>
+						<li class="divider-vertical"></li>
+						<li><a href="../analysis/index.html">Data Analysis</a></li>
+						<li class="divider-vertical"></li>
+						<li><a href="../data/index.html">Dataset</a></li>
+						<li class="divider-vertical"></li>
+						<li class="active"><a href="../code/index.html">Code</a></li>
+						<li class="divider-vertical"></li>
+						
+					</ul>
+				</div>
+				</b>
+			</div>
+		</div>
+	</div>
+    <br>
+    <br>
+    <br>
+    
+    <center>
+    	<table width=1000 align="center">
+		<tr>
+			<td align="center">
+				<h3>Codebase (currently being updated)</h3>
+				<br>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<a href="code.zip"><button class="btn btn-large btn-primary" type="button">Download "code.zip"</button></a> 
+				&nbsp;&nbsp;
+				<a href="code.7z"><button class="btn btn-large btn-primary" type="button">Download "code.7z"</button></a>
+				&nbsp;&nbsp;
+				<a href="src/"><button class="btn btn-large btn-primary" type="button">View Code Folder</button></a>
+				<br><br>
+				<a href="https://github.com/saikatgomes/CV-Final.git" target="_blank"><button class="btn btn-small btn-success" type="button">Git Repository</button></a>				
+				<br>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<br>
+				<table width=800>
+					<tr>
+						<td>	
+							<div class="alert">	
+								<h4>code/</h4>
+								<br>
+								<code>batchprocess( mainDir ,outDir, createVid, overwriteP1, overwriteP2, overwriteP3, seed, emailAddress, emailPass)</code>	
+								<br>
+								<blockquote>
+									<br>
+									mainDir: Location of the main dir which contains directories containing sample videos.
+									<br>
+									outDir: Location where the processed data will be moved after successful processing.
+									<br>
+									createVid: Boolean flag to denote if videos of intermediate steps should be created.
+									<br>
+									overwriteP1: Boolean flag to denote if phase 1 should skipped if phase 1 data was previously created already.
+									<br>
+									overwriteP2: Boolean flag to denote if phase 2 should skipped if phase 1 data was previously created already.
+									<br>
+									overwriteP3: Boolean flag to denote if phase 3 should skipped if phase 1 data was previously created already.
+									<br>
+									seed:  A number to generate new sample names after processing.
+									<br>
+									emailAddress: email address from where an email will be sent.
+									<br>
+									emailPass: passwords of email address.
+								</blockquote>
+								<br>
+								<code>process( fileName, ext ,PRINT_VID, numOfClusters,overwriteP1, overwriteP2, overwriteP3)</code>	
+								<br>
+								<blockquote>
+									<br>
+									fileName: filename of the video to be processed.
+									<br>
+									ext: file extention of the video to be processed.
+									<br>
+									PRINT_VID: Boolean flag to denote if videos of intermediate steps should be created.
+									<br>
+									numOfClusters: number of clusters (k) to be used in k-mean clustering.
+									<br>
+									overwriteP1: Boolean flag to denote if phase 1 should skipped if phase 1 data was previously created already.
+									<br>
+									overwriteP2: Boolean flag to denote if phase 2 should skipped if phase 1 data was previously created already.
+									<br>
+									overwriteP3: Boolean flag to denote if phase 3 should skipped if phase 1 data was previously created already.
+								</blockquote>
+							</div>										
+						</td>
+					</tr>
+					<tr>
+						<td>	
+							<div class="alert">	
+								<h4>code/ML</h4>
+								<br>
+								<code>extractFeatures( mainDir )</code>	
+								<br>
+								<blockquote>
+									<br>
+								</blockquote>
+								<br>
+								<code>analyzeOne( base_dir )</code>	
+								<br>
+								<blockquote>
+									<br>
+								</blockquote>
+								<br>
+								<code>[ featureVector, hogVisualization ] = getHOGFeatures( img, s )</code>	
+								<br>
+								<blockquote>
+									<br>
+								</blockquote>
+								<br>
+								<code>consolidateData( mainDir )</code>	
+								<br>
+								<blockquote>
+									<br>
+								</blockquote>
+								<br>
+								<code>classify( mainDir, trainNum)</code>	
+								<br>
+								<blockquote>
+									<br>
+								</blockquote>
+								<br>
+								<code>classifyOffWithDef()</code>	
+								<br>
+								<blockquote>
+									<br>
+								</blockquote>
+								<br>
+								<code>stratifiedOffWithDef()</code>	
+								<br>
+								<blockquote>
+									<br>
+								</blockquote>
+							</div>										
+						</td>
+					</tr>
+					<tr>
+						<td>	
+							<div class="alert">	
+								<h4>code/phase1</h4>
+								<br>
+								<code>Code API's will be added here</code>	
+							</div>										
+						</td>
+					</tr>
+					<tr>
+						<td>	
+							<div class="alert">	
+								<h4>code/phase2</h4>
+								<br>
+								<code>Code API's will be added here</code>	
+							</div>										
+						</td>
+					</tr>
+					<tr>
+						<td>	
+							<div class="alert">	
+								<h4>code/phase3</h4>
+								<br>
+								<code>Code API's will be added here</code>	
+							</div>										
+						</td>
+					</tr>
+					<tr>
+						<td>	
+							<div class="alert">	
+								<h4>code/display</h4>
+								<br>
+								<code>Code API's will be added here</code>	
+							</div>										
+						</td>
+					</tr>
+					<tr>
+						<td>	
+							<div class="alert">	
+								<h4>code/helper</h4>
+								<br>
+								<code>Code API's will be added here</code>	
+							</div>										
+						</td>
+					</tr>
+					<tr>
+						<td>	
+							<div class="alert">	
+								<h4>code/liblinear</h4>
+								<br>
+								<code>Code API's will be added here</code>	
+							</div>										
+						</td>
+					</tr>
+					<tr>
+						<td>	
+							<div class="alert">	
+								<h4>code/sort</h4>
+								<br>
+								<code>Code API's will be added here</code>	
+							</div>										
+						</td>
+					</tr>
+					<tr>
+						<td>	
+							<div class="alert">	
+								<h4>code/util</h4>
+								<br>
+								<code>Code API's will be added here</code>	
+							</div>										
+						</td>
+					</tr>
+				</table>				
+			</td>
+		</tr>
+	</table>
+    </center>
+      
+    
+    
+  </body>
+</html>

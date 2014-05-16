@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CS 766 - Computer Vision Final Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body >
+	  
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+		
+	<div class="navbar navbar-inverse navbar-fixed-top ">
+		<div class="navbar-inner">
+			<div class="container pull-left">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<a class="brand" style="font-size:16px" href="#"><b><i>&nbsp;&nbsp;&nbsp;&nbsp;Player Tracking</i></b></a>
+				<b>
+				<div class="nav-collapse collapse navbar-responsive-collapse ">
+					<ul class="nav" style="font-size:14px">
+						<li class="divider-vertical"></li>
+						<li><a href="../index.html">Home</a></li>
+						<li class="divider-vertical"></li>
+						<li><a href="../pipeline/index.html">Pipeline</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b></a>
+							<ul class="dropdown-menu">
+							  <li class="nav-header">Phase 0</li>
+							  <li><a href="../data/index.html">Data Collection</a></li>
+							  <li class="divider"></li>
+							  <li class="nav-header">Phase 1</li>
+							  <li><a href="../pipeline/bg_sub.html">Background Subtraction</a></li>
+							  <li><a href="../pipeline/img_smooth.html">Image Smoothening</a></li>
+							  <li><a href="../pipeline/pos_est.html">Position Estimation</a></li>
+							  <li><a href="../pipeline/pos_opt.html">Position Optimization</a></li>
+							  <li class="divider"></li>
+							  <li class="nav-header">Phase 2</li>
+							  <li><a href="../pipeline/tk_est.html">Track Estimation</a></li>
+							  <li><a href="../pipeline/tk_opt.html">Track Optimzation</a></li>
+							  <li><a href="../pipeline/tk_data.html">Track Data Computation</a></li>
+							  <li class="divider"></li>
+							  <li class="nav-header">Phase 3</li>
+							  <li><a href="../pipeline/net_tk.html">Net Track Estimation</a></li>
+							  <li><a href="../pipeline/hm_est.html">Heatmap Estimation</a></li>
+							  <li><a href="../pipeline/hog_ext.html">HOG Feature Extraction</a></li>
+							  <li><a href="../pipeline/play_classification.html">Play Classification</a></li>
+							</ul>
+						</li>
+						<li class="divider-vertical"></li>
+						<li class="active"><a href="../tracking/index.html">Tracking</a></li>
+						<li class="divider-vertical"></li>
+						<li><a href="../analysis/index.html">Data Analysis</a></li>
+						<li class="divider-vertical"></li>
+						<li><a href="../data/index.html">Data</a></li>
+						<li class="divider-vertical"></li>
+						<li><a href="../code/index.html">Code</a></li>
+						<li class="divider-vertical"></li>
+						
+					</ul>
+				</div>
+				</b>
+			</div>
+		</div>
+	</div>
+    <br>
+    <br>
+    <br>
+    
+    <center>
+	<table width=1100 align="center">
+		<tr>
+			<td align="center" colspan=100%>
+				<h3>Play 1</h3>
+			</td>
+		</tr>
+		<tr>
+			<td align="center" width=50%>
+				<iframe width="500" height="281" src="//www.youtube.com/embed/JHKHnUKQYVw?rel=0" frameborder="0" allowfullscreen></iframe>
+				<br>
+				<a href="plays/p1/index.html"><button class="btn btn-small btn-primary" type="button">More on Play 1 (Offense Only)</button></a>
+			</td>
+			<td align="center" width=50%>
+				<iframe width="500" height="281" src="//www.youtube.com/embed/EqWxujvzSRY?rel=0" frameborder="0" allowfullscreen></iframe>
+				<br>
+				<a href="plays/p1b/index.html"><button class="btn btn-small btn-primary" type="button">More on Play 1 (Offense & Defense)</button></a>
+			</td>		
+		</tr>
+		<tr>
+			<td align="center" colspan=100%>
+				<hr>
+			</td>
+		</tr>
+		
+		
+		<tr>
+			<td align="center" colspan=100%>
+				<h3>Play 2</h3>
+			</td>
+		</tr>
+		<tr>
+			<td align="center" width=50%>
+				<iframe width="500" height="281" src="//www.youtube.com/embed/O5G8VsRcXv0?rel=0" frameborder="0" allowfullscreen></iframe>
+				<br>
+				<a href="plays/p2/index.html"><button class="btn btn-small btn-primary" type="button">More on Play 2 (Offense Only)</button></a>
+			</td>
+			<td align="center" width=50%>
+				<iframe width="500" height="281" src="//www.youtube.com/embed/AUPz2LsyBKg?rel=0" frameborder="0" allowfullscreen></iframe>
+				<br>
+				<a href="plays/p2b/index.html"><button class="btn btn-small btn-primary" type="button">More on Play 2 (Offense & Defense)</button></a>
+			</td>		
+		</tr>
+		<tr>
+			<td align="center" colspan=100%>
+				<hr>
+			</td>
+		</tr>
+		
+		<tr>
+			<td align="center" colspan=100%>
+				<h3>Play 3</h3>
+			</td>
+		</tr>
+		<tr>
+			<td align="center" width=50%>
+				<iframe width="500" height="281" src="//www.youtube.com/embed/ZHfzXRF0Cdo?rel=0" frameborder="0" allowfullscreen></iframe>
+				<br>
+				<a href="plays/p3/index.html"><button class="btn btn-small btn-primary" type="button">More on Play 3 (Offense Only)</button></a>
+			</td>
+			<td align="center" width=50%>
+				<iframe width="500" height="281" src="//www.youtube.com/embed/jUoAtOVXS1I?rel=0" frameborder="0" allowfullscreen></iframe>
+				<br>
+				<a href="plays/p3b/index.html"><button class="btn btn-small btn-primary" type="button">More on Play 3 (Offense & Defense)</button></a>
+			</td>		
+		</tr>
+		<tr>
+			<td align="center" colspan=100%>
+				<hr>
+			</td>
+		</tr>
+		
+		<tr>
+			<td align="center" colspan=100%>
+				<h3>Play 4</h3>
+			</td>
+		</tr>
+		<tr>
+			<td align="center" width=50%>
+				<iframe width="500" height="281" src="//www.youtube.com/embed/fwTDMe1p84k?rel=0" frameborder="0" allowfullscreen></iframe>
+				<br>
+				<a href="plays/p4/index.html"><button class="btn btn-small btn-primary" type="button">More on Play 4 (Offense Only)</button></a>
+			</td>
+			<td align="center" width=50%>
+				<iframe width="500" height="281" src="//www.youtube.com/embed/02TnO2hZsbE?rel=0" frameborder="0" allowfullscreen></iframe>
+				<br>
+				<a href="plays/p4b/index.html"><button class="btn btn-small btn-primary " type="button">More on Play 4 (Offense & Defense)</button></a>
+			</td>		
+		</tr>
+		<tr>
+			<td align="center" colspan=100%>
+				<hr>
+			</td>
+		</tr>
+		
+		<tr>
+			<td align="center" colspan=100%>
+				<h3>Play 5</h3>
+			</td>
+		</tr>
+		<tr>
+			<td align="center" width=50%>
+				<iframe width="500" height="281" src="//www.youtube.com/embed/4zmQ19mRGG8?rel=0" frameborder="0" allowfullscreen></iframe>
+				<br>
+				<a href="plays/p5/index.html"><button class="btn btn-small btn-primary" type="button">More on Play 5 (Offense Only)</button></a>
+			</td>
+			<td align="center" width=50%>
+				<iframe width="500" height="281" src="//www.youtube.com/embed/5vLTKtatyWo?rel=0" frameborder="0" allowfullscreen></iframe>
+				<br>
+				<a href="plays/p5b/index.html"><button class="btn btn-small btn-primary" type="button">More on Play 5 (Offense & Defense)</button></a>
+			</td>		
+		</tr>
+		<tr>
+			<td align="center" colspan=100%>
+				<hr>
+			</td>
+		</tr>
+		
+	</table>    
+    </center>
+      
+    
+    
+  </body>
+</html>
