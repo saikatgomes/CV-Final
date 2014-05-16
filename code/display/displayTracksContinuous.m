@@ -1,3 +1,8 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Author: Saikat R. Gomes
+%% Email: saikat@cs.wisc.edu
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 function [  ] = displayTracksContinuous( playerCollection, frame, base_dir, isPrint, isShowEnds  )
 
 warning('off','all');

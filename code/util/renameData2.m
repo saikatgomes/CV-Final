@@ -3,7 +3,7 @@
 %% Email: saikat@cs.wisc.edu
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [ ] = renameData( mainDir )
+function [ ] = renameData2( mainDir )
 
     d = dir(mainDir);
     isub = [d(:).isdir];
@@ -24,10 +24,10 @@ function [ ] = renameData( mainDir )
             base_dir=strcat(mainDir,labelDir{i},'/',instanceDir{j},'/');
             if(exist(strcat(base_dir,'/data/feature_data.mat'),'file'))
                 cpyFile=strcat(base_dir,'data\*');
-                newFile=strcat('U:\u.saikat-523968\raw\data\',labelDir{i},'\',instanceDir{j},'\');
+                newFile=strcat('U:\u.saikat-523968\raw\data\',labelDir{i},'b\',instanceDir{j},'\');
                 if(exist(strcat(base_dir,'/original.mp4'),'file'))
                     cpyFile2=strcat(base_dir,'original.mp4');
-                    newFile2=strcat('U:\u.saikat-523968\raw\samples\',labelDir{i},'\',instanceDir{j},'.mp4');  
+                    newFile2=strcat('U:\u.saikat-523968\raw\samples\',labelDir{i},'b\',instanceDir{j},'.mp4');  
                     if(~exist(newFile2,'file'))                        
                         display(strcat('Copying: ',base_dir));
                         copyfile(cpyFile2,newFile2,'f');
